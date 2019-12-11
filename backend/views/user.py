@@ -136,9 +136,7 @@ def edit_category(request):
     category_id=request.POST.get('cate_id')
     print(category_title,category_id)
     try:
-        ss=models.Category.objects.filter(nid=category_id).update(title=category_title,blog=user)
-        sss=models.Category.objects.filter(nid=category_id).values()
-        print(sss)
+        models.Category.objects.filter(nid=category_id).update(title=category_title,blog=user)
         res={'statu':True}
     except Exception as err:
         print(err)

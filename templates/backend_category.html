@@ -141,11 +141,12 @@
             modal.find('.modal-title').text('修改'+cate_title+'信息');
             modal.find('.modal-body #message-text').val(cate_title);
             $('#send_message').click(function () {
+                var new_title=$('#message-text').val()
                 $.ajax({
                 url:'backend/edit_category/',
                 type:'POST',
                 data:{
-                    cate_title:cate_title,
+                    cate_title:new_title,
                     cate_id:cate_id,
                 },
                 success:function (data) {
