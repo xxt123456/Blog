@@ -123,7 +123,6 @@ def add_category(request):
 def del_category(request):
     blog = models.Blog.objects.filter().select_related('user').first()
     del_cate_id = request.POST.get('cate_id')
-    print(del_cate_id)
     try:
         models.Category.objects.filter(nid=del_cate_id).delete()
         res = {'statu':True}
@@ -131,6 +130,20 @@ def del_category(request):
         res = {'statu':False,'res':'删除异常'}
     return JsonResponse(res)
 
+def edit_category(request):
+    user = request.session.get('user_info')['blog__nid']
+    category_title=request.POST.get('cate_title')
+    category_id=request.POST.get('cate_id')
+    print(category_title,category_id)
+    try:
+        ss=models.Category.objects.filter(nid=category_id).update(title=category_title,blog=user)
+        sss=models.Category.objects.filter(nid=category_id).values()
+        print(sss)
+        res={'statu':True}
+    except Exception as err:
+        print(err)
+        res = {'statu': False, 'res': '修改失败'}
+    return JsonResponse(res)
 
 @check_login
 def article(request,*args,**kwargs):

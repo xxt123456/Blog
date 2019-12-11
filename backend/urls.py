@@ -13,5 +13,6 @@ urlpatterns = [
     url(r'^category/(?P<blog_id>\d+).html$', user.category,name='category'),
     url(r'backend/add_category/',user.add_category),
     url(r'backend/del_category/',user.del_category),
+    url(r'backend/edit_category/',user.edit_category),
     url(r'^article-(?P<article_type_id>\d+)-(?P<category_id>\d+).html$', user.article, name='article'),
 ]
