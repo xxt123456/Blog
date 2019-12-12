@@ -47,7 +47,9 @@ def home(request,site):
     :param site:
     :return:
     """
+    print('111',site)
     blog = models.Blog.objects.filter(site=site).select_related('user').first()
+    print(blog)
     if not blog:
         return redirect('/all/0.html')
     tag_list = models.Tag.objects.filter(blog=blog)

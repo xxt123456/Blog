@@ -59,11 +59,13 @@ def register(request):
     if request.method=="GET":
         return render(request, 'register.html')
     elif request.method=="POST":
-        username = request.POST.get('username')
+        site=username = request.POST.get('username')
         password = request.POST.get('password')
         email = request.POST.get('email')
-        print(username,password,email)
-        new_user = models.UserInfo.objects.create(username=username,password=password,email=email)
+        title=nickname = request.POST.get('nickname')
+        user_img = request.FILES.get('avatar')
+        new_user = models.UserInfo.objects.create(username=username,password=password,email=email,nickname=nickname)
+        models.Blog.objects.create(site=site,title=title,theme='哈哈哈',user=new_user)
     return HttpResponse('注册成功')
 
 

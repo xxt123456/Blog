@@ -11,7 +11,10 @@ from django.urls import reverse
 
 @check_login
 def index(request):
-    print(request.session.get('user_info'))
+    if request.method =="GET":
+        user_info=request.session.get('user_info')
+        if not user_info['blog__nid']:
+            models.Blog.objects.create()
     return render(request,'backend_index.html')
 
 @check_login
@@ -52,6 +55,10 @@ def tag(request,*args,**kwargs):
     """
     base_url=reverse('tag',kwargs=kwargs)
     blog = models.Blog.objects.filter().select_related('user').first()
+    blog1 = models.Blog.objects.filter().select_related('user').values()
+    user = request.session.get('user_info')
+    print(blog1)
+    print(user)
     if not blog:
         return redirect('/login')
     from django.db.models.aggregates import Count
@@ -95,8 +102,10 @@ def category(request,*args,**kwargs):
     :param request:
     :return:
     """
+    print()
     bass_url = reverse('category', kwargs=kwargs)
-    user=request.session.get('user_info')['blog__nid']
+    # user=request.session.get('user_info')['blog__nid']
+    user=models.Blog.objects.filter().select_related('user').first()
     if not user:
         return redirect('/login')
     date_count=models.Category.objects.filter(blog=user).count()
@@ -108,7 +117,6 @@ def category(request,*args,**kwargs):
 
 def add_category(request):
     blog = models.Blog.objects.filter().select_related('user').first()
-    print(blog)
     add_cate = request.POST.get('add_cate')
     if add_cate =='':
         res = {'statu':False,'res':'请输入分类类型'}
