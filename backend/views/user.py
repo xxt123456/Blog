@@ -44,28 +44,28 @@ def upload_avatar(request):
     return HttpResponse(json.dumps(ret))
 
 @check_login
-def tag(request):
+def tag(request,*args,**kwargs):
     """
     个人标签管理
     :param request:
     :return:
     """
+    base_url=reverse('tag',kwargs=kwargs)
     blog = models.Blog.objects.filter().select_related('user').first()
-
-    if request.method == 'POST':
-        tagname = request.POST.get('tagname')
     if not blog:
         return redirect('/login')
-    tag_list = models.Tag.objects.filter(blog=blog).order_by('-nid')
-    article_count = models.Article.objects.filter(blog=blog).count()
-    return  render(request,'backend_tag.html',{'tag_list':tag_list,'article_count':article_count})
+    from django.db.models.aggregates import Count
+    data_count=models.Tag.objects.filter(blog=blog).count()
+    page_obj=Pagination(request.GET.get('p'),data_count)
+    tag_list=models.Tag.objects.filter(blog=blog).annotate(c=Count('article2tag__article')).values().order_by('-nid')[page_obj.start:page_obj.end]
+    page_str=page_obj.page_str(base_url)
+    return  render(request,'backend_tag.html',{'tag_list':tag_list,'page_str':page_str})
 
 def del_tag(request):
     blog = models.Blog.objects.filter().select_related('user').first()
     if request.method == 'POST':
-        tagname = request.POST.get('tagname')
         ds = request.POST.get('tag_id')
-        mvtag = models.Tag.objects.filter(nid=ds).delete()
+        models.Tag.objects.filter(nid=ds,blog=blog).delete()
         response={'statu':True}
     return JsonResponse(response)
 
@@ -84,7 +84,7 @@ def edit_tag(request):
     blog = models.Blog.objects.filter().select_related('user').first()
     tag_id = request.POST.get('tag_id')
     tag_title = request.POST.get('tag_title')
-    tag_up = models.Tag.objects.filter(nid=tag_id).update(title=tag_title,blog=blog)
+    models.Tag.objects.filter(nid=tag_id).update(title=tag_title,blog=blog)
     res={'statu':True}
     return JsonResponse(res)
 
@@ -103,9 +103,6 @@ def category(request,*args,**kwargs):
     page_obj=Pagination(request.GET.get('p'),date_count)
     from django.db.models.aggregates import Count
     date_list=models.Category.objects.filter(blog=user).annotate(c=Count('article__title')).values('title','c','nid')[page_obj.start:page_obj.end]
-    # category_list = models.Category.objects.filter(blog=user)[page_obj.start:page_obj.end]
-    # for i in category_list:
-    #    article_sum=i.article_set.filter(blog=user).count()
     page_str = page_obj.page_str(bass_url)
     return  render(request,'backend_category.html',{'date_list':date_list,'page_str':page_str})
 

@@ -9,7 +9,7 @@
     </ol>
     <div>
         <div class="row" style="padding: 20px 5px;">
-            <form class="form-horizontal" id="addTag" action="{% url 'tag' %}" method="post">
+            <form class="form-horizontal" id="addTag">
                 <div class="col-xs-12">
                     <div class="form-group">
                         <label class="col-xs-1 control-label">标签名</label>
@@ -34,51 +34,71 @@
         <table class="table table-bordered">
             <thead>
             <tr>
+                <th>序号</th>
                 <th>标签</th>
                 <th>文章个数</th>
-                <th>序号</th>
                 <th>操作</th>
             </tr>
             </thead>
             <tbody>
             {% for tags in tag_list %}
                 <tr>
-                    <td id="title" >{{ tags.title }}</td>
-                    <td id="article_count">{{ article_count }}</td>
-                    <td id="tag_nid">{{ tags.nid }}</td>
+                    <td>{{ forloop.counter }}</td>
+                    <td id="title">{{ tags.title }}</td>
+                    <td id="article_count">{{ tags.c }}</td>
                     <td>
-                        <a class="btn btn-danger btn-xs" id="del" tag_id={{ tags.nid }}>
+                        <button type="button" class="btn btn-primary btn-xs" data-toggle="modal"
+                                data-target="#exampleModal" data-tag_id={{ tags.nid }} id="edit_category"
+                                data-tag_title={{ tags.title }}>编辑
+                        </button>
+                        |
+                        {#                        <a class="btn btn-primary btn-xs" id="tag_edit" tag_id={{ tags.nid }} title={{ tags.title }} article_count={{ article_count }}>#}
+                        {#                            <i class="fa fa-pencil-square-o" aria-hidden="true"></i>#}
+                        {#                            编辑#}
+                        {#                        </a>#}
+                        <button class="btn btn-danger btn-xs" id="del" tag_id={{ tags.nid }}>
                             <i class="fa fa-times" aria-hidden="true"></i>
                             删除
-                        </a>
-                        |
-                        <a class="btn btn-primary btn-xs" id="tag_edit" tag_id={{ tags.nid }} title={{ tags.title }} article_count={{ article_count }}>
-                            <i class="fa fa-pencil-square-o" aria-hidden="true"></i>
-                            编辑
-                        </a>
+                        </button>
                     </td>
                 </tr>
             {% endfor %}
             </tbody>
         </table>
-        <div id="tag-edit-1" style="display: none">
-            <div>
-                标签
-                <input type="text" id="tag_edit_cn" value=""/>
-                <input type="button" id="tag_sbm" value="提交">
+        <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                                aria-hidden="true">&times;</span></button>
+                        <h4 class="modal-title" id="exampleModalLabel">修改标签信息</h4>
+                    </div>
+                    <div class="modal-body">
+                        <form>
+                            <div class="form-group">
+                                <label for="message-text" class="control-label">标签:</label>
+                                <input type="text" class="form-control" id="message-text">
+                            </div>
+                        </form>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+                        <button type="button" class="btn btn-primary" id="send_message">确认修改</button>
+                    </div>
+                </div>
             </div>
         </div>
-        <div class="clearfix">
-            <ul class="pagination right" style="margin-top: 0">
-                <li><a href="#">&laquo;</a></li>
-                <li><a href="#">1</a></li>
-                <li><a href="#">2</a></li>
-                <li><a href="#">3</a></li>
-                <li><a href="#">4</a></li>
-                <li><a href="#">5</a></li>
-                <li><a href="#">&raquo;</a></li>
-            </ul>
-        </div>
+        {#        <div id="tag-edit-1" style="display: none">#}
+        {#            <div>#}
+        {#                标签#}
+        {#                <input type="text" id="tag_edit_cn" value=""/>#}
+        {#                <input type="button" id="tag_sbm" value="提交">#}
+        {#            </div>#}
+        {#        </div>#}
+    <div class="clearfix" style="margin-top: 0">
+        <ul class="pagination right" style="margin-top: 0">
+            {{ page_str }}
+        </ul>
     </div>
 
 
@@ -86,75 +106,99 @@
 
 {% block js %}
     <script src="/static/js/jquery-1.12.4.js"></script>
+    <script src="/static/plugins/bootstrap/js/bootstrap.js"></script>
     <script>
         $('#addtagname').click(function () {
-            var add_tag=$('#tagname').val();
+            var add_tag = $('#tagname').val();
             $.ajax({
-                url:'backend/add_tag/',
-                type:'POST',
-                data:{
+                url: 'backend/add_tag/',
+                type: 'POST',
+                data: {
                     add_tag: add_tag,
                 },
-                success:function (data) {
+                success: function (data) {
                     console.log(data.statu);
-                    if (data.statu==true){
+                    if (data.statu == true) {
                         console.log(data);
                         location.reload();
-                    }else {
-                        var a=data.res;
+                    } else {
+                        var a = data.res;
                         $('#addgjxx').html(a);
                     }
                     setTimeout(function () {
-                            $("#addgjxx").html("")
-                        },5000)
+                        $("#addgjxx").html("")
+                    }, 5000)
 
                 }
             });
         });
         $('td #del').click(function () {
-            var tag_id=$(this).attr("tag_id");
+            var tag_id = $(this).attr("tag_id");
             $.ajax({
-                url:'backend/del_tag/',
-                type:'POST',
-                data:{
+                url: 'backend/del_tag/',
+                type: 'POST',
+                data: {
                     tag_id: tag_id,
                 },
-                success:function (data) {
+                success: function (data) {
                     console.log(data);
-                    if (data){
+                    if (data) {
                         location.reload();
                     }
                 }
             });
         });
-        $('td #tag_edit').click(function () {
-            var tg=document.getElementById('tag-edit-1');
-            tg.style.display ="";
-            var tag_edit_cn=document.getElementById('tag_edit_cn');
-            var tag_id=$(this).attr("tag_id");
-            var tag_title=$(this).attr('title');
-            var tag_com=document.getElementById('tag_edit_cn').value+=tag_title;
+        {#$('td #tag_edit').click(function () {#}
+        {#    var tg=document.getElementById('tag-edit-1');#}
+        {#    tg.style.display ="";#}
+        {#    var tag_edit_cn=document.getElementById('tag_edit_cn');#}
+        {#    var tag_id=$(this).attr("tag_id");#}
+        {#    var tag_title=$(this).attr('title');#}
+        {#    var tag_com=document.getElementById('tag_edit_cn').value+=tag_title;#}
+        {##}
+        {#    $('#tag_sbm').click(function () {#}
+        {#        var tag_commend = $('#tag_edit_cn').val();#}
+        {#        console.log(tag_commend);#}
+        {#        $.ajax({#}
+        {#        url:'backend/edit_tag/',#}
+        {#        type:'POST',#}
+        {#        data:{#}
+        {#            tag_id:tag_id,#}
+        {#            tag_title:tag_commend,#}
+        {#        },#}
+        {#        success:function (data) {#}
+        {#            console.log(data);#}
+        {#            if(data){#}
+        {#                location.reload();#}
+        {#            }#}
+        {##}
+        {#        }#}
+        {#    });#}
+        {#    })#}
 
-            $('#tag_sbm').click(function () {
-                var tag_commend = $('#tag_edit_cn').val();
-                console.log(tag_commend);
+
+        $('#exampleModal').on('show.bs.modal', function (event) {
+            var button = $(event.relatedTarget) // Button that triggered the modal
+            var tag_id = button.data('tag_id') // Extract info from data-* attributes
+            var tag_title = button.data('tag_title') // Extract info from data-* attributes
+            var modal = $(this)
+            modal.find('.modal-title').text('修改' + tag_title + '信息');
+            modal.find('.modal-body #message-text').val(tag_title);
+            $('#send_message').click(function () {
+                var new_title = $('#message-text').val()
                 $.ajax({
-                url:'backend/edit_tag/',
-                type:'POST',
-                data:{
-                    tag_id:tag_id,
-                    tag_title:tag_commend,
-                },
-                success:function (data) {
-                    console.log(data);
-                    if(data){
-                        location.reload();
+                    url: 'backend/edit_tag/',
+                    type: 'POST',
+                    data: {
+                        tag_title: new_title,
+                        tag_id: tag_id,
+                    },
+                    success: function (data) {
+                        console.log(data);
+                        location.reload()
                     }
-
-                }
-            });
+                })
             })
-
         })
     </script>
 {% endblock %}

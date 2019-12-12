@@ -6,7 +6,7 @@ urlpatterns = [
     url(r'^index.html$',user.index,name='index'),
     url(r'^base-info.html',user.base_info,name='base-info'),
     url(r'^upload-avatar.html$', user.upload_avatar),
-    url(r'^tag.html$', user.tag,name='tag'),
+    url(r'^tag/(?P<tag_id>\d+).html$', user.tag,name='tag'),
     url(r'backend/del_tag/',user.del_tag),
     url(r'backend/add_tag/',user.add_tag),
     url(r'backend/edit_tag/',user.edit_tag),
