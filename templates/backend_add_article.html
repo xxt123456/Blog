@@ -1,0 +1,54 @@
+{% extends 'backend_layout.html' %}
+{% block css %}
+
+{% endblock %}
+{% block conent %}
+    <form class="form-horizontal">
+        <div class="col-xs-12">
+            <label class="col-xs-1 control-label">分类名称</label>
+            <div class="col-xs-3">
+                <input type="text" class="form-control" id="add_category" placeholder="请输入分类名称">
+            </div>
+        </div>
+        <div class="col-xs-12">
+            <label class="col-xs-1 control-label">文章简介</label>
+            <div class="col-xs-3">
+                <input type="text" class="form-control" id="add_category" placeholder="请输入文章简介">
+            </div>
+        </div>
+        <div class="col-xs-12">
+            <label class="col-xs-1 control-label">所属博客</label>
+            <div class="col-xs-3">
+                <input type="text" class="form-control" id="add_category" placeholder="请输入所属博客">
+            </div>
+        </div>
+        <div class="col-xs-12">
+            <label class="col-xs-1 control-label">文章类型</label>
+            <div class="col-xs-3">
+                <input type="text" class="form-control" id="add_category" placeholder="请输入文章类型">
+            </div>
+        </div>
+        <div class="col-xs-12">
+            <label class="col-xs-1 control-label">文章tags</label>
+            <div class="col-xs-3">
+                <input type="text" class="form-control" id="add_category" placeholder="请输入文章tags名称">
+            </div>
+        </div>
+        <div class="col-xs-12 control-label">
+            <textarea id="editor_id" name="content" style="width:90%;height:500px;">121312</textarea>
+        </div>
+    </form>
+{% endblock %}
+{% block js %}
+    <script charset="utf-8" src="/static/kindeditor/kindeditor-all.js"></script>
+    <script charset="utf-8" src="/static/kindeditor/lang/zh-CN.js"></script>
+    <script>
+        KindEditor.ready(function (K) {
+            window.editor = K.create('#editor_id');
+        });
+        var ss = $('#editor_id').val()
+        console.log(ss)
+    </script>
+{% endblock %}
+</body>
+</html>
