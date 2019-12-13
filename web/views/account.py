@@ -64,8 +64,12 @@ def register(request):
         email = request.POST.get('email')
         title=nickname = request.POST.get('nickname')
         user_img = request.FILES.get('avatar')
-        new_user = models.UserInfo.objects.create(username=username,password=password,email=email,nickname=nickname)
-        models.Blog.objects.create(site=site,title=title,theme='哈哈哈',user=new_user)
+        try:
+            new_user = models.UserInfo.objects.create(username=username, password=password, email=email,
+                                                      nickname=nickname)
+            models.Blog.objects.create(site=site, title=title, theme='哈哈哈', user=new_user)
+        except Exception as e:
+            print(e)
     return HttpResponse('注册成功')
 
 

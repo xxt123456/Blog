@@ -1,6 +1,6 @@
 from django.conf.urls import url
 from django.conf.urls import include
-from .views import user
+from .views import user, article
 
 urlpatterns = [
     url(r'^index.html$',user.index,name='index'),
@@ -14,5 +14,6 @@ urlpatterns = [
     url(r'backend/add_category/',user.add_category),
     url(r'backend/del_category/',user.del_category),
     url(r'backend/edit_category/',user.edit_category),
-    url(r'^article-(?P<article_type_id>\d+)-(?P<category_id>\d+).html$', user.article, name='article'),
+    url(r'^article-(?P<article_type_id>\d+)-(?P<category_id>\d+).html$', article.article, name='article'),
+    url(r'^article/add_article/', article.add_article)
 ]

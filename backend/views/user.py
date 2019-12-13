@@ -83,7 +83,7 @@ def add_tag(request):
         if tagname =='':
             response = {'statu': False,'res':'请输入类型'}
         else:
-            newtagname = models.Tag.objects.create(title=tagname, blog=blog)
+            models.Tag.objects.create(title=tagname, blog=blog)
             response={'statu':True}
     return JsonResponse(response)
 
@@ -148,42 +148,4 @@ def edit_category(request):
         res = {'statu': False, 'res': '修改失败'}
     return JsonResponse(res)
 
-@check_login
-def article(request,*args,**kwargs):
-    """
-    个人文章管理
-    :param request:
-    :param args:
-    :param kwargs:
-    :return:
-    """
-    blog_id = request.session.get('user_info')
-    # blog_id = request.session.get(['user_info']['blog__nid'])
 
-    condition = {}
-    for k,v in kwargs.items():
-        kwargs[k] = int(v)
-        if v == '0':
-            pass
-        else:
-            condition[k] = v
-    condition['blog_id']=blog_id['blog__nid']
-    data_count = models.Article.objects.filter(**condition).count()
-    page = Pagination(request.GET.get('p'),data_count)
-    result = models.Article.objects.filter(**condition).order_by('-nid').only('nid','title','blog').select_related('blog')[page.start:page.end]
-    page_str = page.page_str(reverse('article',kwargs=kwargs))
-    category_list = models.Category.objects.filter(blog_id=blog_id['blog__nid']).values('nid','title')
-    type_list = map(lambda item:{'nid':item[0],'title':item[1]},models.Article.type_choices)
-    kwargs['p']=page.current_page
-    return render(
-        request,
-        'backend_article.html',
-        {
-            'result':result,
-            'page_str':page_str,
-            'category_list':category_list,
-            'type_list':type_list,
-            'arg_dict':kwargs,
-            'data_count':data_count
-        }
-    )
