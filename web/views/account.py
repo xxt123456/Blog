@@ -2,7 +2,7 @@ from io import BytesIO
 from django.shortcuts import HttpResponse,render,redirect
 from utils.check_code import create_validate_code
 from repository import models
-from ..forms.account import LoginForm
+from ..forms.account import LoginForm,RegisterForm
 import json
 
 def check_code(request):
@@ -59,18 +59,26 @@ def register(request):
     if request.method=="GET":
         return render(request, 'register.html')
     elif request.method=="POST":
-        site=username = request.POST.get('username')
-        password = request.POST.get('password')
-        email = request.POST.get('email')
-        title=nickname = request.POST.get('nickname')
-        user_img = request.FILES.get('avatar')
-        try:
-            new_user = models.UserInfo.objects.create(username=username, password=password, email=email,
-                                                      nickname=nickname)
-            models.Blog.objects.create(site=site, title=title, theme='哈哈哈', user=new_user)
-        except Exception as e:
-            print(e)
-    return HttpResponse('注册成功')
+        form = RegisterForm(request=request, data=request.POST)
+        print(form)
+        if form.is_valid():
+            site=username = form.cleaned_data.get('username')
+            password = form.cleaned_data.get('password')
+            email = form.cleaned_data.get('email')
+            title=nickname = form.cleaned_data.get('nickname')
+            user_img = request.FILES.get('avatar')
+            try:
+                # new_user = models.UserInfo.objects.create(username=username, password=password, email=email,
+                #                                           nickname=nickname)
+                new_user=models.UserInfo.objects.create(**form.cleaned_data)
+                models.Blog.objects.create(site=site, title=title, theme='哈哈哈', user=new_user)
+            except Exception as e:
+                print(e)
+            ret={"status":True,'message':'注册成功'}
+        else:
+            ret={'status':False,"messagee":'失败'}
+
+        return HttpResponse(ret)
 
 
 

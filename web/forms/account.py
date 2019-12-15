@@ -27,3 +27,28 @@ class LoginForm(BaseForm,django_forms.Form):
     def clean_check_code(self):
         if self.request.session.get('CheckCode').upper()!=self.request.POST.get('check_code').upper():
             raise ValidationError(message='验证码错误', code='invalid')
+
+
+class RegisterForm(BaseForm,django_forms.Form):
+    username = django_fields.CharField(
+        min_length=2,
+        max_length=20,
+        error_messages={'required':'用户名不能为空','min_length':'用户名过短','max_length':'用户名过长'}
+    )
+    password = django_fields.CharField(
+        min_length=3,
+        max_length=32,
+        error_messages={'required': '密码不能为空.',
+                        'invalid': '密码必须包含数字，字母、特殊字符',
+                        'min_length': "密码长度不能小于8个字符",
+                        'max_length': "密码长度不能大于32个字符"}
+    )
+    email = django_fields.EmailField(
+        error_messages={'required':'邮箱不能为空'}
+    )
+    nickname=django_fields.CharField(
+        min_length=1,
+        max_length=20,
+        error_messages={'required': '昵称不能为空', 'min_length': '昵称过短', 'max_length': '昵称过长'}
+    )
+
