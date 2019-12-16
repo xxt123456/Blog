@@ -22,23 +22,24 @@
         {% csrf_token %}
         <div class="form-group">
             <label for="username">用户名</label>
-            <input type="text" class="form-control" name="username" placeholder="请输入用户名">
+            <input type="text" class="form-control" name="username" id="username" placeholder="请输入用户名">
         </div>
         <div class="form-group">
             <label for="email">邮箱</label>
-            <input type="email" class="form-control" name="email" placeholder="请输入密码">
+            <input type="email" class="form-control" name="email" id="email" placeholder="请输入邮箱">
         </div>
         <div class="form-group">
             <label for="nickname">昵称</label>
-            <input type="text" class="form-control" name="nickname" placeholder="请输入昵称">
+            <input type="text" class="form-control" name="nickname" id="nickname" placeholder="请输入昵称">
         </div>
         <div class="form-group">
             <label for="password">密码</label>
-            <input type="password" class="form-control" name="password" placeholder="请输入密码">
+            <input type="password" class="form-control" name="password" id='password' placeholder="请输入密码">
         </div>
         <div class="form-group">
             <label for="confirm_password">确认密码</label>
-            <input type="password" class="form-control" name="confirm_password" placeholder="请重新输入密码">
+            <input type="password" class="form-control" name="confirm_password" id="confirm_password"
+                   placeholder="请再次输入密码">
         </div>
             <div class="form-group">
             <label for="user_img"><img id="avatar-img" src="/static/imgs/avatar/default.png" alt="" style="height: 60px;width: 60px"></label>
@@ -63,20 +64,28 @@
                     $('#avatar-img').attr('src',fileReader.result);
             }
                 });
+        var formData = new FormData();
+        formData.append("username", $('#username').val());
+        formData.append("email", $('#email').val());
+        formData.append("password", $('#password').val());
+        formData.append('confirm_password', $('#confirm_password').val());
+        formData.append('avatar', $('#avatar')[0].files[0]);
         function submitRe(ths) {
             $('#resubmit').click(function () {
-                console.log(11111)
                 var $msg = $('#error_msg');
                 console.log($msg.error());
                 $msg.parent().addClass('hide');
                 $.ajax({
                     url:'/register/',
                     type: 'POST',
-                    data: $('#reform').serialize(),
+                    processData: false,
+                    contentType: false,
+                    data: formData,
                     dataType: 'JOSN',
                     success: function (arg) {
+                        console.log(arg)
                         if(arg.status){
-                            location.href = '/'
+                            {#location.href = '/'#}
                             console.log(arg.status);
 
                         }else{

@@ -114,12 +114,15 @@
                     <form method="POST" action="/backend/upload-avatar.html" enctype="multipart/form-data"
                           target="upload_iframe">
                         {% csrf_token %}
-                        <img id="previewImg" origin="/static/imgs/avatar/default.png"
-                             src="/static/imgs/avatar/default.png"
-                             style="border-radius: 50%;">
+                        {% for row in email %}
+                            <img id="previewImg" origin={{ row.avatar }}
+                                    src='/{{ row.avatar }}'
+                                 style="border-radius: 80%;">
 
                         <div class="text">点击图片更换(<a href="#">撤销</a>)</div>
-                        <input id="avatarImg" name="avatar_img" type="file" class="img-file"/>
+                            <input id="avatarImg" name="avatar_img" type="file" class="img-file"
+                                   username="{{ row.username }}"/>
+                        {% endfor %}
                     </form>
                 </div>
             </div>
@@ -129,7 +132,8 @@
 {% block js %}
     <script type="text/javascript">
         $(function () {
-            bindChangeAvatar4();
+            bindChangeAvatar2();
+            bindChangeAvatar3();
         });
 
         function bindChangeAvatar1() {
@@ -154,10 +158,13 @@
             $('#avatarImg').change(function () {
                 var file_obj = $(this)[0].files[0];
                 var form = new FormData();
-                form.add('img_upload', file_obj);
+                console.log($('#avatarImg').attr('username'))
+                form.append('img_upload', file_obj);
+                form.append('username', $(this).attr('username'))
 
                 $.ajax({
-                    url: '',
+                    url: '/backend/upload-avatar.html',
+                    type: 'POST',
                     data: form,
                     processData: false,  // tell jQuery not to process the data
                     contentType: false,  // tell jQuery not to set contentType

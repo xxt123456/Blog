@@ -4,6 +4,7 @@ from utils.check_code import create_validate_code
 from repository import models
 from ..forms.account import LoginForm,RegisterForm
 import json
+from django.http import JsonResponse
 
 def check_code(request):
     """
@@ -60,25 +61,25 @@ def register(request):
         return render(request, 'register.html')
     elif request.method=="POST":
         form = RegisterForm(request=request, data=request.POST)
-        print(form)
+        ret = {'status': False, 'message': None, 'data': None}
         if form.is_valid():
             site=username = form.cleaned_data.get('username')
             password = form.cleaned_data.get('password')
             email = form.cleaned_data.get('email')
             title=nickname = form.cleaned_data.get('nickname')
-            user_img = request.FILES.get('avatar')
-            try:
-                # new_user = models.UserInfo.objects.create(username=username, password=password, email=email,
-                #                                           nickname=nickname)
-                new_user=models.UserInfo.objects.create(**form.cleaned_data)
+            user_img = request.FILES.get('user_img')
+            user = models.UserInfo.objects.filter(username=username)
+            if user:
+                ret['status'] = False
+                ret['message'] = "该用户名已被占用"
+            else:
+                new_user = models.UserInfo.objects.create(**form.cleaned_data, avatar=user_img)
                 models.Blog.objects.create(site=site, title=title, theme='哈哈哈', user=new_user)
-            except Exception as e:
-                print(e)
-            ret={"status":True,'message':'注册成功'}
+                ret = {'status': True, 'message': '注册成功'}
         else:
-            ret={'status':False,"messagee":'失败'}
-
-        return HttpResponse(ret)
+            ret['status'] = False
+            ret['message'] = form.errors
+    return JsonResponse(json.dumps(ret), safe=False)
 
 
 

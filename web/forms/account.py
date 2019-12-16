@@ -51,4 +51,11 @@ class RegisterForm(BaseForm,django_forms.Form):
         max_length=20,
         error_messages={'required': '昵称不能为空', 'min_length': '昵称过短', 'max_length': '昵称过长'}
     )
-
+    # confirm_password = django_fields.CharField(
+    #     min_length=3,
+    #     max_length=32,
+    #     error_messages={'required': '密码不能为空.',
+    #                     'invalid': '密码必须包含数字，字母、特殊字符',
+    #                     'min_length': "密码长度不能小于8个字符",
+    #                     'max_length': "密码长度不能大于32个字符"}
+    # )

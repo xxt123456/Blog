@@ -25,23 +25,27 @@ def base_info(request):
     :return:
     """
     current_username = request.session.get('user_info')
-    email = models.UserInfo.objects.filter(username=current_username['username']).values('email','nickname')
+    email = models.UserInfo.objects.filter(username=current_username['username']).values('email', 'nickname', 'avatar',
+                                                                                         'username')
     return render(request,'backend_base_info.html',{'current_username':current_username,'email':email})
 
 @check_login
 def upload_avatar(request):
     ret = {'status':False,'data':None,'message':None}
     if request.method == 'POST':
-        file_obj = request.FILES.get('avatar_img')
+        username = request.POST.get('username')
+        file_obj = request.FILES.get('img_upload')
         if not file_obj:
             pass
         else:
             file_name = str(uuid.uuid4())
-            file_path = os.path.join('static/imgs/avator',file_name)
+            file_path = os.path.join('static/imgs/avatar/', file_name)
             f = open(file_path,'wb')
+            ss = models.UserInfo.objects.filter(username=username).update(avatar=file_path)
             for chunk in file_obj.chunks():
                 f.write(chunk)
             f.close()
+            print(ss)
             ret['status']=True
             ret['data']=file_path
     return HttpResponse(json.dumps(ret))
@@ -54,11 +58,7 @@ def tag(request,*args,**kwargs):
     :return:
     """
     base_url=reverse('tag',kwargs=kwargs)
-    blog = models.Blog.objects.filter().select_related('user').first()
-    blog1 = models.Blog.objects.filter().select_related('user').values()
-    user = request.session.get('user_info')
-    print(blog1)
-    print(user)
+    blog = request.session.get('user_info')['blog__nid']
     if not blog:
         return redirect('/login')
     from django.db.models.aggregates import Count
@@ -69,15 +69,16 @@ def tag(request,*args,**kwargs):
     return  render(request,'backend_tag.html',{'tag_list':tag_list,'page_str':page_str})
 
 def del_tag(request):
-    blog = models.Blog.objects.filter().select_related('user').first()
+    blog_id = request.session.get('user_info')['blog__nid']
     if request.method == 'POST':
         ds = request.POST.get('tag_id')
-        models.Tag.objects.filter(nid=ds,blog=blog).delete()
+        models.Tag.objects.filter(nid=ds, blog=blog_id).delete()
         response={'statu':True}
     return JsonResponse(response)
 
 def add_tag(request):
-    blog = models.Blog.objects.filter().select_related('user').first()
+    blog_id = request.session.get('user_info')['blog__nid']
+    blog = models.Blog.objects.filter(nid=blog_id).select_related('user').first()
     if request.method == 'POST':
         tagname = request.POST.get('add_tag')
         if tagname =='':
@@ -88,10 +89,10 @@ def add_tag(request):
     return JsonResponse(response)
 
 def edit_tag(request):
-    blog = models.Blog.objects.filter().select_related('user').first()
+    blog_id = request.session.get('user_info')['blog__nid']
     tag_id = request.POST.get('tag_id')
     tag_title = request.POST.get('tag_title')
-    models.Tag.objects.filter(nid=tag_id).update(title=tag_title,blog=blog)
+    models.Tag.objects.filter(nid=tag_id).update(title=tag_title, blog=blog_id)
     res={'statu':True}
     return JsonResponse(res)
 
@@ -102,21 +103,22 @@ def category(request,*args,**kwargs):
     :param request:
     :return:
     """
-    print()
     bass_url = reverse('category', kwargs=kwargs)
-    # user=request.session.get('user_info')['blog__nid']
-    user=models.Blog.objects.filter().select_related('user').first()
-    if not user:
+    blog_id = request.session.get('user_info')['blog__nid']
+    if not blog_id:
         return redirect('/login')
-    date_count=models.Category.objects.filter(blog=user).count()
+    date_count = models.Category.objects.filter(blog=blog_id).count()
     page_obj=Pagination(request.GET.get('p'),date_count)
     from django.db.models.aggregates import Count
-    date_list=models.Category.objects.filter(blog=user).annotate(c=Count('article__title')).values('title','c','nid')[page_obj.start:page_obj.end]
+    date_list = models.Category.objects.filter(blog=blog_id).annotate(c=Count('article__title')).values('title', 'c',
+                                                                                                        'nid')[
+                page_obj.start:page_obj.end]
     page_str = page_obj.page_str(bass_url)
     return  render(request,'backend_category.html',{'date_list':date_list,'page_str':page_str})
 
 def add_category(request):
-    blog = models.Blog.objects.filter().select_related('user').first()
+    blog_id = request.session.get('user_info')['blog__nid']
+    blog = models.Blog.objects.filter(nid=blog_id).first()
     add_cate = request.POST.get('add_cate')
     if add_cate =='':
         res = {'statu':False,'res':'请输入分类类型'}
@@ -126,7 +128,6 @@ def add_category(request):
     return JsonResponse(res)
 
 def del_category(request):
-    blog = models.Blog.objects.filter().select_related('user').first()
     del_cate_id = request.POST.get('cate_id')
     try:
         models.Category.objects.filter(nid=del_cate_id).delete()
@@ -136,12 +137,12 @@ def del_category(request):
     return JsonResponse(res)
 
 def edit_category(request):
-    user = request.session.get('user_info')['blog__nid']
+    blog_id = request.session.get('user_info')['blog__nid']
     category_title=request.POST.get('cate_title')
     category_id=request.POST.get('cate_id')
     print(category_title,category_id)
     try:
-        models.Category.objects.filter(nid=category_id).update(title=category_title,blog=user)
+        models.Category.objects.filter(nid=category_id).update(title=category_title, blog=blog_id)
         res={'statu':True}
     except Exception as err:
         print(err)

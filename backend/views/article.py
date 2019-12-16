@@ -51,6 +51,7 @@ def article(request, *args, **kwargs):
     )
 
 
+@check_login
 def add_article(request):
     """
     添加文章
@@ -58,7 +59,11 @@ def add_article(request):
     :return:
     """
     if request.method == 'GET':
-        return render(request, 'backend_add_article.html')
+        blog_id = request.session.get('user_info')['blog__nid']
+        print(blog_id)
+        blog = models.Blog.objects.filter(nid=blog_id).values('category__title')
+        print(blog)
+        return render(request, 'backend_add_article.html', {'blog': blog})
     title = request.POST.get('title')
     summary = request.POST.get('summary')
     blog = request.POST.get('blog')
