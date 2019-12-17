@@ -61,22 +61,22 @@ def add_article(request):
     if request.method == 'GET':
         blog_id = request.session.get('user_info')['blog__nid']
         cat_list = models.Blog.objects.filter(nid=blog_id).values('category__title', 'category__nid', 'title', 'nid')
-        print(cat_list)
         tag_list = models.Blog.objects.filter(nid=blog_id).values('tag__title', 'tag__nid')
         return render(request, 'backend_add_article.html', {'cat_list': cat_list, 'tag_list': tag_list})
-    print(request.body)
     title = request.POST.get('art_name')
     summary = request.POST.get('art_introduce')
-    blog = request.POST.get('art_blog')
-    category = request.POST.get('category')
-    article_type_id = request.POST.get('article_type_id')
-    tags = request.POST.get('tags')
+    blog_id = models.Blog.objects.get(nid=request.POST.get('art_blog_id'))
+    tags_id = models.Tag.objects.get(nid=request.POST.get('add_tag_id'))
+    category_id = models.Category.objects.get(nid=request.POST.get('art_category_id'))
+    article_type_id = 1
     art_content = request.POST.get('art_content')
     try:
-        models.Article.objects.create(title=title, summary=summary, blog=blog, category=category,
-                                      article_type_id=article_type_id, tags=tags)
+        a = models.Article.objects.create(title=title, summary=summary, blog=blog_id, category=category_id,
+                                          article_type_id=article_type_id)
+        # models.Article2Tag.objects.create(article=a,tag=tags_id)
         res = {'status': True}
     except Exception as e:
+        print(e)
         res = {'status': False, 'err': '添加失败'}
     return JsonResponse(res)
 

@@ -20,7 +20,7 @@
             <label class="col-xs-1 control-label">所属博客</label>
             <div class="col-xs-3">
                 <span class="form-control" id="art_blog"
-                      blog_id="{{ cat_list.first.nid }}">{{ cat_list.first.title }}</span>
+                      data-blog_id="{{ cat_list.first.nid }}">{{ cat_list.first.title }}</span>
             </div>
         </div>
         <div class="col-xs-12">
@@ -28,7 +28,7 @@
             <div class="col-xs-3">
                 <select class="form-control" id="art_category">
                     {% for cat in cat_list %}
-                        <option cat_id="{{ cat.category__nid }}">{{ cat.category__title }}</option>
+                        <option data-cat_id="{{ cat.category__nid }}">{{ cat.category__title }}</option>
                     {% endfor %}
                 </select>
             </div>
@@ -38,7 +38,7 @@
             <div class="col-xs-3">
                 <select class="form-control" id="add_tag">
                     {% for tag in tag_list %}
-                        <option tag_id="{{ tag.tag__nid }}111">{{ tag.tag__title }}</option>
+                        <option data-tag_id="{{ tag.tag__nid }}">{{ tag.tag__title }}</option>
                     {% endfor %}
                 </select>
             </div>
@@ -61,11 +61,15 @@
         });
 
         $('#add_article').click(function () {
+            var art_category_id = $('#art_category').find("option:selected").data("cat_id")
+            var add_tag_id = $('#add_tag').find("option:selected").data("tag_id")
+            var art_blog_id = $('#art_blog').data("blog_id")
             var formData = new FormData();
             formData.append('art_name', $('#art_name').val())
             formData.append('art_introduce', $('#art_introduce').val())
-            formData.append('art_blog', $('#art_blog').html());
-            formData.append('art_category', $('#art_category').val());
+            formData.append('art_blog_id', art_blog_id);
+            formData.append('add_tag_id', add_tag_id);
+            formData.append('art_category_id', art_category_id);
             formData.append('art_content', $('#editor_id').val());
             $.ajax({
                 url: 'article/add_article/',
