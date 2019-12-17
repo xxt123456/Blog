@@ -60,16 +60,18 @@ def add_article(request):
     """
     if request.method == 'GET':
         blog_id = request.session.get('user_info')['blog__nid']
-        print(blog_id)
-        blog = models.Blog.objects.filter(nid=blog_id).values('category__title','title')
-        print(blog)
-        return render(request, 'backend_add_article.html', {'blog': blog})
-    title = request.POST.get('title')
-    summary = request.POST.get('summary')
-    blog = request.POST.get('blog')
+        cat_list = models.Blog.objects.filter(nid=blog_id).values('category__title', 'category__nid', 'title', 'nid')
+        print(cat_list)
+        tag_list = models.Blog.objects.filter(nid=blog_id).values('tag__title', 'tag__nid')
+        return render(request, 'backend_add_article.html', {'cat_list': cat_list, 'tag_list': tag_list})
+    print(request.body)
+    title = request.POST.get('art_name')
+    summary = request.POST.get('art_introduce')
+    blog = request.POST.get('art_blog')
     category = request.POST.get('category')
     article_type_id = request.POST.get('article_type_id')
     tags = request.POST.get('tags')
+    art_content = request.POST.get('art_content')
     try:
         models.Article.objects.create(title=title, summary=summary, blog=blog, category=category,
                                       article_type_id=article_type_id, tags=tags)

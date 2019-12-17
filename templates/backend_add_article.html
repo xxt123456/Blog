@@ -7,46 +7,50 @@
         <div class="col-xs-12">
             <label class="col-xs-1 control-label">分类名称</label>
             <div class="col-xs-3">
-                <input type="text" class="form-control" id="add_category" placeholder="请输入分类名称">
+                <input type="text" class="form-control" id="art_name" placeholder="请输入分类名称">
             </div>
         </div>
         <div class="col-xs-12">
             <label class="col-xs-1 control-label">文章简介</label>
             <div class="col-xs-3">
-                <input type="text" class="form-control" id="add_category" placeholder="请输入文章简介">
+                <input type="text" class="form-control" id="art_introduce" placeholder="请输入文章简介">
             </div>
         </div>
         <div class="col-xs-12">
             <label class="col-xs-1 control-label">所属博客</label>
             <div class="col-xs-3">
-                <span class="form-control" id="add_category">{{ blog.title }}</span>
+                <span class="form-control" id="art_blog"
+                      blog_id="{{ cat_list.first.nid }}">{{ cat_list.first.title }}</span>
             </div>
         </div>
-
         <div class="col-xs-12">
             <label class="col-xs-1 control-label">文章类型</label>
-
             <div class="col-xs-3">
-
-                <select class="form-control" id="add_category">
-                    {% for row in blog %}
-                        <option>{{ row.category__title }}</option>
+                <select class="form-control" id="art_category">
+                    {% for cat in cat_list %}
+                        <option cat_id="{{ cat.category__nid }}">{{ cat.category__title }}</option>
                     {% endfor %}
                 </select>
             </div>
-
         </div>
-
         <div class="col-xs-12">
             <label class="col-xs-1 control-label">文章tags</label>
             <div class="col-xs-3">
-                <input type="text" class="form-control" id="add_category" placeholder="请输入文章tags名称">
+                <select class="form-control" id="add_tag">
+                    {% for tag in tag_list %}
+                        <option tag_id="{{ tag.tag__nid }}">{{ tag.tag__title }}</option>
+                    {% endfor %}
+                </select>
             </div>
         </div>
         <div class="col-xs-12 control-label">
-            <textarea id="editor_id" name="content" style="width:90%;height:500px;">121312</textarea>
+            <textarea id="editor_id" name="content" style="width:90%;height:400px;">121312</textarea>
         </div>
     </form>
+    <div class="col-xs-3">
+        <input type="button" class="btn btn-primary" id="add_article" value="添 加">
+        <input type="button" class="btn btn-primary" id="add_cate" value="返 回">
+    </div>
 {% endblock %}
 {% block js %}
     <script charset="utf-8" src="/static/kindeditor/kindeditor-all.js"></script>
@@ -55,8 +59,27 @@
         KindEditor.ready(function (K) {
             window.editor = K.create('#editor_id');
         });
-        var ss = $('#editor_id').val()
-        console.log(ss)
+
+        $('#add_article').click(function () {
+            var formData = new FormData();
+            formData.append('art_name', $('#art_name').val())
+            formData.append('art_introduce', $('#art_introduce').val())
+            formData.append('art_blog', $('#art_blog').html());
+            formData.append('art_category', $('#art_category').val());
+            formData.append('art_content', $('#editor_id').val());
+            $.ajax({
+                url: 'article/add_article/',
+                processData: false,
+                contentType: false,
+                type: 'POST',
+                data: formData,
+                dataType: 'JSON',
+                success: function (arg) {
+                    console.log(arg)
+                }
+            })
+        })
+
     </script>
 {% endblock %}
 </body>
