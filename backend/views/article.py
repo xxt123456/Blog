@@ -60,9 +60,10 @@ def add_article(request):
     """
     if request.method == 'GET':
         blog_id = request.session.get('user_info')['blog__nid']
-        cat_list = models.Blog.objects.filter(nid=blog_id).values('category__title','title')
-        tag_list = models.Blog.objects.filter(nid=blog_id).values('tag__title')
-        return render(request, 'backend_add_article.html', {'cat_list': cat_list,'tag_list':tag_list})
+        print(blog_id)
+        blog = models.Blog.objects.filter(nid=blog_id).values('category__title','title')
+        print(blog)
+        return render(request, 'backend_add_article.html', {'blog': blog})
     title = request.POST.get('title')
     summary = request.POST.get('summary')
     blog = request.POST.get('blog')
