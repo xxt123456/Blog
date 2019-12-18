@@ -15,5 +15,7 @@ urlpatterns = [
     url(r'backend/del_category/',user.del_category),
     url(r'backend/edit_category/',user.edit_category),
     url(r'^article-(?P<article_type_id>\d+)-(?P<category_id>\d+).html$', article.article, name='article'),
-    url(r'^article/add_article/', article.add_article)
+    url(r'^article/add_article/', article.add_article),
+    url(r'^article/del_article/', article.del_article),
+    url(r'^article/edit_article_(?P<art_id>\d+).html', article.edit_article),
 ]

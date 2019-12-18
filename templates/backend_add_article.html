@@ -44,12 +44,12 @@
             </div>
         </div>
         <div class="col-xs-12 control-label">
-            <textarea id="editor_id" name="content" style="width:90%;height:400px;">121312</textarea>
+            <textarea id="editor_id" name="content" style="width:90%;height:400px;"></textarea>
         </div>
     </form>
     <div class="col-xs-3">
         <input type="button" class="btn btn-primary" id="add_article" value="添 加">
-        <input type="button" class="btn btn-primary" id="add_cate" value="返 回">
+        <a href="#" class="btn btn-primary" onclick="self.location=document.referrer;">返 回</a>
     </div>
 {% endblock %}
 {% block js %}
@@ -57,16 +57,21 @@
     <script charset="utf-8" src="/static/kindeditor/lang/zh-CN.js"></script>
     <script>
         KindEditor.ready(function (K) {
-            window.editor = K.create('#editor_id');
+            var editor = K.create('textarea[name="content"]', {
+                afterBlur: function () {
+                    this.sync();
+                },
+            });
         });
 
+
         $('#add_article').click(function () {
-            var art_category_id = $('#art_category').find("option:selected").data("cat_id")
-            var add_tag_id = $('#add_tag').find("option:selected").data("tag_id")
-            var art_blog_id = $('#art_blog').data("blog_id")
+            var art_category_id = $('#art_category').find("option:selected").data("cat_id");
+            var add_tag_id = $('#add_tag').find("option:selected").data("tag_id");
+            var art_blog_id = $('#art_blog').data("blog_id");
             var formData = new FormData();
-            formData.append('art_name', $('#art_name').val())
-            formData.append('art_introduce', $('#art_introduce').val())
+            formData.append('art_name', $('#art_name').val());
+            formData.append('art_introduce', $('#art_introduce').val());
             formData.append('art_blog_id', art_blog_id);
             formData.append('add_tag_id', add_tag_id);
             formData.append('art_category_id', art_category_id);
@@ -79,7 +84,12 @@
                 data: formData,
                 dataType: 'JSON',
                 success: function (arg) {
-                    console.log(arg)
+                    if (arg.status == true) {
+                        setTimeout('location=document.referrer;', 1000)
+                    } else {
+                        alert(arg.error())
+                    }
+
                 }
             })
         })

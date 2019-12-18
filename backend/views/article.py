@@ -73,7 +73,7 @@ def add_article(request):
     try:
         a = models.Article.objects.create(title=title, summary=summary, blog=blog_id, category=category_id,
                                           article_type_id=article_type_id)
-        # models.Article2Tag.objects.create(article=a,tag=tags_id)
+        models.ArticleDetail.objects.create(article=a, content=art_content)
         res = {'status': True}
     except Exception as e:
         print(e)
@@ -87,13 +87,30 @@ def del_article(request):
     :param request:
     :return:
     """
-    pass
+    article_id = request.POST.get('article_id')
+    try:
+        atticle = models.Article.objects.filter(nid=article_id)
+        if article:
+            models.Article.objects.filter(nid=article_id).delete()
+            res = {'status': True}
+    except Exception as e:
+        res = {'status': False, 'err': e}
+    return JsonResponse(res)
 
 
-def edit_article(request):
+def edit_article(request, *args, **kwargs):
     """
     编辑文章
     :param request:
     :return:
     """
-    pass
+    if request.method == "GET":
+        art_id = kwargs['art_id']
+        blog_id = request.session.get('user_info')['blog__nid']
+        cat_list = models.Blog.objects.filter(nid=blog_id).values('category__title', 'category__nid', 'title', 'nid')
+        tag_list = models.Blog.objects.filter(nid=blog_id).values('tag__title', 'tag__nid')
+        artilce_list = models.Article.objects.filter(nid=art_id).values('blog__title', 'title', 'summary',
+                                                                        'category__nid', 'article_type_id',
+                                                                        'articledetail__content', 'category__title')
+        return render(request, 'backend_edit_article.html',
+                      {'artilce_list': artilce_list, 'cat_list': cat_list, 'tag_list': tag_list})
