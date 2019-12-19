@@ -4,6 +4,7 @@ from repository import models
 from django.http import JsonResponse
 from utils.pagination import Pagination
 from django.urls import reverse
+import os
 
 
 @check_login
@@ -131,3 +132,16 @@ def edit_article(request, *args, **kwargs):
             print(e)
             res = {'status': False, 'message': '添加失败' + e}
         return JsonResponse(res)
+
+
+def upload(request):
+    obj = request.FILES.get('upload_img')
+    path = os.path.join('static/imgs/art_imgs/', obj.name)
+    with open(path, 'wb') as f:
+        for i in obj:
+            f.write(i)
+    f.close()
+    res = {'error': 0,
+           'url': '/static/imgs/art_imgs/' + obj.name
+           }
+    return JsonResponse(res)

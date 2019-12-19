@@ -18,4 +18,5 @@ urlpatterns = [
     url(r'^article/add_article/', article.add_article),
     url(r'^article/del_article/', article.del_article),
     url(r'^article/edit_article_(?P<art_id>\d+).html', article.edit_article),
+    url(r'^upload/', article.upload),
 ]
