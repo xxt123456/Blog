@@ -1,9 +1,6 @@
 from ..auth.auth import check_login
 from django.shortcuts import render, redirect, HttpResponse
 from repository import models
-import uuid
-import os
-import json
 from django.http import JsonResponse
 from utils.pagination import Pagination
 from django.urls import reverse
@@ -73,7 +70,8 @@ def add_article(request):
     try:
         a = models.Article.objects.create(title=title, summary=summary, blog=blog_id, category=category_id,
                                           article_type_id=article_type_id)
-        # models.Article2Tag.objects.create(article=a,tag=tags_id)
+        models.ArticleDetail.objects.create(article=a, content=art_content)
+        models.Article2Tag.objects.create(article=a, tag=tags_id)
         res = {'status': True}
     except Exception as e:
         print(e)
@@ -87,13 +85,49 @@ def del_article(request):
     :param request:
     :return:
     """
-    pass
+    article_id = request.POST.get('article_id')
+    try:
+        atticle = models.Article.objects.filter(nid=article_id)
+        if article:
+            models.Article.objects.filter(nid=article_id).delete()
+            res = {'status': True}
+    except Exception as e:
+        res = {'status': False, 'err': e}
+    return JsonResponse(res)
 
 
-def edit_article(request):
+def edit_article(request, *args, **kwargs):
     """
     编辑文章
     :param request:
     :return:
     """
-    pass
+    if request.method == "GET":
+        art_id = kwargs['art_id']
+        blog_id = request.session.get('user_info')['blog__nid']
+        cat_list = models.Blog.objects.filter(nid=blog_id).values('category__title', 'category__nid', 'title', 'nid')
+        tag_list = models.Blog.objects.filter(nid=blog_id).values('tag__title', 'tag__nid')
+        artilce_list = models.Article.objects.filter(nid=art_id).values('blog__title', 'title', 'summary',
+                                                                        'category__nid', 'article_type_id',
+                                                                        'articledetail__content', 'category__title',
+                                                                        'tags__article2tag__tag__title')
+        return render(request, 'backend_edit_article.html',
+                      {'artilce_list': artilce_list, 'cat_list': cat_list, 'tag_list': tag_list, 'art_id': art_id})
+    if request.method == "POST":
+        title = request.POST.get('art_name')
+        art_id = request.POST.get('art_id')
+        summary = request.POST.get('art_introduce')
+        tags_id = models.Tag.objects.get(nid=request.POST.get('edit_tag_id'))
+        category_id = models.Category.objects.get(nid=request.POST.get('art_category_id'))
+        article_type_id = 2
+        art_content = request.POST.get('art_content')
+        try:
+            models.Article.objects.filter(nid=art_id).update(title=title, summary=summary, category=category_id,
+                                                             article_type_id=article_type_id)
+            models.Article2Tag.objects.filter(article=art_id).update(tag=tags_id)
+            models.ArticleDetail.objects.filter(article=art_id).update(content=art_content)
+            res = {'status': True, 'message': '添加成功'}
+        except Exception as e:
+            print(e)
+            res = {'status': False, 'message': '添加失败' + e}
+        return JsonResponse(res)

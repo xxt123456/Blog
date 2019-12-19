@@ -3,7 +3,7 @@ from django.utils.safestring import mark_safe
 
 
 class Pagination(object):
-    def __init__(self, current_page, data_count, per_page_count=2, pager_num=7):
+    def __init__(self, current_page, data_count, per_page_count=5, pager_num=7):
         try:
             self.current_page = int(current_page)
         except Exception as e:
