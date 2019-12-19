@@ -1,0 +1,119 @@
+{% extends 'backend_layout.html' %}
+{% block css %}
+
+{% endblock %}
+{% block conent %}
+    <form class="form-horizontal">
+        <div class="col-xs-12">
+            <label class="col-xs-1 control-label">分类名称</label>
+            <div class="col-xs-3">
+                <input type="text" class="form-control" id="art_name" data-art_id="{{ art_id }}"
+                       value="{{ artilce_list.first.title }}">
+            </div>
+        </div>
+        <div class="col-xs-12">
+            <label class="col-xs-1 control-label">文章简介</label>
+            <div class="col-xs-3">
+                <input type="text" class="form-control" id="art_introduce" value="{{ artilce_list.first.summary }}">
+            </div>
+        </div>
+        <div class="col-xs-12">
+            <label class="col-xs-1 control-label">所属博客</label>
+            <div class="col-xs-3">
+                <span class="form-control" id="art_blog"
+                      data-blog_id="{{ cat_list.first.nid }}"> {{ cat_list.first.title }}</span>
+            </div>
+        </div>
+        <div class="col-xs-12">
+            <label class="col-xs-1 control-label">文章类型</label>
+            <div class="col-xs-3">
+                <select class="form-control" id="art_category">
+                    {% for cat in cat_list %}
+                        <option data-cat_id="{{ cat.category__nid }}">{{ cat.category__title }}</option>
+                    {% endfor %}
+                </select>
+                <input type="hidden" id="now_art_category" value='{{ artilce_list.first.category__title }}'/>
+            </div>
+        </div>
+        <div class="col-xs-12">
+            <label class="col-xs-1 control-label">文章tags</label>
+            <div class="col-xs-3">
+                <select class="form-control" id="add_tag">
+                    {% for tag in tag_list %}
+                        <option data-tag_id="{{ tag.tag__nid }}">{{ tag.tag__title }}</option>
+                    {% endfor %}
+                </select>
+                <input type="hidden" id="now_art_tag" value='{{ artilce_list.first.tags__article2tag__tag__title }}'/>
+            </div>
+        </div>
+        <div class="col-xs-12 control-label">
+            <textarea id="editor_id" name="content"
+                      style="width:90%;height:400px;">{{ artilce_list.first.articledetail__content }}</textarea>
+        </div>
+    </form>
+    <div class="col-xs-3">
+        <input type="button" class="btn btn-primary" id="edit_article" value="编 辑">
+        <a href="#" class="btn btn-primary" onclick="self.location=document.referrer;">返 回</a>
+    </div>
+{% endblock %}
+{% block js %}
+    <script charset="utf-8" src="/static/kindeditor/kindeditor-all.js"></script>
+    <script charset="utf-8" src="/static/kindeditor/lang/zh-CN.js"></script>
+    <script>
+        KindEditor.ready(function (K) {
+            var editor = K.create('textarea[name="content"]', {
+                afterBlur: function () {
+                    this.sync();
+                },
+            });
+        });
+        {# 设置原始类型值 #}
+        var now_art_category_id = $('#now_art_category').val();
+        var art_obj = document.getElementById("art_category");
+        for (i = 0; i < art_obj.length; i++) {
+            if (art_obj[i].value == now_art_category_id)
+                art_obj[i].selected = true;
+        }
+        {# 设置原始标签值 #}
+        var now_art_tag = $('#now_art_tag').val();
+        console.log(now_art_tag)
+        var tag_obj = document.getElementById("add_tag");
+        for (i = 0; i < tag_obj.length; i++) {
+            if (tag_obj[i].value == now_art_tag)
+                tag_obj[i].selected = true;
+        }
+        $('#edit_article').click(function () {
+            var art_category_id = $('#art_category').find("option:selected").data("cat_id");
+            var edit_tag_id = $('#add_tag').find("option:selected").data("tag_id");
+            var art_blog_id = $('#art_blog').data("blog_id");
+            var art_id = $('#art_name').data("art_id");
+            var formData = new FormData();
+            formData.append('art_name', $('#art_name').val());
+            formData.append('art_introduce', $('#art_introduce').val());
+            formData.append('art_blog_id', art_blog_id);
+            formData.append('edit_tag_id', edit_tag_id);
+            formData.append('art_id', art_id);
+            formData.append('art_category_id', art_category_id);
+            formData.append('art_content', $('#editor_id').val());
+            $.ajax({
+                url: '/backend/article/edit_article_22.html',
+                processData: false,
+                contentType: false,
+                type: 'POST',
+                data: formData,
+                dataType: 'JSON',
+                success: function (arg) {
+                    if (arg.status == true) {
+                        setTimeout('location=document.referrer;', 1000)
+                    } else {
+
+                    }
+
+                }
+            })
+        })
+
+    </script>
+{% endblock %}
+</body>
+</html>

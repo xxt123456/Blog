@@ -13,7 +13,7 @@ def index(request,*args,**kwargs):
     if kwargs:
         article_type_id = int(kwargs['article_type_id'])
         bass_url= reverse('index',kwargs=kwargs)
-        print(bass_url)
+        # print(bass_url)
     else:
         article_type_id=None
         bass_url='/'
@@ -47,9 +47,7 @@ def home(request,site):
     :param site:
     :return:
     """
-    print('111',site)
     blog = models.Blog.objects.filter(site=site).select_related('user').first()
-    print(blog)
     if not blog:
         return redirect('/all/0.html')
     tag_list = models.Tag.objects.filter(blog=blog)
