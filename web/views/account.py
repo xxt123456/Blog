@@ -33,9 +33,11 @@ def login(request):
             username = form.cleaned_data.get('username')
             password = form.cleaned_data.get('password')
             we= models.UserInfo.objects.all()
-            print(we)
-            user_info = models.UserInfo.objects.filter(username=username,password=password).values('username','password','blog__nid').first()
-            print(user_info)
+            user_info = models.UserInfo.objects.filter(username=username, password=password).values('username',
+                                                                                                    'password',
+                                                                                                    'blog__nid',
+                                                                                                    'blog__site',
+                                                                                                    'nickname').first()
             if not user_info:
                 result['message']='用户名或密码错误'
             else:
