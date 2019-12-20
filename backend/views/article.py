@@ -136,8 +136,10 @@ def edit_article(request, *args, **kwargs):
 
 def upload(request):
     obj = request.FILES.get('upload_img')
-    path = os.path.join('static/imgs/art_imgs/', obj.name)
-    with open(path, 'wb') as f:
+    path = os.path.join('static/imgs/art_imgs/')
+    if not os.path.exists(path):
+        os.makedirs(path)
+    with open(path + obj.name, 'wb') as f:
         for i in obj:
             f.write(i)
     f.close()
