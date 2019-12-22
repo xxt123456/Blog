@@ -134,16 +134,19 @@ def edit_article(request, *args, **kwargs):
         return JsonResponse(res)
 
 
+@check_login
 def upload(request):
     obj = request.FILES.get('upload_img')
-    path = os.path.join('static/imgs/art_imgs/')
+    type = obj.name.split('.', -1)
+    img_name = request.POST.get('img_name') + '.' + type[-1]
+    path = 'static/imgs/art_imgs/' + request.session.get('user_info')['username'] + '/'
     if not os.path.exists(path):
         os.makedirs(path)
-    with open(path + obj.name, 'wb') as f:
+    with open(path + img_name, 'wb') as f:
         for i in obj:
             f.write(i)
     f.close()
     res = {'error': 0,
-           'url': '/static/imgs/art_imgs/' + obj.name
+           'url': '/static/imgs/art_imgs/' + request.session.get('user_info')['username'] + '/' + img_name
            }
     return JsonResponse(res)
