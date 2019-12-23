@@ -52,11 +52,12 @@
             <div class="types-header">分类</div>
             <div class="types-body">
                 <ul>
-                    {% for tag in category_list %}
-                        <li><a href="/{{ blog.site }}/category/{{ tag.nid }}.html">{{ tag.title }}({{ tag.article_set.count }})</a></li>
+                    {% for cat in category_list %}
+                        <li>
+                            <a href="/{{ blog.site }}/category/{{ cat.nid }}.html">{{ cat.title }}({{ cat.article_set.count }})</a>
+                        </li>
                     {% endfor %}
                 </ul>
-
             </div>
         </div>
         <div class="dates">

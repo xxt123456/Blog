@@ -1,11 +1,9 @@
-from django.shortcuts import HttpResponse,render,redirect
+from django.shortcuts import render, redirect
 from repository import models
-from django.urls import reverse
-from utils.pagination import Pagination
 
 def home(request,site):
     """
-    个人首页
+    个人博客web首页
     :param request:
     :param site:
     :return:
@@ -28,73 +26,5 @@ def home(request,site):
             'category_list':category_list,
             'date_list':date_list,
             'article_list':article_list
-        }
-    )
-
-def filter(request,site,condition,val):
-    """
-    分类显示
-    :param request:
-    :param site:
-    :param condition:
-    :param val:
-    :return:
-    """
-    blog = models.Blog.objects.filter(site=site).select_related('user').first()
-    if not blog:
-        return redirect('/login')
-    tag_list = models.Tag.objects.filter(blog=blog)
-    category_list = models.Category.objects.filter(blog=blog)
-    date_list = models.Article.objects.raw(
-        'select nid, count(nid) as num,date_format(creat_time,"%%Y-%%m") as ctime from repository_article group by date_format(creat_time,"%%Y-%%m")'
-    )
-    template_name = "home_summary_list.html"
-    if condition =='tag':
-        template_name='home_title_list.html'
-        article_list = models.Article.objects.filter(tags=val,blog=blog).all()
-        print('11111', article_list)
-    elif condition == 'category':
-        article_list = models.Article.objects.filter(category=val, blog=blog).all()
-    elif condition == 'date':
-        article_list = models.Article.objects.filter(blog=blog).extra(
-            where=['date_format(creat_time,"%%Y-%%m")=%s'],params=[val,]).all()
-    else:
-        article_list=[]
-
-    return render(
-        request,
-        template_name,
-        {
-            'blog':blog,
-            'tag_list':tag_list,
-            'category_list':category_list,
-            'date_list':date_list,
-            'article_list':article_list
-        }
-    )
-
-def detail(request,site,nid):
-    """
-    博文详情
-    :param request:
-    :param site:
-    :param nid:
-    :return:
-    """
-    blog = models.Blog.objects.filter(site=site).select_related('user').first()
-    tag_list = models.Tag.objects.filter(blog=blog)
-    category = models.Category.objects.filter(blog=blog)
-    date_list = models.Article.objects.raw(
-        'select nid, count(nid) as num,date_format(creat_time,"%%Y-%%m") as ctime from repository_article group by date_format(creat_time,"%%Y-%%m")'
-    )
-    article = models.Article.objects.filter(blog=blog,nid=nid).select_related('category','articledetail').first()
-    return render(
-        request,
-        'home_detail.html',
-        {
-            'blog':blog,
-            'category':category,
-            'date_list':date_list,
-            'article':article
         }
     )

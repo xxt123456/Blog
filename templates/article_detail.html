@@ -26,9 +26,10 @@
         </div>
     </div>
     <div class="tips">
-        <span class="ctime">{{ article.create_time }}</span>
+        <span class="ctime">{{ article.creat_time }}</span>
         <a class="author">{{ blog.user.nickname }}</a>
         <span class="read-count">阅读({{ article.read_count }})</span>
+        <a href="/backend/article/edit_article_{{ article.nid }}.html">编辑</a>
     </div>
     <div id="AllanboltSignature">
         <div style="border-bottom: #e0e0e0 1px dashed; border-left: #e0e0e0 1px dashed; padding: 10px; font-family: 微软雅黑; font-size: 11px; border-top: #e0e0e0 1px dashed; border-right: #e0e0e0 1px dashed; "

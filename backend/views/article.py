@@ -97,6 +97,7 @@ def del_article(request):
     return JsonResponse(res)
 
 
+@check_login
 def edit_article(request, *args, **kwargs):
     """
     编辑文章
