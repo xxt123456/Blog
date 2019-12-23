@@ -14,7 +14,6 @@ def filter(request, site, condition, val):
     blog = models.Blog.objects.filter(site=site).select_related('user').first()
     if not blog:
         return redirect('/login')
-    print('1123123', condition)
     tag_list = models.Tag.objects.filter(blog=blog)
     category_list = models.Category.objects.filter(blog=blog)
     date_list = models.Article.objects.raw(

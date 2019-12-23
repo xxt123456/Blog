@@ -10,6 +10,10 @@ def detail(request, site, nid):
     :param nid:
     :return:
     """
+    # 更新阅读数
+    from django.db.models import F
+    if request.method == 'GET':
+        models.Article.objects.filter(nid=nid).update(read_count=F('read_count') + 1)
     blog = models.Blog.objects.filter(site=site).select_related('user').first()
     tag_list = models.Tag.objects.filter(blog=blog)
     category = models.Category.objects.filter(blog=blog)
