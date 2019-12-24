@@ -21,8 +21,8 @@ def detail(request, site, nid):
         'select nid, count(nid) as num,date_format(creat_time,"%%Y-%%m") as ctime from repository_article group by date_format(creat_time,"%%Y-%%m")'
     )
     article = models.Article.objects.filter(blog=blog, nid=nid).select_related('category', 'articledetail').first()
-    comment = models.Article.objects.filter(blog=blog, nid=nid).values('comment__content')
-    print(comment)
+    comment = models.Comment.objects.filter(article=nid).all()
+    models.Article.objects.filter(nid=nid).update(comment_count=comment.count())
     return render(
         request,
         'article_detail.html',
