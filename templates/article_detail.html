@@ -29,11 +29,25 @@
         <span class="ctime">{{ article.creat_time }}</span>
         <a class="author">{{ blog.user.nickname }}</a>
         <span class="read-count">阅读({{ article.read_count }})</span>
-        <a href="/backend/article/edit_article_{{ article.nid }}.html">编辑</a>
+        <span class="comment">评论({{ article.comment_count }})</span>
+        {% if request.session.user_info.username == blog.user.username %}
+            <a href="/backend/article/edit_article_{{ article.nid }}.html">编辑</a>
+        {% endif %}
     </div>
     <div id="AllanboltSignature">
+        <div>
+            <h1>{{ comment }}</h1>
+        </div>
         <div style="border-bottom: #e0e0e0 1px dashed; border-left: #e0e0e0 1px dashed; padding: 10px; font-family: 微软雅黑; font-size: 11px; border-top: #e0e0e0 1px dashed; border-right: #e0e0e0 1px dashed; "
              id="PSignature">
+            {# 评论#}
+            <div class="col-xs-12 control-label">
+                <textarea id="editor_id" name="content" style="width:90%;height:400px;"></textarea>
+                <div class="col-xs-3">
+                    <input type="button" class="btn btn-primary" id="sub_comment" value="确 定">
+                    <a href="#" class="btn btn-primary" onclick="self.location=document.referrer;">取 消</a>
+                </div>
+            </div>
             <div style="float:left;width:70px;">
                 <img src="/static/imgs/o_Warning.png" style="width:65px;height:65px">
             </div>
@@ -48,4 +62,19 @@
             <div style="clear:both;"></div>
         </div>
     </div>
+{% endblock %}
+{% block js %}
+    <script charset="utf-8" src="/static/kindeditor/kindeditor-all.js"></script>
+    <script charset="utf-8" src="/static/kindeditor/lang/zh-CN.js"></script>
+    <script>
+        KindEditor.ready(function (K) {
+            var editor = K.create('textarea[name="content"]', {
+                afterBlur: function () {
+                    this.sync();
+                },
+                resizeType: 0,
+
+            });
+        });
+    </script>
 {% endblock %}

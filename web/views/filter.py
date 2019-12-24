@@ -5,19 +5,21 @@ from repository import models
 def filter(request, site, condition, val):
     """
     分类显示：博客类别展示
-    :param request:
-    :param site:
-    :param condition:
-    :param val:
+    :param request:http://127.0.0.1:8000/xiaoxin/category/8.html
+    :param site: xiaoxin
+    :param condition: category
+    :param val:8
     :return:
     """
+
     blog = models.Blog.objects.filter(site=site).select_related('user').first()
     if not blog:
         return redirect('/login')
     tag_list = models.Tag.objects.filter(blog=blog)
     category_list = models.Category.objects.filter(blog=blog)
     date_list = models.Article.objects.raw(
-        'select nid, count(nid) as num,date_format(creat_time,"%%Y-%%m") as ctime from repository_article group by date_format(creat_time,"%%Y-%%m")'
+        'select nid, count(nid) as num,date_format(creat_time,"%%Y-%%m") as ctime from repository_article where blog_id=' + str(
+            blog.nid) + ' group by date_format(creat_time,"%%Y-%%m")'
     )
     template_name = "article_summary_list.html"
     if condition == 'tag':
@@ -41,6 +43,6 @@ def filter(request, site, condition, val):
             'tag_list': tag_list,
             'category_list': category_list,
             'date_list': date_list,
-            'article_list': article_list
+            'article_list': article_list,
         }
     )

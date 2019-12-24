@@ -14,7 +14,9 @@
             <span>{{ row.user.nickname }}</span>
             <span>阅读{{ row.read_count }}</span>
             <a>评论{{ row.comment_count }}</a>
-            <a href="#">编辑</a>
+            {% if request.session.user_info.username == blog.user.username %}
+                <a href="/backend/article/edit_article_{{ row.nid }}.html">编辑</a>
+            {% endif %}
         </div>
     {% endfor %}
  </div>

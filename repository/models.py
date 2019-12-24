@@ -96,3 +96,18 @@ class Article2Tag(models.Model):
         unique_together = [
             ('article', 'tag'),
         ]
+
+
+class Comment(models.Model):
+    """
+    评论表
+    """
+    nid = models.AutoField(primary_key=True)
+    article = models.ForeignKey(to='Article', to_field='nid', on_delete=models.CASCADE)
+    user = models.ForeignKey(to='UserInfo', to_field='nid', on_delete=models.CASCADE)
+    content = models.CharField(max_length=255)
+    create_time = models.DateTimeField(auto_now_add=True)
+    parent_comment = models.ForeignKey('self', null=True, blank=True, on_delete=models.CASCADE)
+
+    def __str__(self):
+        return self.content
