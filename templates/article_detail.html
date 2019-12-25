@@ -54,7 +54,8 @@
                 <textarea id="editor_id" name="content" style="width:90%;height:400px;"></textarea>
                 <div class="col-xs-3">
                     <input type="button" class="btn btn-primary" id="sub_comment"
-                           user_id="{{ request.session.user_info.nid }}" article_id="{{ article.nid }}" value="确 定">
+                           user_id="{{ request.session.user_info.nid }}" user_id="{{ request.session.user_info.nid }}"
+                           article_id="{{ article.nid }}" value="确 定">
                     <a href="#" class="btn btn-primary" onclick="self.location=document.referrer;">取 消</a>
                 </div>
             </div>
@@ -97,16 +98,21 @@
             var com_content = $('#editor_id').val();
             var user_id = $(this).attr('user_id');
             var article_id = $(this).attr('article_id');
-            from_data.append(com_content, 'com_content');
-            from_data.append(user_id, 'user_id');
-            from_data.append(article_id, 'article_id');
+            from_data.append('com_content', com_content);
+            from_data.append('user_id', user_id,);
+            from_data.append('article_id', article_id);
             $.ajax({
                     url: 'atricle_comment/',
+                processData: false,
+                contentType: false,
                     type: 'POST',
                     data: from_data,
                     dataType: 'JSON',
                     success: function (dat) {
-                        console.log(1111)
+                        if (dat.status == true) {
+                            location.reload(true);
+                        }
+
                     }
                 }
             )
