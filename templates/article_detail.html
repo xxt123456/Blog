@@ -29,7 +29,9 @@
         <span class="ctime">{{ article.creat_time }}</span>
         <a class="author">{{ blog.user.nickname }}</a>
         <span class="read-count">阅读({{ article.read_count }})</span>
-        <span class="comment">评论({{ article.comment_count }})</span>
+        {% if request.session.user_info.username != blog.user.username %}
+            <span class="comment" onclick="Commnent_Content();">评论({{ article.comment_count }})</span>
+        {% endif %}
         {% if request.session.user_info.username == blog.user.username %}
             <a href="/backend/article/edit_article_{{ article.nid }}.html">编辑</a>
         {% endif %}
@@ -48,10 +50,11 @@
                 <div class="tips">请登陆后进行评论</div>
             {% endif %}
             {# 进行评论#}
-            <div class="col-xs-12 control-label">
+            <div class="col-xs-12 control-label" id='comment_content' style="display: none">
                 <textarea id="editor_id" name="content" style="width:90%;height:400px;"></textarea>
                 <div class="col-xs-3">
-                    <input type="button" class="btn btn-primary" id="sub_comment" value="确 定">
+                    <input type="button" class="btn btn-primary" id="sub_comment"
+                           user_id="{{ request.session.user_info.nid }}" article_id="{{ article.nid }}" value="确 定">
                     <a href="#" class="btn btn-primary" onclick="self.location=document.referrer;">取 消</a>
                 </div>
             </div>
@@ -73,15 +76,40 @@
 {% block js %}
     <script charset="utf-8" src="/static/kindeditor/kindeditor-all.js"></script>
     <script charset="utf-8" src="/static/kindeditor/lang/zh-CN.js"></script>
+    <script src="/static/js/jquery-1.12.4.js"></script>
     <script>
+        Commnent_Content = function () {
+            $('#comment_content').show()
+        }
+
         KindEditor.ready(function (K) {
             var editor = K.create('textarea[name="content"]', {
                 afterBlur: function () {
                     this.sync();
                 },
                 resizeType: 0,
-
+                uploadJson: '/backend/upload/',
+                filePostName: "upload_img",
             });
         });
+        $('#sub_comment').click(function (ths) {
+            var from_data = new FormData();
+            var com_content = $('#editor_id').val();
+            var user_id = $(this).attr('user_id');
+            var article_id = $(this).attr('article_id');
+            from_data.append(com_content, 'com_content');
+            from_data.append(user_id, 'user_id');
+            from_data.append(article_id, 'article_id');
+            $.ajax({
+                    url: 'atricle_comment/',
+                    type: 'POST',
+                    data: from_data,
+                    dataType: 'JSON',
+                    success: function (dat) {
+                        console.log(1111)
+                    }
+                }
+            )
+        })
     </script>
 {% endblock %}
