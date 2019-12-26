@@ -22,6 +22,7 @@ def detail(request, site, nid):
     )
     article = models.Article.objects.filter(blog=blog, nid=nid).select_related('category', 'articledetail').first()
     comment = models.Comment.objects.filter(article=nid).all()
+    print(comment)
     return render(
         request,
         'article_detail.html',

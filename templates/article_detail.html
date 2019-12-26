@@ -42,9 +42,15 @@
             {% if request.session.user_info %}
                 {# 展示评论#}
                 {% for i in comment %}
-                    <div>
-                        <h4>{{ i.user.nickname }}:{{ i.content }} <span href="#" class="comment-item">回复评论</span></h4>
+                    <div style="border-bottom: #e0e0e0 1px dashed; border-left: #e0e0e0 1px dashed; padding: 10px; font-family: 微软雅黑; font-size: 11px; border-top: #e0e0e0 1px dashed; border-right: #e0e0e0 1px dashed; "
+                         id="PSignature">
+                        {#                        <h4 id="com_name" user_name="{{ i.user.nickname }}">{{ i.user.nickname }}:{{ i.content }}</h4> <span class="comment-item" id='ref_com_id'parent_comment_id="{{ i.nid }}" onclick="ref_Commnent();">回复</span>#}
+                        <h4 id="com_name" user_name="{{ i.user.nickname }}">{{ i.user.nickname }}:{{ i.content }}</h4>
+                        <span class="comment-item" id='ref_com_id' parent_comment_id="{{ i.nid }}">回复</span>
                     </div>
+                    {% if i.parent_comment %}
+                        <div>{{ i.parent_comment }}</div>
+                    {% endif %}
                 {% endfor %}
             {% else %}
                 <div class="tips">请登陆后进行评论</div>
@@ -81,7 +87,18 @@
     <script>
         Commnent_Content = function () {
             $('#comment_content').show()
-        }
+        };
+        var user_info = $('#com_name').attr('user_name');
+        console.log(user_info)
+        {#     ref_Commnent = function () {#}
+        {#         $('#comment_content').show();#}
+        {#var parent_comment_id = $('#ref_com_id').attr('parent_comment_id');#}
+        {#         console.log(parent_comment_id)#}
+        {#     };#}
+        $('div #ref_com_id').click(function () {
+            alert(111)
+            console.log($(this).attr('parent_comment_id'))
+        })
 
         KindEditor.ready(function (K) {
             var editor = K.create('textarea[name="content"]', {
@@ -92,15 +109,25 @@
                 uploadJson: '/backend/upload/',
                 filePostName: "upload_img",
             });
+            if (user_info != undefined) {
+                editor.html('@' + user_info + ':')
+            }
+
         });
         $('#sub_comment').click(function (ths) {
             var from_data = new FormData();
             var com_content = $('#editor_id').val();
             var user_id = $(this).attr('user_id');
             var article_id = $(this).attr('article_id');
+            var parent_comment_id = $('#ref_com_id').attr('parent_comment_id');
+            console.log(parent_comment_id)
+            if (parent_comment_id !== undefined) {
+                from_data.append('parent_comment_id', parent_comment_id);
+            }
             from_data.append('com_content', com_content);
             from_data.append('user_id', user_id,);
             from_data.append('article_id', article_id);
+
             $.ajax({
                     url: 'atricle_comment/',
                 processData: false,
