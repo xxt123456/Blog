@@ -11,13 +11,12 @@
     </div>
     <div class="art-recommend clearfix">
         <div class="recommend">
-            <a href="#" class="up"
+            <a class="up" id='give_up' up_or_down="1"
                style="margin: 5px 10px;display: inline-block;padding: 5px 15px;border: 1px solid #dddddd;text-align: center;">
                 <i class="fa fa-thumbs-o-up fa-3" aria-hidden="true" style="font-size: 25px"></i>
-
                 <div>{{ article.up_count }}</div>
             </a>
-            <a href="#" class="down"
+            <a class="down" id='give_up' up_or_down="0"
                style="margin: 5px 30px 5px 10px;display: inline-block;padding: 5px 15px;border: 1px solid #dddddd;text-align: center;">
                 <i class="fa fa-thumbs-o-down fa-3" aria-hidden="true" style="font-size: 25px"></i>
 
@@ -44,12 +43,12 @@
                 {% for i in comment %}
                     <div style="border-bottom: #e0e0e0 1px dashed; border-left: #e0e0e0 1px dashed; padding: 10px; font-family: 微软雅黑; font-size: 11px; border-top: #e0e0e0 1px dashed; border-right: #e0e0e0 1px dashed; "
                          id="PSignature">
+                        {% if i.parent_comment %}
+                            <div>{{ i.parent_comment }}</div>
+                        {% endif %}
                         <h4 id="com_name" user_name="{{ i.user.nickname }}">{{ i.user.nickname }}:{{ i.content }}</h4>
                         <span class="comment-item" id='ref_com_id' parent_comment_id="{{ i.nid }}">回复</span>
                     </div>
-                    {% if i.parent_comment %}
-                        <div>{{ i.parent_comment }}</div>
-                    {% endif %}
                 {% endfor %}
             {% else %}
                 <div class="tips">请登陆后进行评论</div>
@@ -84,17 +83,42 @@
     <script charset="utf-8" src="/static/kindeditor/lang/zh-CN.js"></script>
     <script src="/static/js/jquery-1.12.4.js"></script>
     <script>
+        $('div #give_up').click(function () {
+            var article_id =
+            {{ article.nid }}
+            var user_id ={{ request.session.user_info.nid }};
+            var up_or_down = $(this).attr('up_or_down');
+            $.ajax({
+                url: 'article_up_or_down/',
+                type: "POST",
+                data: {
+                    'article_id': article_id,
+                    'user_id': user_id,
+                    'up_or_down': up_or_down,
+                },
+                dataType: 'JSON',
+                success: function (arg) {
+                    if (arg.status === true) {
+                        console.log(1111)
+                        location.reload()
+                        {#$(".recommend").load(location.href+" #recommend")#}
+                    }
+                }
+
+            })
+        });
         Commnent_Content = function () {
             $('#comment_content').show()
         };
-        {#var user_info = $('#com_name').attr('user_name')#}
-        {#console.log(user_info)#}
         $('div #ref_com_id').click(function () {
             $('#comment_content').show();
             var commend_id = $(this).attr('parent_comment_id');
-
+            var user_info = $('#com_name').attr('user_name');
             document.getElementById('sub_comment').setAttribute('parent_comment_id', commend_id);
             document.getElementById('editor_id').setAttribute('user_info', user_info);
+            {#var ss=document.getElementsByClassName('ke-content');#}
+            {#ss.innerHTML='12333333'#}
+            {#console.log(ss.innerHTML)#}
         });
 
 
@@ -109,11 +133,7 @@
                 filePostName: "upload_img",
             });
 
-            var user_info = document.getElementById('editor_id').getAttribute('user_info')
-            console.log(user_info)
-
-
-
+            {#var user_info = document.getElementById('editor_id').getAttribute('user_info')#}
         });
         $('#sub_comment').click(function (ths) {
             var from_data = new FormData();
@@ -129,7 +149,7 @@
             from_data.append('article_id', article_id);
 
             $.ajax({
-                    url: 'atricle_comment/',
+                url: 'article_comment/',
                 processData: false,
                 contentType: false,
                     type: 'POST',

@@ -1,6 +1,22 @@
 from django.db import models
 
-# Create your models here.
+
+# from django.db.models import BooleanField as _BooleanField
+#
+# # Create your models here.
+# """
+# 重写BooleanField方法
+# """
+# class BooleanField(_BooleanField):
+#     def get_prep_value(self, value):
+#         if value in ('0','false','False'):
+#             return False
+#         elif value in ('1','true','True'):
+#             return True
+#         else:
+#             return super(BooleanField, self).get_prep_value(value)
+
+
 class UserInfo(models.Model):
     """
     用户表

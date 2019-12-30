@@ -17,7 +17,7 @@ from django.contrib import admin
 from django.urls import path
 from django.conf.urls import url
 from .views import account
-from .views import home, index, filter, article_detail, article_comment
+from .views import home, index, filter, article_detail, article_comment, article_up_or_down
 urlpatterns = [
     path('admin/', admin.site.urls),
     url(r'^login.html/$',account.login,name='login'),
@@ -28,5 +28,6 @@ urlpatterns = [
     url(r'^(?P<site>\w+).html$',home.home),
     url(r'^(?P<site>\w+)/(?P<condition>((tag)|(date)|(category)))/(?P<val>\w+-*\w*).html$', filter.filter),
     url(r'^(?P<site>\w+)/(?P<nid>\d+).html', article_detail.detail),
-    url(r'atricle_comment/$', article_comment.article_commnet),
+    url(r'article_comment/$', article_comment.article_commnet),
+    url(r'article_up_or_down/$', article_up_or_down.artilce_give),
 ]
