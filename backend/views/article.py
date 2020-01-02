@@ -60,13 +60,15 @@ def add_article(request):
         blog_id = request.session.get('user_info')['blog__nid']
         cat_list = models.Blog.objects.filter(nid=blog_id).values('category__title', 'category__nid', 'title', 'nid')
         tag_list = models.Blog.objects.filter(nid=blog_id).values('tag__title', 'tag__nid')
-        return render(request, 'backend_add_article.html', {'cat_list': cat_list, 'tag_list': tag_list})
+        article_type_id = models.Article.type_choices
+        return render(request, 'backend_add_article.html',
+                      {'cat_list': cat_list, 'tag_list': tag_list, 'article_type_id': article_type_id})
     title = request.POST.get('art_name')
     summary = request.POST.get('art_introduce')
     blog_id = models.Blog.objects.get(nid=request.POST.get('art_blog_id'))
     tags_id = models.Tag.objects.get(nid=request.POST.get('add_tag_id'))
     category_id = models.Category.objects.get(nid=request.POST.get('art_category_id'))
-    article_type_id = 1
+    article_type_id = request.POST.get('article_type_id')
     art_content = request.POST.get('art_content')
     try:
         a = models.Article.objects.create(title=title, summary=summary, blog=blog_id, category=category_id,

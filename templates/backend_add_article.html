@@ -34,6 +34,16 @@
             </div>
         </div>
         <div class="col-xs-12">
+            <label class="col-xs-1 control-label">所属类型</label>
+            <div class="col-xs-3">
+                <select class="form-control" id="article_type_id">
+                    {% for i in article_type_id %}
+                        <option data-article_type_id="{{ i.0 }}">{{ i.1 }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+        </div>
+        <div class="col-xs-12">
             <label class="col-xs-1 control-label">文章tags</label>
             <div class="col-xs-3">
                 <select class="form-control" id="add_tag">
@@ -74,11 +84,13 @@
         $('#add_article').click(function () {
             var art_category_id = $('#art_category').find("option:selected").data("cat_id");
             var add_tag_id = $('#add_tag').find("option:selected").data("tag_id");
+            var article_type_id = $('#article_type_id').find("option:selected").data("article_type_id");
             var art_blog_id = $('#art_blog').data("blog_id");
             var formData = new FormData();
             formData.append('art_name', $('#art_name').val());
             formData.append('art_introduce', $('#art_introduce').val());
             formData.append('art_blog_id', art_blog_id);
+            formData.append('article_type_id', article_type_id);
             formData.append('add_tag_id', add_tag_id);
             formData.append('art_category_id', art_category_id);
             formData.append('art_content', $('#editor_id').val());

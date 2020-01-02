@@ -10,7 +10,7 @@
         {{ article.articledetail.content|safe }}
     </div>
     <div class="art-recommend clearfix">
-        <div class="recommend">
+        <div class="recommend" user_id="{{ request.session.user_info.nid }}">
             <a class="up" id='give_up' up_or_down="1"
                style="margin: 5px 10px;display: inline-block;padding: 5px 15px;border: 1px solid #dddddd;text-align: center;">
                 <i class="fa fa-thumbs-o-up fa-3" aria-hidden="true" style="font-size: 25px"></i>
@@ -23,13 +23,15 @@
                 <div>{{ article.down_count }}</div>
             </a>
         </div>
+        <a id="give_up_resule"></a>
     </div>
     <div class="tips">
         <span class="ctime">{{ article.creat_time }}</span>
         <a class="author">{{ blog.user.nickname }}</a>
         <span class="read-count">阅读({{ article.read_count }})</span>
         {% if request.session.user_info.username != blog.user.username %}
-            <span class="comment" onclick="Commnent_Content();">评论({{ article.comment_count }})</span>
+            <span class="comment" onclick="Commnent_Content();"
+                  user_id="{{ request.session.user_info.nid }}">评论({{ article.comment_count }})</span>
         {% endif %}
         {% if request.session.user_info.username == blog.user.username %}
             <a href="/backend/article/edit_article_{{ article.nid }}.html">编辑</a>
@@ -86,8 +88,11 @@
         $('div #give_up').click(function () {
             var article_id =
             {{ article.nid }}
-            var user_id ={{ request.session.user_info.nid }};
-            var up_or_down = $(this).attr('up_or_down');
+            var user_id = $('.recommend').attr('user_id');
+            if (user_id == '') {
+                alert('请先登录')
+            } else {
+                var up_or_down = $(this).attr('up_or_down');
             $.ajax({
                 url: 'article_up_or_down/',
                 type: "POST",
@@ -98,17 +103,36 @@
                 },
                 dataType: 'JSON',
                 success: function (arg) {
-                    if (arg.status === true) {
-                        console.log(1111)
-                        location.reload()
-                        {#$(".recommend").load(location.href+" #recommend")#}
+                    if (arg.status === 1) {
+                        $('#give_up_resule').html(arg.message);
+                        setTimeout("location.reload()", 1000);
+                    } else if (arg.status === 2) {
+                        $('#give_up_resule').html(arg.message);
+                        setTimeout("location.reload()", 1000);
+                    } else if (arg.status === 3) {
+                        $('#give_up_resule').html(arg.message);
+                        setTimeout("location.reload()", 1000);
+                    } else if (arg.status === 4) {
+                        $('#give_up_resule').html(arg.message);
+                        setTimeout("location.reload()", 1000);
+                    } else if (arg.status === 5) {
+                        $('#give_up_resule').html(arg.message);
+                        setTimeout("location.reload()", 1000);
+                    } else if (arg.status === 6) {
+                        $('#give_up_resule').html(arg.message);
+                        setTimeout("location.reload()", 1000);
                     }
                 }
-
             })
+            }
         });
         Commnent_Content = function () {
-            $('#comment_content').show()
+            var user_id = $('.comment').attr('user_id');
+            if (user_id == '') {
+                alert('请先登录')
+            } else {
+                $('#comment_content').show()
+            }
         };
         $('div #ref_com_id').click(function () {
             $('#comment_content').show();
@@ -118,7 +142,6 @@
             document.getElementById('editor_id').setAttribute('user_info', user_info);
             {#var ss=document.getElementsByClassName('ke-content');#}
             {#ss.innerHTML='12333333'#}
-            {#console.log(ss.innerHTML)#}
         });
 
 
@@ -156,7 +179,9 @@
                     data: from_data,
                     dataType: 'JSON',
                     success: function (dat) {
-                        if (dat.status == true) {
+                        if (dat.status == 0) {
+                            location.reload(true);
+                        } else if (dat.status == 1) {
                             location.reload(true);
                         }
 
