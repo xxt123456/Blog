@@ -28,7 +28,7 @@
                         {{ row.summary }}
                     </div>
                     <div class="footers">
-                        <a href="#">
+                        <a href="#" class="recommend" user_id="{{ request.session.user_info.nid }}">
                             <i class="fa fa-user-o" aria-hidden="true"></i>
                             <span>{{ row.blog.user.nickname }}</span>
                         </a>
@@ -36,12 +36,18 @@
                         <a href="/{{ row.blog.site }}/{{ row.articledetail.article.nid }}.html" class="ele">
                             <i class="fa fa-commenting-o" aria-hidden="true"></i>
                             <span>{{ row.comment_count }}</span>
-                            <a href="#" class="ele">
+                            <a class="up" id='give_up' up_or_down="1" article_id="{{ row.nid }}">
                                 <i class="fa fa-thumbs-o-up" aria-hidden="true"></i>
                                 <span>{{ row.up_count }}</span>
                             </a>
+                            <a class="down" id='give_up' up_or_down="0" article_id="{{ row.nid }}">
+                                <i class="fa fa-thumbs-o-down" aria-hidden="true"></i>
+                                <span>{{ row.down_count }}</span>
+                            </a>
                         </a>
+                        <span id="give_up_resule"></span>
                         <span>阅读({{ row.read_count }})</span>
+
                     </div>
                 </div>
             {% endfor %}
@@ -54,5 +60,50 @@
 
     </div>
 </div>
+{% block js %}
+    <script src="/static/js/jquery-1.12.4.js"></script>
+    <script>
+        $('div #give_up').click(function () {
+            var article_id = $(this).attr('article_id');
+            var user_id = $('.recommend').attr('user_id');
+            if (user_id == '') {
+                alert('请先登录')
+            } else {
+                var up_or_down = $(this).attr('up_or_down');
+                $.ajax({
+                    url: 'article_up_or_down/',
+                    type: "POST",
+                    data: {
+                        'article_id': article_id,
+                        'user_id': user_id,
+                        'up_or_down': up_or_down,
+                    },
+                    dataType: 'JSON',
+                    success: function (arg) {
+                        if (arg.status === 1) {
+                            $('#give_up_resule').html(arg.message);
+                            setTimeout("location.reload()", 1000);
+                        } else if (arg.status === 2) {
+                            $('#give_up_resule').html(arg.message);
+                            setTimeout("location.reload()", 1000);
+                        } else if (arg.status === 3) {
+                            $('#give_up_resule').html(arg.message);
+                            setTimeout("location.reload()", 1000);
+                        } else if (arg.status === 4) {
+                            $('#give_up_resule').html(arg.message);
+                            setTimeout("location.reload()", 1000);
+                        } else if (arg.status === 5) {
+                            $('#give_up_resule').html(arg.message);
+                            setTimeout("location.reload()", 1000);
+                        } else if (arg.status === 6) {
+                            $('#give_up_resule').html(arg.message);
+                            setTimeout("location.reload()", 1000);
+                        }
+                    }
+                })
+            }
+        });
+    </script>
+{% endblock %}
 </body>
 </html>

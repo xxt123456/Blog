@@ -18,6 +18,10 @@
                     <i class="fa fa-thumbs-o-up" aria-hidden="true"></i>
                     <span>{{ row.up_count }}</span>
                 </span>
+                <span>
+                   <i class="fa fa-thumbs-o-down" aria-hidden="true"></i>
+                   <span>{{ row.down_count }}</span>
+               </span>
                 <span>阅读({{ row.read_count }})</span>
                 {% if request.session.user_info.username == blog.user.username %}
                 <a href="/backend/article/edit_article_{{ row.nid }}.html">编辑</a>
