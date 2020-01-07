@@ -158,7 +158,6 @@
             $('#avatarImg').change(function () {
                 var file_obj = $(this)[0].files[0];
                 var form = new FormData();
-                console.log($('#avatarImg').attr('username'))
                 form.append('img_upload', file_obj);
                 form.append('username', $(this).attr('username'))
 

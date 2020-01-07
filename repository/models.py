@@ -85,7 +85,7 @@ class Article(models.Model):
     up_count = models.IntegerField(default=0)
     down_count = models.IntegerField(default=0)
     creat_time = models.DateTimeField(verbose_name='创建时间',auto_now_add=True)
-
+    article_img = models.ImageField(upload_to='./static/img/art_imgs/', verbose_name='主题照片', default=None)
     blog = models.ForeignKey(verbose_name='所属博客',to='Blog',to_field='nid',on_delete=models.CASCADE)
     category = models.ForeignKey(verbose_name='文章类型',to='Category',to_field='nid',on_delete=models.CASCADE)
 

@@ -22,8 +22,10 @@
                     <h3><a href="/{{ row.blog.site }}/{{ row.articledetail.article.nid }}.html">{{ row.title }}</a></h3>
                     <div class="clearfix">
                         <a class="active left" href="#" style="height: 80px;width: 80px">
+                            {% if row.article_img != None %}
                             <img style="height: 80px;width: 80px"
-                                 src="/static/imgs/art_imgs/{{ request.session.user_info.username }}/{{ row.title }}.jpg">
+                                 src="/{{ row.article_img }}">
+                            {% endif %}
                         </a>
                         {{ row.summary }}
                     </div>

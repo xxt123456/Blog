@@ -70,12 +70,24 @@ def add_article(request):
     category_id = models.Category.objects.get(nid=request.POST.get('art_category_id'))
     article_type_id = request.POST.get('article_type_id')
     art_content = request.POST.get('art_content')
+    article_img = request.FILES.get('article_img')
     try:
-        a = models.Article.objects.create(title=title, summary=summary, blog=blog_id, category=category_id,
-                                          article_type_id=article_type_id)
-        models.ArticleDetail.objects.create(article=a, content=art_content)
-        models.Article2Tag.objects.create(article=a, tag=tags_id)
-        res = {'status': True}
+        if article_img != None:
+            with open('static/imgs/art_imgs/' + article_img.name, 'wb') as f:
+                for i in article_img:
+                    f.write(i)
+            f.close()
+            a = models.Article.objects.create(title=title, summary=summary, blog=blog_id, category=category_id,
+                                              article_type_id=article_type_id, article_img=article_img)
+            models.ArticleDetail.objects.create(article=a, content=art_content)
+            models.Article2Tag.objects.create(article=a, tag=tags_id)
+            res = {'status': True}
+        else:
+            a = models.Article.objects.create(title=title, summary=summary, blog=blog_id, category=category_id,
+                                              article_type_id=article_type_id)
+            models.ArticleDetail.objects.create(article=a, content=art_content)
+            models.Article2Tag.objects.create(article=a, tag=tags_id)
+            res = {'status': True}
     except Exception as e:
         print(e)
         res = {'status': False, 'err': '添加失败'}
@@ -114,23 +126,39 @@ def edit_article(request, *args, **kwargs):
         artilce_list = models.Article.objects.filter(nid=art_id).values('blog__title', 'title', 'summary',
                                                                         'category__nid', 'article_type_id',
                                                                         'articledetail__content', 'category__title',
-                                                                        'tags__article2tag__tag__title')
+                                                                        'tags__article2tag__tag__title',
+                                                                        'article_type_id')
+        article_type_id = models.Article.type_choices
         return render(request, 'backend_edit_article.html',
-                      {'artilce_list': artilce_list, 'cat_list': cat_list, 'tag_list': tag_list, 'art_id': art_id})
+                      {'artilce_list': artilce_list, 'cat_list': cat_list, 'tag_list': tag_list, 'art_id': art_id,
+                       'article_type_id': article_type_id})
     if request.method == "POST":
         title = request.POST.get('art_name')
         art_id = request.POST.get('art_id')
         summary = request.POST.get('art_introduce')
         tags_id = models.Tag.objects.get(nid=request.POST.get('edit_tag_id'))
         category_id = models.Category.objects.get(nid=request.POST.get('art_category_id'))
-        article_type_id = 2
+        article_type_id = request.POST.get('article_type_id')
         art_content = request.POST.get('art_content')
+        art_img = request.FILES.get('art_img')
+
         try:
-            models.Article.objects.filter(nid=art_id).update(title=title, summary=summary, category=category_id,
-                                                             article_type_id=article_type_id)
-            models.Article2Tag.objects.filter(article=art_id).update(tag=tags_id)
-            models.ArticleDetail.objects.filter(article=art_id).update(content=art_content)
-            res = {'status': True, 'message': '添加成功'}
+            if art_img != None:
+                with open('static/imgs/art_imgs/' + art_img.name, 'wb') as f:
+                    for i in art_img:
+                        f.write(i)
+                f.close()
+                models.Article.objects.filter(nid=art_id).update(title=title, summary=summary, category=category_id,
+                                                                 article_type_id=article_type_id, article_img=art_img)
+                models.Article2Tag.objects.filter(article=art_id).update(tag=tags_id)
+                models.ArticleDetail.objects.filter(article=art_id).update(content=art_content)
+                res = {'status': True, 'message': '添加成功'}
+            else:
+                models.Article.objects.filter(nid=art_id).update(title=title, summary=summary, category=category_id,
+                                                                 article_type_id=article_type_id)
+                models.Article2Tag.objects.filter(article=art_id).update(tag=tags_id)
+                models.ArticleDetail.objects.filter(article=art_id).update(content=art_content)
+                res = {'status': True, 'message': '添加成功'}
         except Exception as e:
             print(e)
             res = {'status': False, 'message': '添加失败' + e}

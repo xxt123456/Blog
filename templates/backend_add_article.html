@@ -3,7 +3,7 @@
 
 {% endblock %}
 {% block conent %}
-    <form class="form-horizontal">
+    <form class="form-horizontal" enctype="multipart/form-data">
         <div class="col-xs-12">
             <label class="col-xs-1 control-label">分类名称</label>
             <div class="col-xs-3">
@@ -53,6 +53,12 @@
                 </select>
             </div>
         </div>
+        <div class="col-xs-12">
+            <label class="col-xs-1 control-label">主题照片</label>
+            <div class="col-xs-3">
+                <input type="file" id="article_img" name="filename">
+            </div>
+        </div>
         <div class="col-xs-12 control-label">
             <textarea id="editor_id" name="content" style="width:90%;height:400px;"></textarea>
         </div>
@@ -94,6 +100,7 @@
             formData.append('add_tag_id', add_tag_id);
             formData.append('art_category_id', art_category_id);
             formData.append('art_content', $('#editor_id').val());
+            formData.append('article_img', $('#article_img')[0].files[0]);
             $.ajax({
                 url: 'article/add_article/',
                 processData: false,

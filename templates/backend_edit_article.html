@@ -46,6 +46,23 @@
                 <input type="hidden" id="now_art_tag" value='{{ artilce_list.first.tags__article2tag__tag__title }}'/>
             </div>
         </div>
+        <div class="col-xs-12">
+            <label class="col-xs-1 control-label">所属类型</label>
+            <div class="col-xs-3">
+                <select class="form-control" id="article_type_id">
+                    {% for i in article_type_id %}
+                        <option data-article_type_id="{{ i.0 }}">{{ i.1 }}</option>
+                    {% endfor %}
+                </select>
+                <input type="hidden" id="now_article_type_id" value='{{ artilce_list.first.article_type_id }}'/>
+            </div>
+        </div>
+        <div class="col-xs-12">
+            <label class="col-xs-1 control-label">主题照片</label>
+            <div class="col-xs-3">
+                <input type="file" id="article_img" name="filename">
+            </div>
+        </div>
         <div class="col-xs-12 control-label">
             <textarea id="editor_id" name="content"
                       style="width:90%;height:400px;">{{ artilce_list.first.articledetail__content }}</textarea>
@@ -82,25 +99,37 @@
         }
         {# 设置原始标签值 #}
         var now_art_tag = $('#now_art_tag').val();
-        console.log(now_art_tag)
         var tag_obj = document.getElementById("add_tag");
         for (i = 0; i < tag_obj.length; i++) {
             if (tag_obj[i].value == now_art_tag)
                 tag_obj[i].selected = true;
         }
+        {# 设置原始类型 #}
+        var now_article_type_id = $('#now_article_type_id').val();
+        console.log(now_article_type_id)
+        var article_type_id = document.getElementById("article_type_id");
+        for (i = 0; i < article_type_id.length; i++) {
+            console.log(article_type_id[i].value)
+            if (article_type_id[i].value == now_article_type_id)
+                article_type_id[i].selected = true;
+        }
         $('#edit_article').click(function () {
             var art_category_id = $('#art_category').find("option:selected").data("cat_id");
             var edit_tag_id = $('#add_tag').find("option:selected").data("tag_id");
             var art_blog_id = $('#art_blog').data("blog_id");
+            var article_type_id = $('#article_type_id').find("option:selected").data("article_type_id");
             var art_id = $('#art_name').data("art_id");
             var formData = new FormData();
             formData.append('art_name', $('#art_name').val());
             formData.append('art_introduce', $('#art_introduce').val());
             formData.append('art_blog_id', art_blog_id);
+            formData.append('article_type_id', article_type_id);
             formData.append('edit_tag_id', edit_tag_id);
+            formData.append('art_img', $('#article_img')[0].files[0]);
             formData.append('art_id', art_id);
             formData.append('art_category_id', art_category_id);
             formData.append('art_content', $('#editor_id').val());
+            formData.append('article_img', $('#article_img')[0].files[0]);
             $.ajax({
                 url: '/backend/article/edit_article_22.html',
                 processData: false,

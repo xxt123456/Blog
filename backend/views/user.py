@@ -41,11 +41,10 @@ def upload_avatar(request):
             file_name = str(uuid.uuid4())
             file_path = os.path.join('static/imgs/avatar/', file_name)
             f = open(file_path,'wb')
-            ss = models.UserInfo.objects.filter(username=username).update(avatar=file_path)
+            models.UserInfo.objects.filter(username=username).update(avatar=file_path)
             for chunk in file_obj.chunks():
                 f.write(chunk)
             f.close()
-            print(ss)
             ret['status']=True
             ret['data']=file_path
     return HttpResponse(json.dumps(ret))
