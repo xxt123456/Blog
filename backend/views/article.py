@@ -5,7 +5,7 @@ from django.http import JsonResponse
 from utils.pagination import Pagination
 from django.urls import reverse
 import os
-
+import time
 
 @check_login
 def article(request, *args, **kwargs):
@@ -71,9 +71,13 @@ def add_article(request):
     article_type_id = request.POST.get('article_type_id')
     art_content = request.POST.get('art_content')
     article_img = request.FILES.get('article_img')
+    path = 'static/imgs/art_imgs/' + request.session.get('user_info')['username'] + '/' + str(time.time()) + '/'
+    img_name = str(time.time()) + '.' + article_img.name.split('.', -1)[1]
+    if not os.path.exists(path):
+        os.makedirs(path)
     try:
         if article_img != None:
-            with open('static/imgs/art_imgs/' + article_img.name, 'wb') as f:
+            with open(path + img_name, 'wb') as f:
                 for i in article_img:
                     f.write(i)
             f.close()
@@ -141,15 +145,19 @@ def edit_article(request, *args, **kwargs):
         article_type_id = request.POST.get('article_type_id')
         art_content = request.POST.get('art_content')
         art_img = request.FILES.get('art_img')
-
+        path = 'static/imgs/art_imgs/' + request.session.get('user_info')['username'] + '/' + str(time.time()) + '/'
+        img_name = str(time.time()) + '.' + art_img.name.split('.', -1)[1]
+        ss = path + img_name
+        if not os.path.exists(path):
+            os.makedirs(path)
         try:
             if art_img != None:
-                with open('static/imgs/art_imgs/' + art_img.name, 'wb') as f:
+                with open(path + img_name, 'wb') as f:
                     for i in art_img:
                         f.write(i)
                 f.close()
                 models.Article.objects.filter(nid=art_id).update(title=title, summary=summary, category=category_id,
-                                                                 article_type_id=article_type_id, article_img=art_img)
+                                                                 article_type_id=article_type_id, article_img=ss)
                 models.Article2Tag.objects.filter(article=art_id).update(tag=tags_id)
                 models.ArticleDetail.objects.filter(article=art_id).update(content=art_content)
                 res = {'status': True, 'message': '添加成功'}

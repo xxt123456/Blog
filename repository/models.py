@@ -103,7 +103,6 @@ class Article(models.Model):
         through_fields=('article', 'tag'),
     )
 
-
 class Article2Tag(models.Model):
     article = models.ForeignKey(verbose_name='文章', to="Article", to_field='nid',on_delete=models.CASCADE)
     tag = models.ForeignKey(verbose_name='标签', to="Tag", to_field='nid',on_delete=models.CASCADE)
@@ -112,7 +111,6 @@ class Article2Tag(models.Model):
         unique_together = [
             ('article', 'tag'),
         ]
-
 
 class Comment(models.Model):
     """
@@ -127,3 +125,8 @@ class Comment(models.Model):
 
     def __str__(self):
         return self.content
+
+# class UserMessage(models.Model):
+#     """
+#     信息通知
+#     """
