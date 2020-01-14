@@ -47,7 +47,7 @@
                                 <span>{{ row.down_count }}</span>
                             </a>
                         </a>
-                        <span id="give_up_resule"></span>
+                        <span id="give_up_resule{{ row.nid }}"></span>
                         <span>阅读({{ row.read_count }})</span>
 
                     </div>
@@ -83,22 +83,22 @@
                     dataType: 'JSON',
                     success: function (arg) {
                         if (arg.status === 1) {
-                            $('#give_up_resule').html(arg.message);
+                            $('#give_up_resule' + article_id).html(arg.message);
                             setTimeout("location.reload()", 1000);
                         } else if (arg.status === 2) {
-                            $('#give_up_resule').html(arg.message);
+                            $('#give_up_resule' + article_id).html(arg.message);
                             setTimeout("location.reload()", 1000);
                         } else if (arg.status === 3) {
-                            $('#give_up_resule').html(arg.message);
+                            $('#give_up_resule' + article_id).html(arg.message);
                             setTimeout("location.reload()", 1000);
                         } else if (arg.status === 4) {
-                            $('#give_up_resule').html(arg.message);
+                            $('#give_up_resule' + article_id).html(arg.message);
                             setTimeout("location.reload()", 1000);
                         } else if (arg.status === 5) {
-                            $('#give_up_resule').html(arg.message);
+                            $('#give_up_resule' + article_id).html(arg.message);
                             setTimeout("location.reload()", 1000);
                         } else if (arg.status === 6) {
-                            $('#give_up_resule').html(arg.message);
+                            $('#give_up_resule' + article_id).html(arg.message);
                             setTimeout("location.reload()", 1000);
                         }
                     }
