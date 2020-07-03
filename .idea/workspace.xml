@@ -2,12 +2,9 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="dd69999a-936b-47cc-94b0-1e5adcc1526c" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/web/views/article_search.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/templates/include/header.html" beforeDir="false" afterPath="$PROJECT_DIR$/templates/include/header.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/templates/index.html" beforeDir="false" afterPath="$PROJECT_DIR$/templates/index.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/web/urls.py" beforeDir="false" afterPath="$PROJECT_DIR$/web/urls.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/web/views/home.py" beforeDir="false" afterPath="$PROJECT_DIR$/web/views/home.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/web/views/article_up_or_down.py" beforeDir="false" afterPath="$PROJECT_DIR$/web/views/article_up_or_down.py" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -70,8 +67,9 @@
           <entry key="js" value="1" />
           <entry key="master" value="1" />
           <entry key="png" value="13" />
-          <entry key="py" value="159" />
+          <entry key="py" value="163" />
           <entry key="rnc" value="1" />
+          <entry key="sql" value="1" />
           <entry key="ts" value="1" />
           <entry key="vmoptions" value="1" />
           <entry key="xml" value="1" />
@@ -83,8 +81,9 @@
           <entry key="Image" value="15" />
           <entry key="JavaScript" value="1" />
           <entry key="PLAIN_TEXT" value="4" />
-          <entry key="Python" value="159" />
+          <entry key="Python" value="163" />
           <entry key="RNG Compact" value="1" />
+          <entry key="Scratch" value="1" />
           <entry key="TypeScript" value="1" />
           <entry key="XML" value="1" />
         </counts>
@@ -92,8 +91,8 @@
       <usages-collector id="statistics.file.extensions.edit">
         <counts>
           <entry key="dummy" value="17" />
-          <entry key="html" value="6806" />
-          <entry key="py" value="5866" />
+          <entry key="html" value="6880" />
+          <entry key="py" value="5942" />
           <entry key="txt" value="254" />
           <entry key="vmoptions" value="1" />
         </counts>
@@ -101,9 +100,9 @@
       <usages-collector id="statistics.file.types.edit">
         <counts>
           <entry key="CSS" value="1" />
-          <entry key="HTML" value="6805" />
+          <entry key="HTML" value="6879" />
           <entry key="PLAIN_TEXT" value="272" />
-          <entry key="Python" value="5865" />
+          <entry key="Python" value="5941" />
           <entry key="SQL" value="1" />
         </counts>
       </usages-collector>
@@ -117,17 +116,38 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/templates/index.html">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="416">
-              <caret line="100" column="80" lean-forward="true" selection-start-line="100" selection-start-column="80" selection-end-line="100" selection-end-column="80" />
+            <state relative-caret-position="302">
+              <caret line="94" column="79" selection-start-line="94" selection-start-column="79" selection-end-line="94" selection-end-column="79" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/templates/include/header.html">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="344">
+              <caret line="83" column="17" lean-forward="true" selection-start-line="83" selection-start-column="17" selection-end-line="83" selection-end-column="17" />
             </state>
           </provider>
         </entry>
       </file>
       <file pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/templates/include/header.html">
+        <entry file="file://$PROJECT_DIR$/web/views/article_up_or_down.py">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="439">
-              <caret line="81" column="29" lean-forward="true" selection-start-line="81" selection-start-column="29" selection-end-line="81" selection-end-column="29" />
+              <caret line="35" column="28" lean-forward="true" selection-start-line="35" selection-start-column="28" selection-end-line="35" selection-end-column="28" />
+              <folding>
+                <element signature="e#0#29#0" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/repository/models.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="-131">
+              <caret line="61" column="11" selection-start-line="61" selection-start-column="4" selection-end-line="61" selection-end-column="11" />
             </state>
           </provider>
         </entry>
@@ -231,7 +251,6 @@
         <option value="$PROJECT_DIR$/web/views/account.py" />
         <option value="$PROJECT_DIR$/web/views/up_or_down.py" />
         <option value="$PROJECT_DIR$/web/views/article_detail.py" />
-        <option value="$PROJECT_DIR$/web/views/article_up_or_down.py" />
         <option value="$PROJECT_DIR$/web/views/article_comment.py" />
         <option value="$PROJECT_DIR$/templates/home_title_list.html" />
         <option value="$PROJECT_DIR$/templates/article_detail.html" />
@@ -253,6 +272,7 @@
         <option value="$PROJECT_DIR$/web/urls.py" />
         <option value="$PROJECT_DIR$/web/views/article_search.py" />
         <option value="$PROJECT_DIR$/templates/include/header.html" />
+        <option value="$PROJECT_DIR$/web/views/article_up_or_down.py" />
       </list>
     </option>
   </component>
@@ -290,8 +310,7 @@
             <path>
               <item name="GSM" type="b2602c69:ProjectViewProjectNode" />
               <item name="GSM" type="462c0819:PsiDirectoryNode" />
-              <item name="backend" type="462c0819:PsiDirectoryNode" />
-              <item name="views" type="462c0819:PsiDirectoryNode" />
+              <item name="GSM" type="462c0819:PsiDirectoryNode" />
             </path>
             <path>
               <item name="GSM" type="b2602c69:ProjectViewProjectNode" />
@@ -332,6 +351,7 @@
     </panes>
   </component>
   <component name="PropertiesComponent">
+    <property name="DatabaseDriversLRU" value="sqlite&#10;mysql" />
     <property name="DefaultHtmlFileTemplate" value="HTML File" />
     <property name="WebServerToolWindowFactoryState" value="false" />
     <property name="last_opened_file_path" value="$PROJECT_DIR$" />
@@ -571,7 +591,14 @@
       <option name="project" value="LOCAL" />
       <updated>1593741006036</updated>
     </task>
-    <option name="localTasksCounter" value="22" />
+    <task id="LOCAL-00022" summary="添加搜索">
+      <created>1593768596709</created>
+      <option name="number" value="00022" />
+      <option name="presentableId" value="LOCAL-00022" />
+      <option name="project" value="LOCAL" />
+      <updated>1593768596709</updated>
+    </task>
+    <option name="localTasksCounter" value="23" />
     <servers />
   </component>
   <component name="TodoView">
@@ -588,18 +615,18 @@
     <editor active="true" />
     <layout>
       <window_info content_ui="combo" id="Project" order="0" sideWeight="0.4984472" visible="true" weight="0.33453757" />
-      <window_info id="Structure" order="1" sideWeight="0.5015528" side_tool="true" weight="0.21748555" />
+      <window_info id="Structure" order="1" sideWeight="0.5015528" side_tool="true" weight="0.33453757" />
       <window_info id="Favorites" order="2" sideWeight="0.5015528" side_tool="true" weight="0.33453757" />
       <window_info anchor="bottom" id="Message" order="0" />
       <window_info anchor="bottom" id="Find" order="1" weight="0.32934132" />
-      <window_info active="true" anchor="bottom" id="Run" order="2" sideWeight="0.49927744" visible="true" weight="0.22874251" />
+      <window_info anchor="bottom" id="Run" order="2" sideWeight="0.49927744" visible="true" weight="0.22874251" />
       <window_info anchor="bottom" id="Debug" order="3" weight="0.3988024" />
       <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
       <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
       <window_info anchor="bottom" id="TODO" order="6" weight="0.32814372" />
       <window_info anchor="bottom" id="Docker" order="7" show_stripe_button="false" />
       <window_info anchor="bottom" id="Version Control" order="8" sideWeight="0.49927744" weight="0.32934132" />
-      <window_info anchor="bottom" id="Database Changes" order="9" show_stripe_button="false" />
+      <window_info anchor="bottom" id="Database Changes" order="9" />
       <window_info anchor="bottom" id="Terminal" order="10" weight="0.32934132" />
       <window_info anchor="bottom" id="Python Console" order="11" weight="0.32934132" />
       <window_info anchor="bottom" id="Event Log" order="12" sideWeight="0.5007225" side_tool="true" weight="0.22874251" />
@@ -676,12 +703,6 @@
     <option name="REFORMAT_BEFORE_PROJECT_COMMIT" value="true" />
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/web/apps.py">
-      <provider selected="true" editor-type-id="text-editor" />
-    </entry>
-    <entry file="file://$PROJECT_DIR$/web/admin.py">
-      <provider selected="true" editor-type-id="text-editor" />
-    </entry>
     <entry file="file://$USER_HOME$/AppData/Local/Programs/Python/Python36/Lib/site-packages/django/template/defaulttags.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="205">
@@ -778,13 +799,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/GSM/settings.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="116">
-          <caret line="131" selection-start-line="131" selection-start-column="2" selection-end-line="147" selection-end-column="3" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/static/imgs/art_imgs/fengjian/1578458718.536916/1578458718.536916.png">
       <provider selected="true" editor-type-id="images" />
     </entry>
@@ -876,13 +890,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/repository/models.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="209">
-          <caret line="80" column="9" selection-start-line="80" selection-start-column="4" selection-end-line="80" selection-end-column="9" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/backend/views/article.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="-1095">
@@ -931,20 +938,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/web/views/article_up_or_down.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-720">
-          <caret line="1" selection-start-line="1" selection-end-line="1" selection-end-column="36" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/templates/index.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="416">
-          <caret line="100" column="80" lean-forward="true" selection-start-line="100" selection-start-column="80" selection-end-line="100" selection-end-column="80" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/templates/article_summary_list.html">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="311">
@@ -969,10 +962,49 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/templates/index.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="302">
+          <caret line="94" column="79" selection-start-line="94" selection-start-column="79" selection-end-line="94" selection-end-column="79" />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/templates/include/header.html">
       <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="344">
+          <caret line="83" column="17" lean-forward="true" selection-start-line="83" selection-start-column="17" selection-end-line="83" selection-end-column="17" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/repository/models.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-131">
+          <caret line="61" column="11" selection-start-line="61" selection-start-column="4" selection-end-line="61" selection-end-column="11" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$APPLICATION_CONFIG_DIR$/consoles/db/abba8d68-ab79-448e-a8d7-68fe25eae85e/console.sql">
+      <provider selected="true" editor-type-id="text-editor" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/GSM/settings.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="1584">
+          <caret line="147" column="3" lean-forward="true" selection-start-line="147" selection-start-column="3" selection-end-line="147" selection-end-column="3" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/backend/templatetags/search.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-682" />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/web/views/article_up_or_down.py">
+      <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="439">
-          <caret line="81" column="29" lean-forward="true" selection-start-line="81" selection-start-column="29" selection-end-line="81" selection-end-column="29" />
+          <caret line="35" column="28" lean-forward="true" selection-start-line="35" selection-start-column="28" selection-end-line="35" selection-end-column="28" />
+          <folding>
+            <element signature="e#0#29#0" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>

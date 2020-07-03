@@ -25,6 +25,8 @@ def artilce_give(request):
                 from django.db.models import F
                 if up_or_down == True:
                     models.Article.objects.select_for_update().filter(nid=article_id).update(up_count=F('up_count') + 1)
+                    ####传值
+                    print(models.Article.objects.filter(nid=article_id).values(up_or_down=F('up_count')))
                     ret = {'status': 1, 'message': '点赞成功'}
                 elif up_or_down == False:
                     models.Article.objects.select_for_update().filter(nid=article_id).update(

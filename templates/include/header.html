@@ -57,6 +57,7 @@
         <div class="nav navbar-nav navbar-right ">
             <input type="text" id="search_text">
             <input type="button" id="search_key" value="搜索">
+            <input type="button" id="clear_search" value="重置">
             <span id="search_resule"></span>
         </div>
 
@@ -65,6 +66,7 @@
 <script charset="utf-8" src="/static/kindeditor/kindeditor-all.js"></script>
 <script charset="utf-8" src="/static/kindeditor/lang/zh-CN.js"></script>
 <script>
+    {#搜索#}
     $('#search_key').click(function () {
         var obj = $('#search_text').val();
         $.ajax({
@@ -75,17 +77,16 @@
             success: function (arg) {
                 console.log(arg);
                 if (arg.status == 0) {
-                    $('#search_resule').html(arg.message).show(300).delay(3000).hide(300);
+                    $('#search_resule').html(arg.message).show(300).delay(300).hide(300);
                 } else {
-                    var ss = JSON.stringify(arg.message)
+                    var ss = JSON.stringify(arg.message);
                     console.log(ss);
-                    alert(ss)
                 }
-
             }
-
         })
-
-
+    })
+    {#重置#}
+    $('#clear_search').click(function () {
+        $('#search_text').val('')
     })
 </script>
