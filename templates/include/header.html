@@ -55,9 +55,37 @@
             </ul>
         </div>
         <div class="nav navbar-nav navbar-right ">
-            <input type="text">
-            <button>s搜索</button>
+            <input type="text" id="search_text">
+            <input type="button" id="search_key" value="搜索">
+            <span id="search_resule"></span>
         </div>
-    </div>
 
+    </div>
 </nav>
+<script charset="utf-8" src="/static/kindeditor/kindeditor-all.js"></script>
+<script charset="utf-8" src="/static/kindeditor/lang/zh-CN.js"></script>
+<script>
+    $('#search_key').click(function () {
+        var obj = $('#search_text').val();
+        $.ajax({
+            url: '/search/',
+            processData: true,
+            data: {'search_text': obj},
+            type: 'POST',
+            success: function (arg) {
+                console.log(arg);
+                if (arg.status == 0) {
+                    $('#search_resule').html(arg.message).show(300).delay(3000).hide(300);
+                } else {
+                    var ss = JSON.stringify(arg.message)
+                    console.log(ss);
+                    alert(ss)
+                }
+
+            }
+
+        })
+
+
+    })
+</script>
