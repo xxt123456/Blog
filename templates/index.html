@@ -23,8 +23,8 @@
                     <div class="clearfix">
                         <a class="active left" href="#" style="height: 80px;width: 80px">
                             {% if row.article_img != None %}
-                            <img style="height: 80px;width: 80px"
-                                 src="/{{ row.article_img }}">
+                                <img style="height: 80px;width: 80px"
+                                     src="/{{ row.article_img }}">
                             {% endif %}
                         </a>
                         {{ row.summary }}
@@ -40,16 +40,15 @@
                             <span>{{ row.comment_count }}</span>
                             <a class="up" id='give_up' up_or_down="1" article_id="{{ row.nid }}">
                                 <i class="fa fa-thumbs-o-up" aria-hidden="true"></i>
-                                <span>{{ row.up_count }}</span>
+                                <span id="up_count{{ row.nid }}">{{ row.up_count }}</span>
                             </a>
                             <a class="down" id='give_up' up_or_down="0" article_id="{{ row.nid }}">
                                 <i class="fa fa-thumbs-o-down" aria-hidden="true"></i>
-                                <span>{{ row.down_count }}</span>
+                                <span id="down_count{{ row.nid }}">{{ row.down_count }}</span>
                             </a>
                         </a>
-                        <span id="give_up_resule{{ row.nid }}"></span>
                         <span>阅读({{ row.read_count }})</span>
-
+                        <span class="tips" id="give_up_resule{{ row.nid }}"></span>
                     </div>
                 </div>
             {% endfor %}
@@ -75,6 +74,7 @@
                 $.ajax({
                     url: 'article_up_or_down/',
                     type: "POST",
+                    async: false,
                     data: {
                         'article_id': article_id,
                         'user_id': user_id,
@@ -83,23 +83,28 @@
                     dataType: 'JSON',
                     success: function (arg) {
                         if (arg.status === 1) {
-                            $('#give_up_resule' + article_id).html(arg.message);
-                            setTimeout("location.reload()", 100);
+                            {#点赞成功#}
+                            $('#up_count' + article_id).html(arg.count_num);
+                            {#$('#give_up_resule' + article_id).html(arg.message).show(300).delay(1000).hide(300);#}
+                            $('#give_up_resule' + article_id).html(arg.message).addClass('alert-success').fadeIn().delay(1500).fadeOut()
                         } else if (arg.status === 2) {
-                            $('#give_up_resule' + article_id).html(arg.message);
-                            setTimeout("location.reload()", 100);
+                            {#踩赞成功#}
+                            $('#down_count' + article_id).html(arg.count_num);
+                            $('#give_up_resule' + article_id).html(arg.message).addClass('alert-success').fadeIn().delay(1500).fadeOut()
                         } else if (arg.status === 3) {
-                            $('#give_up_resule' + article_id).html(arg.message);
-                            setTimeout("location.reload()", 100);
+                            {#取消点赞#}
+                            $('#up_count' + article_id).html(arg.count_num);
+                            $('#give_up_resule' + article_id).html(arg.message).addClass('alert-info').fadeIn().delay(1500).fadeOut()
                         } else if (arg.status === 4) {
-                            $('#give_up_resule' + article_id).html(arg.message);
-                            setTimeout("location.reload()", 100);
+                            {#已踩赞，请勿点赞#}
+                            $('#give_up_resule' + article_id).html(arg.message).addClass('alert-warning').fadeIn().delay(1500).fadeOut()
                         } else if (arg.status === 5) {
-                            $('#give_up_resule' + article_id).html(arg.message);
-                            setTimeout("location.reload()", 100);
+                            {#取消踩暂#}
+                            $('#down_count' + article_id).html(arg.count_num);
+                            $('#give_up_resule' + article_id).html(arg.message).addClass('alert-info').fadeIn().delay(1500).fadeOut()
                         } else if (arg.status === 6) {
-                            $('#give_up_resule' + article_id).html(arg.message);
-                            setTimeout("location.reload()", 100);
+                            {#已点赞，请勿踩赞#}
+                            $('#give_up_resule' + article_id).html(arg.message).addClass('alert-warning').fadeIn().delay(1500).fadeOut()
                         }
                     }
                 })
