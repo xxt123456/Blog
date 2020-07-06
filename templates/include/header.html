@@ -58,9 +58,11 @@
             <input type="text" id="search_text">
             <input type="button" id="search_key" value="搜索">
             <input type="button" id="clear_search" value="重置">
+
+        </div>
+        <div class="nav navbar-nav navbar-right ">
             <span id="search_resule"></span>
         </div>
-
     </div>
 </nav>
 <script charset="utf-8" src="/static/kindeditor/kindeditor-all.js"></script>
@@ -77,7 +79,7 @@
             success: function (arg) {
                 console.log(arg);
                 if (arg.status == 0) {
-                    $('#search_resule').html(arg.message).show(300).delay(300).hide(300);
+                    $('#search_resule').html(arg.message).addClass('alert-info').fadeIn().delay(1500).fadeOut();
                 } else {
                     var ss = JSON.stringify(arg.message);
                     console.log(ss);
