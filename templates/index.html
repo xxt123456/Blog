@@ -15,7 +15,7 @@
 <body>
 {% include 'include/header.html' %}
 <div class="container">
-    <div class="col-md-8">
+    <div class="col-md-7">
         <div class="article-list">
             {% for row in article_list %}
                 <div class="article-item clearfix">
@@ -59,19 +59,33 @@
             </ul>
         </div>
     </div>
-    <div class="col-md-3">
+    <div class="col-md-5">
+        <div class="nav navbar-nav navbar-right ">
+            <input type="text" id="search_text">
+            <input type="button" id="search_key" value="搜索">
+            <input type="button" id="clear_search" value="重置">
+
+        </div>
+    </div>
+    <div class="col-md-5">
+        <div class="nav navbar-nav navbar-right ">
+            <span id="search_resule"></span>
+        </div>
         <div class="article-item clearfix">
+            <p id="search_title"></p>
         </div>
     </div>
 </div>
 {% block js %}
     <script src="/static/js/jquery-1.12.4.js"></script>
     <script>
+        {#点赞#}
         $('div #give_up').click(function () {
             var article_id = $(this).attr('article_id');
             var user_id = $('.recommend').attr('user_id');
             if (user_id == '') {
-                alert('请先登录')
+                alert('请先登录');
+                window.location.href = "/login.html";
             } else {
                 var up_or_down = $(this).attr('up_or_down');
                 $.ajax({
@@ -113,6 +127,38 @@
                 })
             }
         });
+
+        {#搜索#}
+        $('#search_key').click(function () {
+            var obj = $('#search_text').val();
+            $.ajax({
+                url: '/search/',
+                processData: true,
+                data: {'search_text': obj},
+                type: 'POST',
+                success: function (arg) {
+                    if (arg.status == 0) {
+                        $('#search_title').html('');
+                        $('#search_resule').html(arg.message).addClass('alert-info').fadeIn().delay(1500).fadeOut();
+                    } else if (arg.status == 2) {
+                        var search_obj = '';
+                        $.each(arg.message, function (index, obj) {
+                            {#title +=$('#search_title').html(obj['title']);#}
+                            {#summary +$('#search_summary').html(obj['summary']);#}
+                            search_obj += '<a href=' + "/" + obj['blog__site'] + "/" + obj['nid'] + ".html" + '>' + obj['title'] + '</a>' + '<p>' + obj['summary'] + '</p>';
+                        });
+                        $('#search_title').html(search_obj);
+                    } else if (arg.status = 1) {
+                        $('#search_title').html('');
+                        $('#search_resule').html(arg.message).addClass('alert-info').fadeIn().delay(1500).fadeOut();
+                    }
+                }
+            })
+        });
+        {#重置#}
+        $('#clear_search').click(function () {
+            $('#search_text').val('')
+        })
     </script>
 {% endblock %}
 </body>

@@ -72,7 +72,10 @@ def add_article(request):
     art_content = request.POST.get('art_content')
     article_img = request.FILES.get('article_img')
     path = 'static/imgs/art_imgs/' + request.session.get('user_info')['username'] + '/' + str(time.time()) + '/'
-    img_name = str(time.time()) + '.' + article_img.name.split('.', -1)[1]
+    if not article_img:
+        pass
+    else:
+        img_name = str(time.time()) + '.' + article_img.name.split('.', -1)[1]
     if not os.path.exists(path):
         os.makedirs(path)
     try:
@@ -80,15 +83,15 @@ def add_article(request):
             with open(path + img_name, 'wb') as f:
                 for i in article_img:
                     f.write(i)
-            f.close()
             a = models.Article.objects.create(title=title, summary=summary, blog=blog_id, category=category_id,
                                               article_type_id=article_type_id, article_img=article_img)
             models.ArticleDetail.objects.create(article=a, content=art_content)
             models.Article2Tag.objects.create(article=a, tag=tags_id)
             res = {'status': True}
         else:
+            article_img = "static/imgs/avatar/default.png"
             a = models.Article.objects.create(title=title, summary=summary, blog=blog_id, category=category_id,
-                                              article_type_id=article_type_id)
+                                              article_type_id=article_type_id, article_img=article_img)
             models.ArticleDetail.objects.create(article=a, content=art_content)
             models.Article2Tag.objects.create(article=a, tag=tags_id)
             res = {'status': True}
@@ -146,8 +149,12 @@ def edit_article(request, *args, **kwargs):
         art_content = request.POST.get('art_content')
         art_img = request.FILES.get('art_img')
         path = 'static/imgs/art_imgs/' + request.session.get('user_info')['username'] + '/' + str(time.time()) + '/'
-        img_name = str(time.time()) + '.' + art_img.name.split('.', -1)[1]
-        ss = path + img_name
+        if not art_img:
+            pass
+        else:
+            img_name = str(time.time()) + '.' + art_img.name.split('.', -1)[1]
+            # img_name = str(time.time()) + '.' + art_img.name.split('.', -1)[1]
+            ss = path + img_name
         if not os.path.exists(path):
             os.makedirs(path)
         try:
@@ -160,13 +167,15 @@ def edit_article(request, *args, **kwargs):
                                                                  article_type_id=article_type_id, article_img=ss)
                 models.Article2Tag.objects.filter(article=art_id).update(tag=tags_id)
                 models.ArticleDetail.objects.filter(article=art_id).update(content=art_content)
-                res = {'status': True, 'message': '添加成功'}
+                res = {'status': True, 'message': '编辑成功'}
             else:
+                article_img = "static/imgs/avatar/default.png"
                 models.Article.objects.filter(nid=art_id).update(title=title, summary=summary, category=category_id,
-                                                                 article_type_id=article_type_id)
+                                                                 article_type_id=article_type_id,
+                                                                 article_img=article_img)
                 models.Article2Tag.objects.filter(article=art_id).update(tag=tags_id)
                 models.ArticleDetail.objects.filter(article=art_id).update(content=art_content)
-                res = {'status': True, 'message': '添加成功'}
+                res = {'status': True, 'message': '编辑成功'}
         except Exception as e:
             print(e)
             res = {'status': False, 'message': '添加失败' + e}

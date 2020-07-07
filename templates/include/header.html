@@ -54,41 +54,10 @@
                 {% endif %}
             </ul>
         </div>
-        <div class="nav navbar-nav navbar-right ">
-            <input type="text" id="search_text">
-            <input type="button" id="search_key" value="搜索">
-            <input type="button" id="clear_search" value="重置">
-
-        </div>
-        <div class="nav navbar-nav navbar-right ">
-            <span id="search_resule"></span>
-        </div>
     </div>
 </nav>
-<script charset="utf-8" src="/static/kindeditor/kindeditor-all.js"></script>
-<script charset="utf-8" src="/static/kindeditor/lang/zh-CN.js"></script>
-<script>
-    {#搜索#}
-    $('#search_key').click(function () {
-        var obj = $('#search_text').val();
-        $.ajax({
-            url: '/search/',
-            processData: true,
-            data: {'search_text': obj},
-            type: 'POST',
-            success: function (arg) {
-                console.log(arg);
-                if (arg.status == 0) {
-                    $('#search_resule').html(arg.message).addClass('alert-info').fadeIn().delay(1500).fadeOut();
-                } else {
-                    var ss = JSON.stringify(arg.message);
-                    console.log(ss);
-                }
-            }
-        })
-    })
-    {#重置#}
-    $('#clear_search').click(function () {
-        $('#search_text').val('')
-    })
-</script>
+{#<script charset="utf-8" src="/static/kindeditor/kindeditor-all.js"></script>#}
+{#<script charset="utf-8" src="/static/kindeditor/lang/zh-CN.js"></script>#}
+{#<script>#}
+{##}
+{#</script>#}

@@ -17,10 +17,14 @@ def search(request):
         ret['message'] = '请输入搜索数据'
     # 输入指定数据进行模糊搜索
     else:
-        search_object = models.Article.objects.filter(title__icontains=search_key).values('title', 'summary')
-        print(search_object)
-        ret['status'] = 1
+        search_object = models.Article.objects.filter(title__icontains=search_key).values('nid', 'title', 'summary',
+                                                                                          'blog__site')
+        if not search_object:
+            ret['status'] = 1
+            ret['message'] = '查询数据为空'
+            return JsonResponse(ret)
+        ret['status'] = 2
         ret['message'] = list(search_object)
-        print(ret['message'])
+        # print(ret['message'])
 
     return JsonResponse(ret)
