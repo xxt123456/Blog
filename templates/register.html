@@ -23,81 +23,131 @@
         <div class="form-group">
             <label for="username">用户名</label>
             <input type="text" class="form-control" name="username" id="username" placeholder="请输入用户名">
+            <div class="col-xs-9" style="padding-left: 0;">
+            </div>
+            <div class="alert alert-danger hide">
+                    <span style="padding: 0 5px 0 5px;display: inline-block;font-size: 14px">
+                        <i class="fa fa-minus-circle" aria-hidden="true"></i>
+                    </span>
+                <span id="username_error" style="font-size: 12px;"></span>
+            </div>
         </div>
         <div class="form-group">
             <label for="email">邮箱</label>
             <input type="email" class="form-control" name="email" id="email" placeholder="请输入邮箱">
+            <div class="alert alert-danger hide">
+                    <span style="padding: 0 5px 0 5px;display: inline-block;font-size: 14px">
+                        <i class="fa fa-minus-circle" aria-hidden="true"></i>
+                    </span>
+                <span id="email_error" style="font-size: 12px;"></span>
+            </div>
         </div>
         <div class="form-group">
             <label for="nickname">昵称</label>
             <input type="text" class="form-control" name="nickname" id="nickname" placeholder="请输入昵称">
+            <div class="alert alert-danger hide">
+                    <span style="padding: 0 5px 0 5px;display: inline-block;font-size: 14px">
+                        <i class="fa fa-minus-circle" aria-hidden="true"></i>
+                    </span>
+                <span id="nickname_error" style="font-size: 12px;"></span>
+            </div>
         </div>
         <div class="form-group">
             <label for="password">密码</label>
             <input type="password" class="form-control" name="password" id='password' placeholder="请输入密码">
+            <div class="alert alert-danger hide">
+                    <span style="padding: 0 5px 0 5px;display: inline-block;font-size: 14px">
+                        <i class="fa fa-minus-circle" aria-hidden="true"></i>
+                    </span>
+                <span id="password_error" style="font-size: 12px;"></span>
+            </div>
         </div>
         <div class="form-group">
             <label for="confirm_password">确认密码</label>
             <input type="password" class="form-control" name="confirm_password" id="confirm_password"
                    placeholder="请再次输入密码">
-        </div>
-            <div class="form-group">
-            <label for="user_img"><img id="avatar-img" src="/static/imgs/avatar/default.png" alt="" style="height: 60px;width: 60px"></label>
-            <input type="file"  id="avatar" name="user_img" placeholder="上传头像">
-        </div>
-        <input id="resubmit" class="btn btn-default" type="submit" value="提交" />
-        <div class="col-xs-9" style="padding-left: 0;">
-                <div class="alert alert-danger hide">
+            <div class="alert alert-danger hide">
                     <span style="padding: 0 5px 0 5px;display: inline-block;font-size: 14px">
                         <i class="fa fa-minus-circle" aria-hidden="true"></i>
                     </span>
-                    <span id="error_msg" style="font-size: 12px;"></span>
-                </div>
+                <span id="confirm_password_error" style="font-size: 12px;"></span>
+            </div>
         </div>
+        <div class="form-group">
+            <label for="theme">博客主题</label>
+            <input type="text" class="form-control" name="password" id='theme' placeholder="请输入博客主题">
+            <div class="alert alert-danger hide">
+                    <span style="padding: 0 5px 0 5px;display: inline-block;font-size: 14px">
+                        <i class="fa fa-minus-circle" aria-hidden="true"></i>
+                    </span>
+                <span id="theme_error" style="font-size: 12px;"></span>
+            </div>
+        </div>
+        <div class="form-group">
+            <label for="title">博客标题</label>
+            <input type="text" class="form-control" name="password" id='title' placeholder="请输入博客标题">
+            <div class="alert alert-danger hide">
+                    <span style="padding: 0 5px 0 5px;display: inline-block;font-size: 14px">
+                        <i class="fa fa-minus-circle" aria-hidden="true"></i>
+                    </span>
+                <span id="title_error" style="font-size: 12px;"></span>
+            </div>
+        </div>
+        <div class="form-group">
+            <label for="user_img"><img id="avatar-img" src="/static/imgs/avatar/default.png" alt=""
+                                       style="height: 60px;width: 60px"></label>
+            <input type="file" id="avatar" name="user_img" placeholder="上传头像">
+        </div>
+        <input id="resubmit" class="btn btn-default" type="button" value="提交"/>
+
     </form>
+
     <script src="/static/js/jquery-1.12.4.js"></script>
     <script>
         $('#avatar').change(function () {
-            var fileReader= new FileReader();
+            var fileReader = new FileReader();
             fileReader.readAsDataURL(this.files[0]);
-            fileReader.onload=function () {
-                    $('#avatar-img').attr('src',fileReader.result);
+            fileReader.onload = function () {
+                $('#avatar-img').attr('src', fileReader.result);
             }
-                });
-        var formData = new FormData();
-        formData.append("username", $('#username').val());
-        formData.append("email", $('#email').val());
-        formData.append("password", $('#password').val());
-        formData.append('confirm_password', $('#confirm_password').val());
-        formData.append('avatar', $('#avatar')[0].files[0]);
-        function submitRe(ths) {
-            $('#resubmit').click(function () {
-                var $msg = $('#error_msg');
-                console.log($msg.error());
-                $msg.parent().addClass('hide');
-                $.ajax({
-                    url:'/register/',
-                    type: 'POST',
-                    processData: false,
-                    contentType: false,
-                    data: formData,
-                    dataType: 'JSON',
-                    success: function (arg) {
-                        console.log(arg)
-                        if(arg.status){
-                            {#location.href = '/'#}
-                            console.log(arg.status);
-
-                        }else{
-                            $msg.parent().removeClass('hide');
-                            $msg.text(arg.message);
-                            $('#password').val('');
-                        }
-
+        });
+        $('#resubmit').click(function () {
+            var formData = new FormData();
+            formData.append("username", $('#username').val());
+            formData.append("nickname", $('#nickname').val());
+            formData.append("email", $('#email').val());
+            formData.append("password", $('#password').val());
+            formData.append('confirm_password', $('#confirm_password').val());
+            formData.append('theme', $('#theme').val());
+            formData.append('title', $('#title').val());
+            formData.append('avatar', $('#avatar')[0].files[0]);
+            var msg = $('#error_msg');
+            $.ajax({
+                url: '/register/',
+                type: 'POST',
+                processData: false,
+                contentType: false,
+                data: formData,
+                dataType: 'JSON',
+                success: function (arg) {
+                    var obj = $.parseJSON(arg);
+                    if (obj.status === 1) {
+                        $('#username_error').parent().removeClass('hide').html(obj.message.username).fadeIn().delay(1500).fadeOut();
+                        $('#nickname_error').parent().removeClass('hide').html(obj.message.nickname).fadeIn().delay(1500).fadeOut();
+                        $('#email_error').parent().removeClass('hide').html(obj.message.email).fadeIn().delay(1500).fadeOut();
+                        $('#password_error').parent().removeClass('hide').html(obj.message.password).fadeIn().delay(1500).fadeOut();
+                        $('#confirm_password_error').parent().removeClass('hide').html(obj.message.confirm_password).fadeIn().delay(1500).fadeOut();
+                        $('#theme_error').parent().removeClass('hide').html(obj.message.theme).fadeIn().delay(1500).fadeOut();
+                        $('#title_error').parent().removeClass('hide').html(obj.message.title).fadeIn().delay(1500).fadeOut();
+                        $('#password').val('');
+                    } else if (obj.status === 2) {
+                        window.location.href = '/login.html'
                     }
-                })
+
+                }
             })
-        }
+        })
+
     </script>
 </div>
 </body>

@@ -64,23 +64,27 @@ def register(request):
         return render(request, 'register.html')
     elif request.method=="POST":
         form = RegisterForm(request=request, data=request.POST)
-        ret = {'status': False, 'message': None, 'data': None}
+        ret = {'status': False, 'message': None, }
         if form.is_valid():
             site=username = form.cleaned_data.get('username')
             password = form.cleaned_data.get('password')
             email = form.cleaned_data.get('email')
-            title=nickname = form.cleaned_data.get('nickname')
-            user_img = request.FILES.get('user_img')
+            nickname = form.cleaned_data.get('nickname')
+            title = form.cleaned_data.get('title')
+            theme = form.cleaned_data.get('theme')
+            avatar = request.FILES.get('avatar')
             user = models.UserInfo.objects.filter(username=username)
+            print(form.cleaned_data)
             if user:
-                ret['status'] = False
+                ret['status'] = 0
                 ret['message'] = "该用户名已被占用"
             else:
-                new_user = models.UserInfo.objects.create(**form.cleaned_data, avatar=user_img)
-                models.Blog.objects.create(site=site, title=title, theme='哈哈哈', user=new_user)
-                ret = {'status': True, 'message': '注册成功'}
+                new_user = models.UserInfo.objects.create(username=username, password=password, email=email,
+                                                          nickname=nickname, avatar=avatar)
+                models.Blog.objects.create(site=site, title=title, theme=theme, user=new_user)
+                ret = {'status': 2, 'message': '注册成功'}
         else:
-            ret['status'] = False
+            ret['status'] = 1
             ret['message'] = form.errors
     return JsonResponse(json.dumps(ret), safe=False)
 
