@@ -74,13 +74,14 @@ def register(request):
             theme = form.cleaned_data.get('theme')
             avatar = request.FILES.get('avatar')
             user = models.UserInfo.objects.filter(username=username)
-            print(form.cleaned_data)
+            form.cleaned_data.pop("theme")
+            form.cleaned_data.pop("title")
+            form.cleaned_data.pop("confirm_password")
             if user:
                 ret['status'] = 0
                 ret['message'] = "该用户名已被占用"
             else:
-                new_user = models.UserInfo.objects.create(username=username, password=password, email=email,
-                                                          nickname=nickname, avatar=avatar)
+                new_user = models.UserInfo.objects.create(**form.cleaned_data, avatar=avatar)
                 models.Blog.objects.create(site=site, title=title, theme=theme, user=new_user)
                 ret = {'status': 2, 'message': '注册成功'}
         else:

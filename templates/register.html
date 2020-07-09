@@ -23,8 +23,6 @@
         <div class="form-group">
             <label for="username">用户名</label>
             <input type="text" class="form-control" name="username" id="username" placeholder="请输入用户名">
-            <div class="col-xs-9" style="padding-left: 0;">
-            </div>
             <div class="alert alert-danger hide">
                     <span style="padding: 0 5px 0 5px;display: inline-block;font-size: 14px">
                         <i class="fa fa-minus-circle" aria-hidden="true"></i>
@@ -99,6 +97,7 @@
             <input type="file" id="avatar" name="user_img" placeholder="上传头像">
         </div>
         <input id="resubmit" class="btn btn-default" type="button" value="提交"/>
+        <a id="back" href="/login/html" class="btn btn-default">返回</a>
 
     </form>
 
@@ -121,7 +120,6 @@
             formData.append('theme', $('#theme').val());
             formData.append('title', $('#title').val());
             formData.append('avatar', $('#avatar')[0].files[0]);
-            var msg = $('#error_msg');
             $.ajax({
                 url: '/register/',
                 type: 'POST',
@@ -132,19 +130,27 @@
                 success: function (arg) {
                     var obj = $.parseJSON(arg);
                     if (obj.status === 1) {
-                        $('#username_error').parent().removeClass('hide').html(obj.message.username).fadeIn().delay(1500).fadeOut();
-                        $('#nickname_error').parent().removeClass('hide').html(obj.message.nickname).fadeIn().delay(1500).fadeOut();
-                        $('#email_error').parent().removeClass('hide').html(obj.message.email).fadeIn().delay(1500).fadeOut();
-                        $('#password_error').parent().removeClass('hide').html(obj.message.password).fadeIn().delay(1500).fadeOut();
-                        $('#confirm_password_error').parent().removeClass('hide').html(obj.message.confirm_password).fadeIn().delay(1500).fadeOut();
-                        $('#theme_error').parent().removeClass('hide').html(obj.message.theme).fadeIn().delay(1500).fadeOut();
-                        $('#title_error').parent().removeClass('hide').html(obj.message.title).fadeIn().delay(1500).fadeOut();
+                        {#输入信息有误#}
+                        $.each(obj.message, function (key, value) {
+                            var ss = $('#' + key + '_error').parent().removeClass('hide').text(value[0]);
+                            console.log(ss)
+                        });
                         $('#password').val('');
+                        $('#confirm_password').val('');
                     } else if (obj.status === 2) {
+                        {#注册成功，跳转登录页面#}
+                        alert('注册成功，即将跳转登录页面')
                         window.location.href = '/login.html'
+                    } else if (obj.status == 0) {
+                        alert(obj.message)
                     }
 
                 }
+
+            })
+            {#点击时清掉提示语#}
+            $('input').focus(function () {
+                $(this).next('div').addClass('hide').text('')
             })
         })
 
