@@ -130,3 +130,12 @@ class Comment(models.Model):
 #     """
 #     信息通知
 #     """
+
+
+class Proxy_Pool(models.Model):
+    ip = models.CharField(verbose_name='ip', max_length=32)
+    port = models.IntegerField(verbose_name='端口')
+    protcol = models.CharField(verbose_name='协议类型', max_length=32)
+    location = models.CharField(verbose_name='代理归属地', max_length=32, blank=True)
+    ip_respons = models.CharField(verbose_name='代理响应时间', max_length=32, blank=True)
+    update = models.DateField(verbose_name='代理更新时间', max_length=64, auto_now_add=True)

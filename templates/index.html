@@ -63,6 +63,7 @@
         <div class="nav navbar-nav navbar-right ">
             <input type="text" id="search_text">
             <input type="button" id="search_key" value="搜索">
+            <input type="button" id="sprider_search" value="爬虫">
             <input type="button" id="clear_search" value="重置">
 
         </div>
@@ -135,6 +136,32 @@
                 url: '/search/',
                 processData: true,
                 data: {'search_text': obj},
+                type: 'POST',
+                success: function (arg) {
+                    if (arg.status == 0) {
+                        $('#search_title').html('');
+                        $('#search_resule').html(arg.message).addClass('alert-info').fadeIn().delay(1500).fadeOut();
+                    } else if (arg.status == 2) {
+                        var search_obj = '';
+                        $.each(arg.message, function (index, obj) {
+                            {#title +=$('#search_title').html(obj['title']);#}
+                            {#summary +$('#search_summary').html(obj['summary']);#}
+                            search_obj += '<a href=' + "/" + obj['blog__site'] + "/" + obj['nid'] + ".html" + '>' + obj['title'] + '</a>' + '<p>' + obj['summary'] + '</p>';
+                        });
+                        $('#search_title').html(search_obj);
+                    } else if (arg.status = 1) {
+                        $('#search_title').html('');
+                        $('#search_resule').html(arg.message).addClass('alert-info').fadeIn().delay(1500).fadeOut();
+                    }
+                }
+            })
+        });
+        $('#sprider_search').click(function () {
+            var obj = $('#search_text').val();
+            $.ajax({
+                url: '/search/',
+                processData: true,
+                data: {'sprider_search': obj},
                 type: 'POST',
                 success: function (arg) {
                     if (arg.status == 0) {
