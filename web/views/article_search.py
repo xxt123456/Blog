@@ -18,7 +18,7 @@ def search(request):
         ret['status'] = 0
         ret['message'] = '请输入搜索数据'
 
-    # 爬虫
+    # 爬代理ip
     elif sprider_search:
         serach_objs = Spiderip(sprider_search)
         for sprider in serach_objs:
@@ -29,7 +29,6 @@ def search(request):
         sprider_obj = models.Proxy_Pool.objects.filter().values('protcol', 'ip', 'port').order_by('-id')[:10]
         ret['status'] = 3
         ret['message'] = list(sprider_obj)
-        # return HttpResponse('100')
         return JsonResponse(ret)
     # 输入指定数据进行模糊搜索
     else:
@@ -41,7 +40,6 @@ def search(request):
             return JsonResponse(ret)
         ret['status'] = 2
         ret['message'] = list(search_object)
-        # print(ret['message'])
 
     return JsonResponse(ret)
 

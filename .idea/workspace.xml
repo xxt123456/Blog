@@ -1,11 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="dd69999a-936b-47cc-94b0-1e5adcc1526c" name="Default Changelist" comment="添加搜索">
-      <change afterPath="$PROJECT_DIR$/backend/views/proxy.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/backend/views/proxy_pool.py" afterDir="false" />
+    <list default="true" id="dd69999a-936b-47cc-94b0-1e5adcc1526c" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/repository/models.py" beforeDir="false" afterPath="$PROJECT_DIR$/repository/models.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/views/proxy_pool.py" beforeDir="false" afterPath="$PROJECT_DIR$/backend/views/sprider_weibo.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/templates/index.html" beforeDir="false" afterPath="$PROJECT_DIR$/templates/index.html" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/web/views/article_search.py" beforeDir="false" afterPath="$PROJECT_DIR$/web/views/article_search.py" afterDir="false" />
     </list>
@@ -16,6 +14,7 @@
     <option name="LAST_RESOLUTION" value="IGNORE" />
   </component>
   <component name="CoverageDataManager">
+    <SUITE FILE_PATH="coverage/GSM$sprider_weibo.coverage" NAME="sprider_weibo Coverage Results" MODIFIED="1594728181694" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/backend/views" />
     <SUITE FILE_PATH="coverage/GSM$proxy.coverage" NAME="proxy Coverage Results" MODIFIED="1594625041603" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/backend/views" />
     <SUITE FILE_PATH="coverage/GSM$user.coverage" NAME="user Coverage Results" MODIFIED="1576063823898" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/backend/views" />
     <SUITE FILE_PATH="coverage/GSM$proxy_pool.coverage" NAME="proxy_pool Coverage Results" MODIFIED="1594624574460" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/backend/views" />
@@ -49,7 +48,7 @@
           <entry key="project.open.time.17" value="1" />
           <entry key="project.open.time.18" value="1" />
           <entry key="project.open.time.19" value="7" />
-          <entry key="project.open.time.20" value="3" />
+          <entry key="project.open.time.20" value="4" />
           <entry key="project.open.time.21" value="6" />
           <entry key="project.open.time.22" value="2" />
           <entry key="project.open.time.24" value="2" />
@@ -60,7 +59,7 @@
           <entry key="project.open.time.7" value="1" />
           <entry key="project.open.time.77" value="1" />
           <entry key="project.open.time.82" value="1" />
-          <entry key="project.opened" value="44" />
+          <entry key="project.opened" value="45" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.extensions.open">
@@ -101,19 +100,19 @@
       <usages-collector id="statistics.file.extensions.edit">
         <counts>
           <entry key="css" value="1" />
-          <entry key="dummy" value="17" />
-          <entry key="html" value="8703" />
-          <entry key="py" value="9161" />
-          <entry key="txt" value="281" />
+          <entry key="dummy" value="32" />
+          <entry key="html" value="8779" />
+          <entry key="py" value="9453" />
+          <entry key="txt" value="286" />
           <entry key="vmoptions" value="1" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.types.edit">
         <counts>
           <entry key="CSS" value="2" />
-          <entry key="HTML" value="8702" />
-          <entry key="PLAIN_TEXT" value="299" />
-          <entry key="Python" value="9160" />
+          <entry key="HTML" value="8778" />
+          <entry key="PLAIN_TEXT" value="319" />
+          <entry key="Python" value="9452" />
           <entry key="SQL" value="1" />
         </counts>
       </usages-collector>
@@ -124,14 +123,14 @@
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file pinned="false" current-in-tab="true">
+      <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/backend/views/proxy.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="488">
-              <caret line="56" column="8" selection-start-line="56" selection-start-column="8" selection-end-line="56" selection-end-column="8" />
+            <state relative-caret-position="266">
+              <caret line="14" column="23" selection-start-line="14" selection-start-column="23" selection-end-line="16" selection-end-column="24" />
               <folding>
                 <element signature="e#0#15#0" expanded="true" />
-                <marker date="1594636704678" expanded="true" signature="182:187" ph="..." />
+                <marker date="1594697273686" expanded="true" signature="187:192" ph="..." />
               </folding>
             </state>
           </provider>
@@ -140,8 +139,8 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/web/views/article_search.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="412">
-              <caret line="29" selection-start-line="29" selection-end-line="29" />
+            <state relative-caret-position="570">
+              <caret line="30" column="42" selection-start-line="30" selection-start-column="42" selection-end-line="30" selection-end-column="42" />
               <folding>
                 <element signature="e#0#59#0" expanded="true" />
               </folding>
@@ -152,8 +151,8 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/templates/index.html">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="545">
-              <caret line="163" column="38" selection-start-line="163" selection-start-column="24" selection-end-line="163" selection-end-column="38" />
+            <state relative-caret-position="1666">
+              <caret line="188" column="39" lean-forward="true" selection-start-line="188" selection-start-column="39" selection-end-line="188" selection-end-column="39" />
             </state>
           </provider>
         </entry>
@@ -182,15 +181,22 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/repository/models.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="338">
-              <caret line="136" column="55" selection-start-line="136" selection-start-column="55" selection-end-line="136" selection-end-column="55" />
+            <state relative-caret-position="2565">
+              <caret line="135" column="58" selection-start-line="135" selection-start-column="58" selection-end-line="135" selection-end-column="58" />
             </state>
           </provider>
         </entry>
       </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/backend/views/proxy_pool.py">
-          <provider selected="true" editor-type-id="text-editor" />
+      <file pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/backend/views/sprider_weibo.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="190">
+              <caret line="10" column="29" selection-start-line="10" selection-start-column="29" selection-end-line="10" selection-end-column="29" />
+              <folding>
+                <element signature="e#0#15#0" expanded="true" />
+              </folding>
+            </state>
+          </provider>
         </entry>
       </file>
     </leaf>
@@ -213,7 +219,6 @@
       <find>art_blog</find>
       <find>cat_list</find>
       <find>comment_content</find>
-      <find>print</find>
       <find>now_art_tag</find>
       <find>name</find>
       <find>generate_filename</find>
@@ -235,6 +240,7 @@
       <find>pop</find>
       <find>&lt; id=&quot;reform&quot; method=&quot;post&quot; action=&quot;/register/&quot; enctype=&quot;multipart/form-data&quot;&gt;</find>
       <find>find</find>
+      <find>print</find>
     </findStrings>
   </component>
   <component name="Git.Settings">
@@ -287,10 +293,11 @@
         <option value="$PROJECT_DIR$/templates/register.html" />
         <option value="$PROJECT_DIR$/backend/views/11.txt" />
         <option value="$PROJECT_DIR$/backend/views/proxy_pool.py" />
-        <option value="$PROJECT_DIR$/templates/index.html" />
-        <option value="$PROJECT_DIR$/web/views/article_search.py" />
         <option value="$PROJECT_DIR$/repository/models.py" />
+        <option value="$PROJECT_DIR$/web/views/article_search.py" />
         <option value="$PROJECT_DIR$/backend/views/proxy.py" />
+        <option value="$PROJECT_DIR$/templates/index.html" />
+        <option value="$PROJECT_DIR$/backend/views/sprider_weibo.py" />
       </list>
     </option>
   </component>
@@ -322,18 +329,23 @@
             <path>
               <item name="GSM" type="b2602c69:ProjectViewProjectNode" />
               <item name="GSM" type="462c0819:PsiDirectoryNode" />
+              <item name="backend" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="GSM" type="b2602c69:ProjectViewProjectNode" />
+              <item name="GSM" type="462c0819:PsiDirectoryNode" />
+              <item name="backend" type="462c0819:PsiDirectoryNode" />
+              <item name="views" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="GSM" type="b2602c69:ProjectViewProjectNode" />
+              <item name="GSM" type="462c0819:PsiDirectoryNode" />
               <item name="static" type="462c0819:PsiDirectoryNode" />
             </path>
             <path>
               <item name="GSM" type="b2602c69:ProjectViewProjectNode" />
               <item name="GSM" type="462c0819:PsiDirectoryNode" />
               <item name="web" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="GSM" type="b2602c69:ProjectViewProjectNode" />
-              <item name="GSM" type="462c0819:PsiDirectoryNode" />
-              <item name="web" type="462c0819:PsiDirectoryNode" />
-              <item name="views" type="462c0819:PsiDirectoryNode" />
             </path>
           </expand>
           <select />
@@ -368,7 +380,7 @@
       </list>
     </option>
   </component>
-  <component name="RunManager" selected="Django server.Unnamed">
+  <component name="RunManager" selected="Python.sprider_weibo">
     <configuration name="proxy" type="PythonConfigurationType" factoryName="Python" temporary="true">
       <module name="GSM" />
       <option name="INTERPRETER_OPTIONS" value="" />
@@ -404,7 +416,29 @@
       <option name="ADD_CONTENT_ROOTS" value="true" />
       <option name="ADD_SOURCE_ROOTS" value="true" />
       <EXTENSION ID="PythonCoverageRunConfigurationExtension" runner="coverage.py" />
-      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/backend/views/proxy_pool.py" />
+      <option name="SCRIPT_NAME" value="C:\Users\xxt\PycharmProjects\GSM\backend\views\sprider_weibo.py" />
+      <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
+      <option name="EMULATE_TERMINAL" value="false" />
+      <option name="MODULE_MODE" value="false" />
+      <option name="REDIRECT_INPUT" value="false" />
+      <option name="INPUT_FILE" value="" />
+      <method v="2" />
+    </configuration>
+    <configuration name="sprider_weibo" type="PythonConfigurationType" factoryName="Python" temporary="true">
+      <module name="GSM" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/backend/views" />
+      <option name="IS_MODULE_SDK" value="true" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <EXTENSION ID="PythonCoverageRunConfigurationExtension" runner="coverage.py" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/backend/views/sprider_weibo.py" />
       <option name="PARAMETERS" value="" />
       <option name="SHOW_COMMAND_LINE" value="false" />
       <option name="EMULATE_TERMINAL" value="false" />
@@ -464,9 +498,11 @@
       <item itemvalue="Python.user" />
       <item itemvalue="Python.proxy" />
       <item itemvalue="Python.proxy_pool" />
+      <item itemvalue="Python.sprider_weibo" />
     </list>
     <recent_temporary>
       <list>
+        <item itemvalue="Python.sprider_weibo" />
         <item itemvalue="Python.proxy" />
         <item itemvalue="Python.proxy_pool" />
         <item itemvalue="Python.user" />
@@ -680,7 +716,21 @@
       <option name="project" value="LOCAL" />
       <updated>1594283021808</updated>
     </task>
-    <option name="localTasksCounter" value="29" />
+    <task id="LOCAL-00029" summary="添加爬虫">
+      <created>1594637717327</created>
+      <option name="number" value="00029" />
+      <option name="presentableId" value="LOCAL-00029" />
+      <option name="project" value="LOCAL" />
+      <updated>1594637717327</updated>
+    </task>
+    <task id="LOCAL-00030" summary="添加爬虫">
+      <created>1594643355052</created>
+      <option name="number" value="00030" />
+      <option name="presentableId" value="LOCAL-00030" />
+      <option name="project" value="LOCAL" />
+      <updated>1594643355053</updated>
+    </task>
+    <option name="localTasksCounter" value="31" />
     <servers />
   </component>
   <component name="TodoView">
@@ -693,10 +743,10 @@
     </todo-panel>
   </component>
   <component name="ToolWindowManager">
-    <frame x="-8" y="-8" width="1936" height="1056" extended-state="6" />
+    <frame x="-8" y="-8" width="1936" height="1056" extended-state="7" />
     <editor active="true" />
     <layout>
-      <window_info content_ui="combo" id="Project" order="0" sideWeight="0.4984472" visible="true" weight="0.25692964" />
+      <window_info content_ui="combo" id="Project" order="0" sideWeight="0.4984472" visible="true" weight="0.2595949" />
       <window_info id="Structure" order="1" sideWeight="0.5015528" side_tool="true" weight="0.33453757" />
       <window_info id="Favorites" order="2" sideWeight="0.5015528" side_tool="true" weight="0.33453757" />
       <window_info anchor="bottom" id="Message" order="0" />
@@ -784,7 +834,8 @@
     <MESSAGE value="完成搜索功能" />
     <MESSAGE value="添加搜索" />
     <MESSAGE value="优化注册" />
-    <option name="LAST_COMMIT_MESSAGE" value="优化注册" />
+    <MESSAGE value="添加爬虫" />
+    <option name="LAST_COMMIT_MESSAGE" value="添加爬虫" />
     <option name="REFORMAT_BEFORE_PROJECT_COMMIT" value="true" />
   </component>
   <component name="editorHistoryManager">
@@ -942,9 +993,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="266">
           <caret line="28" column="44" selection-start-line="28" selection-start-column="44" selection-end-line="28" selection-end-column="44" />
-          <folding>
-            <element signature="e#0#29#0" expanded="true" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -973,11 +1021,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="539">
           <caret line="191" column="46" lean-forward="true" selection-start-line="191" selection-start-column="46" selection-end-line="191" selection-end-column="46" />
-          <folding>
-            <element signature="e#905#1024#0#HTML" expanded="true" />
-            <element signature="e#2069#2262#0#HTML" expanded="true" />
-            <element signature="e#2430#2623#0#HTML" expanded="true" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -1037,23 +1080,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="268">
           <caret line="134" column="81" selection-start-line="134" selection-start-column="70" selection-end-line="134" selection-end-column="81" />
-          <folding>
-            <element signature="n#style#0;n#div#0;n#div#0;n#body#0;n#html#0;n#!!top" expanded="true" />
-            <element signature="n#style#0;n#span#0;n#div#1;n#div#0;n#form#0;n#div#0;n#body#0;n#html#0;n#!!top" expanded="true" />
-            <element signature="n#style#0;n#span#1;n#div#1;n#div#0;n#form#0;n#div#0;n#body#0;n#html#0;n#!!top" expanded="true" />
-            <element signature="n#style#0;n#span#0;n#div#0;n#div#1;n#form#0;n#div#0;n#body#0;n#html#0;n#!!top" expanded="true" />
-            <element signature="n#style#0;n#span#1;n#div#0;n#div#1;n#form#0;n#div#0;n#body#0;n#html#0;n#!!top" expanded="true" />
-            <element signature="n#style#0;n#span#0;n#div#0;n#div#2;n#form#0;n#div#0;n#body#0;n#html#0;n#!!top" expanded="true" />
-            <element signature="n#style#0;n#span#1;n#div#0;n#div#2;n#form#0;n#div#0;n#body#0;n#html#0;n#!!top" expanded="true" />
-            <element signature="n#style#0;n#span#0;n#div#0;n#div#3;n#form#0;n#div#0;n#body#0;n#html#0;n#!!top" expanded="true" />
-            <element signature="n#style#0;n#span#1;n#div#0;n#div#3;n#form#0;n#div#0;n#body#0;n#html#0;n#!!top" expanded="true" />
-            <element signature="n#style#0;n#span#0;n#div#0;n#div#4;n#form#0;n#div#0;n#body#0;n#html#0;n#!!top" expanded="true" />
-            <element signature="n#style#0;n#span#1;n#div#0;n#div#4;n#form#0;n#div#0;n#body#0;n#html#0;n#!!top" expanded="true" />
-            <element signature="n#style#0;n#span#0;n#div#0;n#div#5;n#form#0;n#div#0;n#body#0;n#html#0;n#!!top" expanded="true" />
-            <element signature="n#style#0;n#span#1;n#div#0;n#div#5;n#form#0;n#div#0;n#body#0;n#html#0;n#!!top" expanded="true" />
-            <element signature="n#style#0;n#span#0;n#div#0;n#div#6;n#form#0;n#div#0;n#body#0;n#html#0;n#!!top" expanded="true" />
-            <element signature="n#style#0;n#span#1;n#div#0;n#div#6;n#form#0;n#div#0;n#body#0;n#html#0;n#!!top" expanded="true" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -1070,23 +1096,6 @@
     <entry file="file://$PROJECT_DIR$/templates/login.html">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="-918" />
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/backend/views/article.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1596">
-          <caret line="91" column="27" selection-start-line="91" selection-start-column="27" selection-end-line="91" selection-end-column="27" />
-          <folding>
-            <element signature="e#0#35#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/GSM/settings.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="741">
-          <caret line="39" column="14" selection-start-line="39" selection-start-column="14" selection-end-line="39" selection-end-column="14" />
-        </state>
       </provider>
     </entry>
     <entry file="file://$USER_HOME$/AppData/Local/Programs/Python/Python36/Lib/site-packages/requests/api.py">
@@ -1113,40 +1122,64 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/templates/index.html">
+    <entry file="file://$PROJECT_DIR$/backend/views/article.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="545">
-          <caret line="163" column="38" selection-start-line="163" selection-start-column="24" selection-end-line="163" selection-end-column="38" />
+        <state relative-caret-position="1596">
+          <caret line="91" column="27" selection-start-line="91" selection-start-column="27" selection-end-line="91" selection-end-column="27" />
+          <folding>
+            <element signature="e#0#35#0" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/backend/views/proxy_pool.py">
-      <provider selected="true" editor-type-id="text-editor" />
+    <entry file="file://$PROJECT_DIR$/GSM/settings.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="741">
+          <caret line="39" column="14" selection-start-line="39" selection-start-column="14" selection-end-line="39" selection-end-column="14" />
+        </state>
+      </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/repository/models.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="338">
-          <caret line="136" column="55" selection-start-line="136" selection-start-column="55" selection-end-line="136" selection-end-column="55" />
+        <state relative-caret-position="2565">
+          <caret line="135" column="58" selection-start-line="135" selection-start-column="58" selection-end-line="135" selection-end-column="58" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/web/views/article_search.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="412">
-          <caret line="29" selection-start-line="29" selection-end-line="29" />
+        <state relative-caret-position="570">
+          <caret line="30" column="42" selection-start-line="30" selection-start-column="42" selection-end-line="30" selection-end-column="42" />
           <folding>
             <element signature="e#0#59#0" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/templates/index.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="1666">
+          <caret line="188" column="39" lean-forward="true" selection-start-line="188" selection-start-column="39" selection-end-line="188" selection-end-column="39" />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/backend/views/proxy.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="488">
-          <caret line="56" column="8" selection-start-line="56" selection-start-column="8" selection-end-line="56" selection-end-column="8" />
+        <state relative-caret-position="266">
+          <caret line="14" column="23" selection-start-line="14" selection-start-column="23" selection-end-line="16" selection-end-column="24" />
           <folding>
             <element signature="e#0#15#0" expanded="true" />
-            <marker date="1594636704678" expanded="true" signature="182:187" ph="..." />
+            <marker date="1594697273686" expanded="true" signature="187:192" ph="..." />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/backend/views/sprider_weibo.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="190">
+          <caret line="10" column="29" selection-start-line="10" selection-start-column="29" selection-end-line="10" selection-end-column="29" />
+          <folding>
+            <element signature="e#0#15#0" expanded="true" />
           </folding>
         </state>
       </provider>

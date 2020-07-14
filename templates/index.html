@@ -63,7 +63,7 @@
         <div class="nav navbar-nav navbar-right ">
             <input type="text" id="search_text">
             <input type="button" id="search_key" value="搜索">
-            <input type="button" id="sprider_search" value="爬代理">
+            <input type="button" id="sprider_search" value="可用代理">
             <input type="button" id="clear_search" value="重置">
 
         </div>
@@ -157,7 +157,8 @@
             })
         });
         $('#sprider_search').click(function () {
-            var obj = $('#search_text').val();
+            {#var obj = $('#search_text').val();#}
+            var obj = 'http://www.ip3366.net/free';
             $.ajax({
                 url: '/search/',
                 processData: true,
@@ -172,7 +173,7 @@
                         $.each(arg.message, function (index, obj) {
                             {#title +=$('#search_title').html(obj['title']);#}
                             {#summary +$('#search_summary').html(obj['summary']);#}
-                            search_obj += '<a><p>' + obj['protcol'] + ' ' + obj['ip'] + ':' + obj['port'] + '</p></a>';
+                            search_obj += '<a id="searchs"><p>' + obj['protcol'] + ' ' + obj['ip'] + ':' + obj['port'] + '</p></a>';
                         });
                         $('#search_title').html(search_obj);
                     } else if (arg.status = 1) {
@@ -182,9 +183,10 @@
                 }
             })
         });
-        {#重置#}
+        {#重置#}213
         $('#clear_search').click(function () {
-            $('#search_text').val('')
+            $('#search_text').val('');
+            $('#search_title').empty();
         })
     </script>
 {% endblock %}
