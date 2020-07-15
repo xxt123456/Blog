@@ -87,6 +87,8 @@ def register(request):
         else:
             ret['status'] = 1
             ret['message'] = form.errors
+            ss=JsonResponse(form.errors)
+            print(ss)
     return JsonResponse(json.dumps(ret), safe=False)
 
 
