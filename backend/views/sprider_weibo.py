@@ -1,5 +1,6 @@
 import time
 import requests
+import re
 from selenium import webdriver
 from bs4 import BeautifulSoup as bf
 
@@ -9,6 +10,7 @@ browser = webdriver.Chrome(chrome_options=chrome_options)
 # browser=webdriver.Chrome()
 browser.get('https://weibo.com/')
 time.sleep(5)
+
 
 # weibo_page = requests.get(url='https://weibo.com/',
 #                           headers={
@@ -20,12 +22,20 @@ time.sleep(5)
 # ss = bf(weibo_page.text, 'lxml')
 # s=ss.find_all(name='div',attrs={'id':'plc_unlogin_home_main'})
 # s = ss.find_all('ul')
-soup = bf(browser.page_source, 'lxml')
-s = soup.find_all(name='div', attrs={'id': 'plc_unlogin_home_main'})
-for i in s:
+weibo_pages = bf(browser.page_source, 'lxml')
+weibo_page = weibo_pages.find_all(name='div', attrs={'id': 'plc_unlogin_home_main'})
+for title in weibo_page:
+    title_list = title.find_all(name='div', attrs={'class': 'UG_list_v2 clearfix'})
+    for obj in title_list:
+        video = obj.find(attrs={'node-type': re.compile(r'fl_h5_video$')})
+        # 微博内容为视频时
+        if video:
+            img = video.find('img').get('src')  # 视频照片地址
+            title = obj.find('h3').text  # 博文主题
+            href = obj.find('h3').find('a').get('href')  # 博文链接
+            face = obj.find('span', attrs={'class': 'subinfo_face'}).find('img').get('src')  # 博主头像
+            username = obj.find('span', attrs={'class': 'subinfo S_txt2'}).text  # 博主昵称
 
-    objs = i.find_all(name='div', attrs={'action-type': 'feed_list_item'})
-    for i in objs:
-        print(i.find('h3').text)
+            print(username)
 
 browser.quit()
