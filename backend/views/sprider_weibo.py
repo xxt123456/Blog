@@ -9,7 +9,7 @@ chrome_options.add_argument('--headless')
 browser = webdriver.Chrome(chrome_options=chrome_options)
 # browser=webdriver.Chrome()
 browser.get('https://weibo.com/')
-time.sleep(5)
+time.sleep(8)
 
 
 # weibo_page = requests.get(url='https://weibo.com/',
@@ -25,17 +25,26 @@ time.sleep(5)
 weibo_pages = bf(browser.page_source, 'lxml')
 weibo_page = weibo_pages.find_all(name='div', attrs={'id': 'plc_unlogin_home_main'})
 for title in weibo_page:
-    title_list = title.find_all(name='div', attrs={'class': 'UG_list_v2 clearfix'})
+    # title_list = title.find_all(name='ul', attrs={'node-type': 'feed_list'})
+    title_list = title.find_all(name='ul', attrs={'action-type': 'feed_list'})
     for obj in title_list:
         video = obj.find(attrs={'node-type': re.compile(r'fl_h5_video$')})
+        list_imgs = obj.find('div', attrs={'class': 'UG_list_a'})
         # 微博内容为视频时
         if video:
             img = video.find('img').get('src')  # 视频照片地址
-            title = obj.find('h3').text  # 博文主题
-            href = obj.find('h3').find('a').get('href')  # 博文链接
-            face = obj.find('span', attrs={'class': 'subinfo_face'}).find('img').get('src')  # 博主头像
-            username = obj.find('span', attrs={'class': 'subinfo S_txt2'}).text  # 博主昵称
 
-            print(username)
+        if list_imgs:
+            title = obj.find('h3').text  # 博文主题
+            imgs = obj.findAll('div', attrs={'class': 'list_nod clearfix'})
+            for img in imgs:
+                img = img.find('img').get('src')  # 微博照片
+        title = obj.find('h3').text  # 博文主题
+        href = obj.find('h3').find('a', attrs={'extra-data': 'type=topic'})  # 博文链接
+        face = obj.find('span', attrs={'class': 'subinfo_face'}).find('img').get('src')  # 博主头像
+        username = obj.find('span', attrs={'class': 'subinfo S_txt2'}).text  # 博主昵称
+
+        print(video)
+        print(title, username)
 
 browser.quit()
