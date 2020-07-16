@@ -30,12 +30,6 @@ for title in weibo_page:
     list_imgA = title.find_all('div', attrs={'action-type': 'feed_list_item', 'class': 'UG_list_a'})
     list_imgB = title.find_all('div', attrs={'action-type': 'feed_list_item', 'class': 'UG_list_b'})
     list_imgC = title.find_all('div', attrs={'action-type': 'feed_list_item', 'class': 'UG_list_c'})
-    print('1111111111', title)
-    # print('1111111112222',title_listA)
-    print('11AAAAAAA2', list_imgA)
-    print('11BBBBBBB2222', list_imgB)
-    print('11CCCCCCC2222', list_imgC)
-
     # for obj in title_list:
     #     print('333333333',obj)
     #     # print('2222',obj.findAll('div',attrs={'action-type': 'feed_list_item'}))
@@ -56,23 +50,26 @@ for title in weibo_page:
     if list_imgA:
         for list_img in list_imgA:
             # title = obj.find('h3').text  # 博文主题
-            imgs = list_img.findAll('div', attrs={'class': 'list_nod clearfix'})
+            imgs = list_img.find('div', attrs={'class': 'list_nod clearfix'}).findAll('img')
             href = list_img.find('h3').find('a', attrs={'extra-data': 'type=topic'})  # 博文链接
             face = list_img.find('span', attrs={'class': 'subinfo_face'}).find('img').get('src')  # 博主头像
             for img in imgs:
-                print(imgs)
-                img = img.find('img').get('src')  # 微博照片
-                print('AAA', img)
+                # print('123',imgs)
+                # print('1234',len(imgs))
+                # img = img.find('img').get('src')  # 微博照片
+                print('AAA', img.get('src'))
     if list_imgB:
         for list_img in list_imgB:
-            img = list_img.find('div', attrs={'class': 'pic W_piccut_v'}).find('img').get('src')
+            # print('BBBB',list_img)
+            img = list_img.find('div', attrs={'class': 'pic W_piccut_h'}).find('img').get('src')
             print('BBBB', img)
-
+    #
     if list_imgC:
         for list_img in list_imgC:
+            print('ccccc', list_img)
             img = list_img.find('div', attrs={'class': 'pic W_piccut_v'}).find('img').get('src')
             print('CCCC', img)
-    title = title.find('h3').text  # 博文主题
+    # title = title.find('h3').text  # 博文主题
     # try:
     #     username = title.find('span', attrs={'class': 'subinfo S_txt2'}).text  # 博主昵称
     # except AttributeError as e:
