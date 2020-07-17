@@ -30,53 +30,50 @@ for title in weibo_page:
     list_imgA = title.find_all('div', attrs={'action-type': 'feed_list_item', 'class': 'UG_list_a'})
     list_imgB = title.find_all('div', attrs={'action-type': 'feed_list_item', 'class': 'UG_list_b'})
     list_imgC = title.find_all('div', attrs={'action-type': 'feed_list_item', 'class': 'UG_list_c'})
-    # for obj in title_list:
-    #     print('333333333',obj)
-    #     # print('2222',obj.findAll('div',attrs={'action-type': 'feed_list_item'}))
-    #     video = obj.find(attrs={'node-type': re.compile(r'fl_h5_video$')})
-    #     list_imgA = obj.find('div',attrs={'class': 'UG_list_a'})
-    #     list_imgB = obj.find('div',attrs={'class': 'UG_list_b'})
-    #     list_imgC = obj.find('div',attrs={'class': 'UG_list_c'})
-    #     print('1111111',video)
-    #     print('1333333',list_imgA)
-    #     print('122222',list_imgA)
-    #     print('144444444',list_imgA)
-    # # 微博内容为视频时
-    # if video:
-    #     img = video.find('img').get('src')  # 视频照片地址
-    #     href = obj.find('h3').find('a', attrs={'extra-data': 'type=topic'})  # 博文链接
-    #     face = obj.find('span', attrs={'class': 'subinfo_face'}).find('img').get('src')  # 博主头像
+    videos = title.find_all('div', attrs={'action-type': 'feed_list_item', 'class': 'UG_list_v2 clearfix'})
+    # 微博内容为视频时
+    if videos:
+        for list_video in videos:
+            img = list_video.find('img').get('src')  # 视频照片地址
+            href = list_video.find('h3').find('a', attrs={'extra-data': 'type=topic'})  # 博文链接
+            face = list_video.find('span', attrs={'class': 'subinfo_face'}).find('img').get('src')  # 博主头像
+            weibo_title = list_video.find('h3').text  # 博文主题
+            username = list_video.find('span', attrs={'class': 'subinfo S_txt2'}).text  # 博主昵称
+            print('VVV', username, img, weibo_title)
+
 
     if list_imgA:
         for list_img in list_imgA:
-            # title = obj.find('h3').text  # 博文主题
+            title = list_img.find('h3').text  # 博文主题
             imgs = list_img.find('div', attrs={'class': 'list_nod clearfix'}).findAll('img')
             href = list_img.find('h3').find('a', attrs={'extra-data': 'type=topic'})  # 博文链接
             face = list_img.find('span', attrs={'class': 'subinfo_face'}).find('img').get('src')  # 博主头像
             for img in imgs:
-                # print('123',imgs)
-                # print('1234',len(imgs))
-                # img = img.find('img').get('src')  # 微博照片
-                print('AAA', img.get('src'))
+                img = img.get('src')  # 微博照片
+                print('AAA', img, title)
+
+
     if list_imgB:
         for list_img in list_imgB:
-            # print('BBBB',list_img)
-            img = list_img.find('div', attrs={'class': 'pic W_piccut_h'}).find('img').get('src')
-            print('BBBB', img)
+            title = list_img.find('h3').text  # 博文主题
+            img = list_img.find('div', attrs={'class': re.compile(r'pic W_piccut')}).find('img').get('src')
+            # img=list_img.find()
+            print('BBBB', img, title)
     #
     if list_imgC:
         for list_img in list_imgC:
-            print('ccccc', list_img)
+            title = list_img.find('h3').text  # 博文主题
             img = list_img.find('div', attrs={'class': 'pic W_piccut_v'}).find('img').get('src')
-            print('CCCC', img)
-    # title = title.find('h3').text  # 博文主题
+            print('CCCC', img, title)
+    # weibo_title = title.find('h3').text  # 博文主题
     # try:
-    #     username = title.find('span', attrs={'class': 'subinfo S_txt2'}).text  # 博主昵称
+    #     # username = title.find('span', attrs={'class': 'subinfo S_txt2'}).text  # 博主昵称
+    #     # print(username, weibo_title)
     # except AttributeError as e:
-    #     pass
-    # print(e)
+    #     print(e)
 
-    # print(username)
+
+
 
 
 browser.quit()
