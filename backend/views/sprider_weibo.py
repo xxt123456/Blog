@@ -60,6 +60,7 @@ def WeiBo_Hot(index, *args):
         weibo_serach = title.find_all('div', attrs={'action-type': 'feed_list_item', 'class': 'card-wrap'})
         # 微博热门内容为视频时
         if videos:
+            videos_objs = []
             for list_video in videos:
                 img = list_video.find('img').get('src')  # 视频照片地址
                 href = list_video.find('h3').find('a', attrs={'extra-data': 'type=topic'})  # 博文链接
@@ -74,11 +75,20 @@ def WeiBo_Hot(index, *args):
                     else:
                         weibo_data.append(i.string.strip().replace("\n", ""))
                 weibo_data = weibo_data[1]
+                # print('VVV', username, img, weibo_title, weibo_data)
 
-                print('VVV', username, img, weibo_title, weibo_data)
-
+                videos_obj = {
+                    'img': img,
+                    'href': href,
+                    'face': face,
+                    'weibo_data': weibo_data,
+                    'username': username,
+                    'weibo_title': weibo_title
+                }
+                videos_objs.append(videos_obj)
         # 微博热门展示为4张图片
         if list_imgA:
+            list_imgA_objs = []
             for list_img in list_imgA:
                 title = list_img.find('h3').text  # 博文主题
                 imgs = list_img.find('div', attrs={'class': 'list_nod clearfix'}).findAll('img')
@@ -97,8 +107,19 @@ def WeiBo_Hot(index, *args):
                     img = img.get('src')  # 微博照片
                 # print('AAA', username, title)
 
+                list_imgA_obj = {
+                    'img': img,
+                    'href': href,
+                    'face': face,
+                    'weibo_data': weibo_data,
+                    'username': username
+                }
+                list_imgA_objs.append(list_imgA_obj)
+            # return img, href, face, weibo_data, username
+
         # 微博热门展示为1张图片
         if list_imgB:
+            list_imgB_objs = []
             for list_img in list_imgB:
                 title = list_img.find('h3').text  # 博文主题
                 img = list_img.find('div', attrs={'class': re.compile(r'pic W_piccut')}).find('img').get('src')
@@ -111,7 +132,15 @@ def WeiBo_Hot(index, *args):
                     else:
                         weibo_data.append(i.string)
                 weibo_data = weibo_data[1]
-                # print('BBBB', username,img, title)
+                print('BBBB', username, img, title)
+                list_imgB_obj = {
+                    'img': img,
+                    'title': title,
+                    'weibo_data': weibo_data,
+                    'username': username
+                }
+                list_imgB_objs.append(list_imgB_obj)
+            # return img, weibo_data, username
         # 微博热门话题
         # if list_imgC:
         #     for list_img in list_imgC:
@@ -132,10 +161,13 @@ def WeiBo_Hot(index, *args):
                     pass
                 else:
                     weibo_content = weibo_contents.text.strip()
-
+                print(nick_name, weibo_content)
+        print('456', list_imgA_objs)
+        print('123', videos_objs)
 
 # def WeiBo_Serach(key):
+# #
+# #     weib0_key=WeiBo_page(key).find('div',attrs={'class':' gn_search_v2'})
 #
-#     weib0_key=WeiBo_page(key).find('div',attrs={'class':' gn_search_v2'})
-
-WeiBo_Hot(2, '王')
+# # WeiBo_Hot(2, '王')
+WeiBo_Hot(2)
