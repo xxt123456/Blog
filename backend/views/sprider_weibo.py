@@ -1,15 +1,16 @@
 import time
 import requests
 import re
+import urllib.parse
 from selenium import webdriver
 from bs4 import BeautifulSoup as bf
 
 
 def Browser_Driver():
-    # chrome_options = webdriver.ChromeOptions()
-    # chrome_options.add_argument('--headless')
-    # browser = webdriver.Chrome(chrome_options=chrome_options)
-    browser = webdriver.Chrome()
+    chrome_options = webdriver.ChromeOptions()
+    chrome_options.add_argument('--headless')
+    browser = webdriver.Chrome(chrome_options=chrome_options)
+    # browser = webdriver.Chrome()
     browser.get('https://weibo.com/')
     time.sleep(8)
     return browser
@@ -26,11 +27,12 @@ def Browser_Driver():
 # s=ss.find_all(name='div',attrs={'id':'plc_unlogin_home_main'})
 # s = ss.find_all('ul')
 # 获取热门分页数据
-def WeiBo_page(index, *args):
+def WeiBo_page(index=2, *args):
     browser = Browser_Driver()
     # 通过args区分搜索关键字
     if not args:
         for i in range(index):
+            time.sleep(3)
             el = browser.find_element_by_xpath('//*[contains(text(),"正在加载中，请稍候...")]')
             time.sleep(3)
             browser.execute_script("arguments[0].scrollIntoView();", el)
@@ -41,11 +43,16 @@ def WeiBo_page(index, *args):
         browser.find_element_by_xpath('//*[@id="weibo_top_public"]/div/div/div[2]/a').click()
 
     weibo_pages = bf(browser.page_source, 'lxml')
+    browser.quit()
     return weibo_pages
 
 
 def WeiBo_Hot(index, *args):
     browser = WeiBo_page(index, *args)
+    videos_objs = []
+    list_imgA_objs = []
+    list_imgB_objs = []
+    weibo_serachs = []
     if index:
         weibo_page = browser.find_all(name='div', attrs={'id': 'pl_unlogin_home_feed'})
     if args:
@@ -60,7 +67,7 @@ def WeiBo_Hot(index, *args):
         weibo_serach = title.find_all('div', attrs={'action-type': 'feed_list_item', 'class': 'card-wrap'})
         # 微博热门内容为视频时
         if videos:
-            videos_objs = []
+
             for list_video in videos:
                 img = list_video.find('img').get('src')  # 视频照片地址
                 href = list_video.find('h3').find('a', attrs={'extra-data': 'type=topic'})  # 博文链接
@@ -76,6 +83,11 @@ def WeiBo_Hot(index, *args):
                         weibo_data.append(i.string.strip().replace("\n", ""))
                 weibo_data = weibo_data[1]
                 # print('VVV', username, img, weibo_title, weibo_data)
+                if href == None:
+                    pass
+                else:
+                    # print('AAA', urllib.parse.unquote(href['href']))
+                    href = "https:" + href['href']
 
                 videos_obj = {
                     'img': img,
@@ -88,12 +100,12 @@ def WeiBo_Hot(index, *args):
                 videos_objs.append(videos_obj)
         # 微博热门展示为4张图片
         if list_imgA:
-            list_imgA_objs = []
+
             for list_img in list_imgA:
-                title = list_img.find('h3').text  # 博文主题
+                weibo_title = list_img.find('h3').text  # 博文主题
                 imgs = list_img.find('div', attrs={'class': 'list_nod clearfix'}).findAll('img')
                 href = list_img.find('h3').find('a', attrs={'extra-data': 'type=topic'})  # 博文链接
-                face = list_img.find('span', attrs={'class': 'subinfo_face'}).find('img').get('src')  # 博主头像
+                user_face = list_img.find('span', attrs={'class': 'subinfo_face'}).find('img').get('src')  # 博主头像
                 username = list_img.find('span', attrs={'class': 'subinfo S_txt2'}).text  # 博主昵称
                 weibo_datas = list_img.find('div', attrs={'class': 'subinfo_box clearfix'}).find('a').next_siblings
                 weibo_data = []
@@ -103,27 +115,36 @@ def WeiBo_Hot(index, *args):
                     else:
                         weibo_data.append(i.string)
                 weibo_data = weibo_data[1]
+                img_list = []
                 for img in imgs:
                     img = img.get('src')  # 微博照片
-                # print('AAA', username, title)
+                    img_list.append(img)
+                if href == None:
+                    pass
+                else:
+                    # print('AAA', urllib.parse.unquote(href['href']))
+                    href = "https:" + href['href']
+
 
                 list_imgA_obj = {
-                    'img': img,
+                    'img': img_list,
                     'href': href,
-                    'face': face,
+                    'user_face': user_face,
                     'weibo_data': weibo_data,
-                    'username': username
+                    'username': username,
+                    'weibo_title': weibo_title
                 }
                 list_imgA_objs.append(list_imgA_obj)
-            # return img, href, face, weibo_data, username
 
         # 微博热门展示为1张图片
         if list_imgB:
-            list_imgB_objs = []
+
             for list_img in list_imgB:
-                title = list_img.find('h3').text  # 博文主题
+                weibo_title = list_img.find('h3').text  # 博文主题
                 img = list_img.find('div', attrs={'class': re.compile(r'pic W_piccut')}).find('img').get('src')
                 username = list_img.find('span', attrs={'class': 'subinfo S_txt2'}).text  # 博主昵称
+                user_face = list_img.find('span', attrs={'class': 'subinfo_face'}).find('img').get('src')  # 博主头像
+                href = list_img.find('h3').find('a', attrs={'extra-data': 'type=topic'})  # 博文链接
                 weibo_datas = list_img.find('div', attrs={'class': 'subinfo_box clearfix'}).find('a').next_siblings
                 weibo_data = []
                 for i in weibo_datas:
@@ -132,12 +153,19 @@ def WeiBo_Hot(index, *args):
                     else:
                         weibo_data.append(i.string)
                 weibo_data = weibo_data[1]
-                print('BBBB', username, img, title)
+                if href == None:
+                    pass
+                else:
+                    # print('AAA', urllib.parse.unquote(href['href']))
+                    href = "https:" + href['href']
+                # print('BBBB', username, img, weibo_title)
                 list_imgB_obj = {
                     'img': img,
-                    'title': title,
+                    'weibo_title': weibo_title,
                     'weibo_data': weibo_data,
-                    'username': username
+                    'username': username,
+                    'user_face': user_face,
+                    'href': href
                 }
                 list_imgB_objs.append(list_imgB_obj)
             # return img, weibo_data, username
@@ -150,6 +178,7 @@ def WeiBo_Hot(index, *args):
         #         print('CCCC', img, title)
         # 搜索通过关键字获取的数据
         if weibo_serach:
+
             for list_img in weibo_serach:
                 nick_names = list_img.find('a', attrs={'class': 'name'})
                 if nick_names == None:
@@ -161,13 +190,18 @@ def WeiBo_Hot(index, *args):
                     pass
                 else:
                     weibo_content = weibo_contents.text.strip()
-                print(nick_name, weibo_content)
-        print('456', list_imgA_objs)
-        print('123', videos_objs)
+                weibo_serach_obj = {
+                    'nick_name': nick_name,
+                    'weibo_content': weibo_content
+                }
+                weibo_serachs.append(weibo_serach_obj)
 
+    # print(list_imgA_objs,list_imgB_objs)
+    # print(list_imgB_objs)
+    return videos_objs, list_imgA_objs, list_imgB_objs, weibo_serachs
 # def WeiBo_Serach(key):
 # #
 # #     weib0_key=WeiBo_page(key).find('div',attrs={'class':' gn_search_v2'})
 #
 # # WeiBo_Hot(2, '王')
-WeiBo_Hot(2)
+# WeiBo_Hot(2)

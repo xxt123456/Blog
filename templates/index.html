@@ -64,6 +64,7 @@
             <input type="text" id="search_text">
             <input type="button" id="search_key" value="搜索">
             <input type="button" id="sprider_search" value="可用代理">
+            <input type="button" id="sprider_weibo_search" value="微博">
             <input type="button" id="clear_search" value="重置">
 
         </div>
@@ -183,7 +184,36 @@
                 }
             })
         });
-        {#重置#}213
+        $('#sprider_weibo_search').click(function () {
+            var obj = $('#search_text').val();
+            {#var obj = 'http://www.ip3366.net/free';#}
+            $.ajax({
+                url: '/search/',
+                processData: true,
+                data: {'sprider_weibo_search': obj},
+                type: 'POST',
+                success: function (arg) {
+                    if (arg.status == 0) {
+                        $('#search_title').html('');
+                        $('#search_resule').html(arg.message).addClass('alert-info').fadeIn().delay(1500).fadeOut();
+                    } else if (arg.status == 4) {
+                        var search_obj = '';
+                        $.each(arg.message, function (index, obj) {
+                            $.each(obj, function (index, weibo_obj) {
+                                {#console.log(weibo_obj['username'])#}
+                                search_obj += '<a id="searchs"><p>' + weibo_obj['weibo_title'] + '<img src=' + weibo_obj['img'] + ' height="200" width="200" >' + weibo_obj['href'] + weibo_obj['username'] + weibo_obj['weibo_data'] + '</p></a>';
+                            })
+
+                        });
+                        $('#search_title').html(search_obj);
+                    } else if (arg.status = 1) {
+                        $('#search_title').html('');
+                        $('#search_resule').html(arg.message).addClass('alert-info').fadeIn().delay(1500).fadeOut();
+                    }
+                }
+            })
+        });
+        {#重置#}
         $('#clear_search').click(function () {
             $('#search_text').val('');
             $('#search_title').empty();
