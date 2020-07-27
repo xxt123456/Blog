@@ -60,6 +60,7 @@ def WeiBo_Hot(index, *args):
     list_imgA_objs = []
     list_imgB_objs = []
     weibo_serachs = []
+    weibo_page = []
     if index:
         weibo_page = browser.find_all(name='div', attrs={'id': 'pl_unlogin_home_feed'})
     if args:
@@ -99,7 +100,7 @@ def WeiBo_Hot(index, *args):
                 videos_obj = {
                     'img': img,
                     'href': href,
-                    'face': face,
+                    'user_face': face,
                     'weibo_data': weibo_data,
                     'username': username,
                     'weibo_title': weibo_title
@@ -185,38 +186,39 @@ def WeiBo_Hot(index, *args):
         #         print('CCCC', img, title)
         # 搜索通过关键字获取的数据
         if weibo_serach:
-
             for list_img in weibo_serach:
                 img = []
                 username = []
                 weibo_title = []
                 weibo_data = []
                 user_face = []
-                nick_names = list_img.find('a', attrs={'class': 'name'})
+                href = []
+                nick_names = list_img.find('a', attrs={'class': 'name'})  # w微博博主
+                weibo_contents = list_img.find('p', attrs={'class': 'txt', 'node-type': 'feed_list_content'})  # 微博正文
+                weibo_datas = list_img.find('p', attrs={'class': 'from'})  # 发布日期
+                user_faces = list_img.find('div', attrs={'class': 'avator'})  # 博主头像
+                imgs = list_img.find('div', attrs={'class': 'media media-piclist'})  # 照片
                 if nick_names == None:
                     pass
                 else:
                     username = nick_names.string  # 博主昵称
-                weibo_contents = list_img.find('p', attrs={'class': 'txt', 'node-type': 'feed_list_content'})
                 if weibo_contents == None:
                     pass
                 else:
                     weibo_title = weibo_contents.text.strip()
-                weibo_datas = list_img.find('p', attrs={'class': 'from'})
                 if weibo_datas == None:
                     pass
                 else:
                     weibo_data = weibo_datas.find('a').string.strip().replace("\n", "")
-                user_faces = list_img.find('div', attrs={'class': 'avator'})
                 if user_faces == None:
                     pass
                 else:
                     user_face = user_faces.find('a').find('img').get('src')
-                imgs = list_img.find('div', attrs={'class': 'feed_list_media_prev'})
                 if imgs == None:
                     pass
                 else:
-                    img = imgs.find('ul').find('li').find('img').get('src')
+                    for obj in imgs.find_all('li'):
+                        img.append(obj.find('img').get('src'))
                 weibo_serach_obj = {
                     'username': username,
                     'weibo_title': weibo_title,
@@ -225,16 +227,13 @@ def WeiBo_Hot(index, *args):
                     'user_face': user_face,
                     'img': img
                 }
+
                 weibo_serachs.append(weibo_serach_obj)
-            # print(weibo_serachs)
+
+    if not weibo_serachs:
+        return videos_objs, list_imgA_objs, list_imgB_objs
+    else:
         return weibo_serachs
 
-    # print(list_imgA_objs,list_imgB_objs)
-    # print(list_imgB_objs)
-    return videos_objs, list_imgA_objs, list_imgB_objs
-# def WeiBo_Serach(key):
-# #
-# #     weib0_key=WeiBo_page(key).find('div',attrs={'class':' gn_search_v2'})
-#
 # WeiBo_Hot(2, '王')
 # WeiBo_Hot(2)

@@ -14,17 +14,21 @@ def search(request):
     search_key = request.POST.get('search_text')
     sprider_search = request.POST.get('sprider_search')
     sprider_weibo_search = request.POST.get('sprider_weibo_search')
-    sprider_weibo_search_obj = sprider_weibo_search
+    sprider_weibo_search_obj = []
+    if type(sprider_weibo_search) is int:
+        sprider_weibo_search = request.POST.get('sprider_weibo_search')
+    else:
+        sprider_weibo_search = []
+        sprider_weibo_search_obj = request.POST.get('sprider_weibo_search')
     ret = {'status': None, 'message': None}
     # 未输入任何值进行搜索
-    if not (search_key or sprider_search or sprider_weibo_search):
+    if not (search_key or sprider_search or sprider_weibo_search or sprider_weibo_search_obj):
         ret['status'] = 0
         ret['message'] = '请输入搜索数据'
 
     # 爬代理ip
     elif sprider_search:
         serach_objs = Spiderip(sprider_search)
-        print(serach_objs)
         for sprider in serach_objs:
             ip = sprider.split(':')[1]
             port = sprider.split(':')[2]
@@ -33,20 +37,20 @@ def search(request):
         sprider_obj = models.Proxy_Pool.objects.filter().values('protcol', 'ip', 'port').order_by('-id')[:10]
         ret['status'] = 3
         ret['message'] = list(sprider_obj)
+
         return JsonResponse(ret)
     # 爬微博热搜
-    # elif sprider_weibo_search:
-    #     weibo_serach = WeiBo_Hot(3)
-    #     ret['status'] = 4
-    #     ret['message'] = weibo_serach
-    #     print(weibo_serach)
-    #     return JsonResponse(ret)
+
+    elif sprider_weibo_search:
+        weibo_serach = WeiBo_Hot(3)
+        ret['status'] = 4
+        ret['message'] = weibo_serach
+        return JsonResponse(ret)
     # 爬微博指定内容
     elif sprider_weibo_search_obj:
-        weibo_serach = WeiBo_Hot(3, sprider_weibo_search)
+        weibo_serach = WeiBo_Hot(1, sprider_weibo_search_obj)
         ret['status'] = 5
         ret['message'] = weibo_serach
-        print(weibo_serach)
         return JsonResponse(ret)
     # 输入指定数据进行模糊搜索
     else:

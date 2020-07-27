@@ -173,8 +173,6 @@
                     } else if (arg.status == 3) {
                         var search_obj = '';
                         $.each(arg.message, function (index, obj) {
-                            {#title +=$('#search_title').html(obj['title']);#}
-                            {#summary +$('#search_summary').html(obj['summary']);#}
                             search_obj += '<a id="searchs"><p>' + obj['protcol'] + ' ' + obj['ip'] + ':' + obj['port'] + '</p></a>';
                         });
                         $('#search_title').html(search_obj);
@@ -187,7 +185,7 @@
         });
         $('#sprider_weibo_search').click(function () {
             var obj = $('#search_text').val();
-            {#var obj = 'http://www.ip3366.net/free';#}
+            alert(Object.prototype.toString.call(obj))
             $.ajax({
                 url: '/search/',
                 processData: true,
@@ -210,13 +208,13 @@
                                     search_obj += '</a></h3> <div class="clearfix">';
                                     $.each(weibo_obj.img, function (index, img) {
                                         search_obj += '<a class="active " href=' + img + ' style="height: 100px;width: 100px" target="_blank"><img style="height: 80px;width: 80px"src=' + img + '>';
-                                    })
-                                    search_obj += '</a></div><div class="footers"><a href="#" class="recommend"><i class="fa fa-user-o" aria-hidden="true"></i><span>' + weibo_obj['username'] + '</span></a><span>发布时间:' + weibo_obj['weibo_data'] + '</span></div> </div>';
+                                    });
+                                    search_obj += '</a></div><div class="footers"><a href="#" class="recommend"><img style="height: 30px;width: 30px" src=' + weibo_obj['user_face'] + '><span>' + weibo_obj['username'] + '</span></a><span>发布时间:' + weibo_obj['weibo_data'] + '</span></div> </div>';
 
                                 } else {
                                     {#console.log(arr,arr.length)#}
                                     search_obj += '</a></h3> <div class="clearfix"> <a class="active left" href=' + weibo_obj.img + ' style="height: 100px;width: 100px" target="_blank"><img style="height: 80px;width: 80px"src=' + weibo_obj['img'];
-                                    search_obj += '></a></div><div class="footers"><a href="#" class="recommend"><i class="fa fa-user-o" aria-hidden="true"></i><span>' + weibo_obj['username'] + '</span></a><span>发布时间:' + weibo_obj['weibo_data'] + '</span></div> </div>';
+                                    search_obj += '></a></div><div class="footers"><a href="#" class="recommend"><img style="height: 30px;width: 30px" src=' + weibo_obj['user_face'] + '><span>' + weibo_obj['username'] + '</span></a><span>发布时间:' + weibo_obj['weibo_data'] + '</span></div> </div>';
                                 }
                             })
 
@@ -225,20 +223,21 @@
                     } else if (arg.status == 5) {
                         var search_obj = '';
                         $.each(arg.message, function (index, obj) {
-                            console.log(obj)
-
                             search_obj += '<div class="article-item clearfix"><h3><a  ' + '>' + obj['weibo_title'];
-                            var arr = Object.keys(obj.img);
-                            if (arr.length < 5) {
+                            var img_obj = Object.keys(obj.img);
+                            var user_obj = Object.keys(obj.username);
+                            if (img_obj.length > 1) {
                                 search_obj += '</a></h3> <div class="clearfix">';
                                 $.each(obj.img, function (index, img) {
                                     search_obj += '<a class="active " href=' + img + ' style="height: 100px;width: 100px" target="_blank"><img style="height: 80px;width: 80px"src=' + img + '>';
                                 });
-                                search_obj += '</a></div><div class="footers"><a href="#" class="recommend"><i class="fa fa-user-o" aria-hidden="true"></i><span>' + obj['username'] + '</span></a><span>发布时间:' + obj['weibo_data'] + '</span></div> </div>';
+                                search_obj += '</a></div><div class="footers"><a href="#" class="recommend"><img style="height: 30px;width: 30px" src=' + obj['user_face'] + '><span>' + obj['username'] + '</span></a><span>发布时间:' + obj['weibo_data'] + '</span></div> </div>';
 
-                            } else {
+                            } else if (img_obj.length == 1) {
                                 search_obj += '</a></h3> <div class="clearfix"> <a class="active left" href=' + obj.img + ' style="height: 100px;width: 100px" target="_blank"><img style="height: 80px;width: 80px"src=' + obj['img'];
-                                search_obj += '></a></div><div class="footers"><a href="#" class="recommend"><i class="fa fa-user-o" aria-hidden="true"></i><span>' + obj['username'] + '</span></a><span>发布时间:' + obj['weibo_data'] + '</span></div> </div>';
+                                search_obj += '></a></div><div class="footers"><a href="#" class="recommend"><img style="height: 30px;width: 30px" src=' + obj['user_face'] + '><span>' + obj['username'] + '</span></a><span>发布时间:' + obj['weibo_data'] + '</span></div> </div>';
+                            } else if (img_obj.length == 0 && user_obj.length > 0) {
+                                search_obj += '</a></h3> <div class="clearfix"> <a class="active left" ' + '></a></div><div class="footers"><a href="#" class="recommend"><img style="height: 30px;width: 30px" src=' + obj['user_face'] + '><span>' + obj['username'] + '</span></a><span>发布时间:' + obj['weibo_data'] + '</span></div> </div>';
                             }
                         });
 
