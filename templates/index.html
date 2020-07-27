@@ -2,6 +2,7 @@
 <html>
 <head lang="en">
     <meta charset="UTF-8">
+    <meta name="referrer" content="no-referrer">
     <title></title>
     <link rel="stylesheet" href="/static/plugins/bootstrap/css/bootstrap.css"/>
     <link rel="stylesheet" href="/static/plugins/font-awesome/css/font-awesome.css"/>
@@ -200,11 +201,48 @@
                         var search_obj = '';
                         $.each(arg.message, function (index, obj) {
                             $.each(obj, function (index, weibo_obj) {
-                                {#console.log(weibo_obj['username'])#}
-                                search_obj += '<a id="searchs"><p>' + weibo_obj['weibo_title'] + '<img src=' + weibo_obj['img'] + ' height="200" width="200" >' + weibo_obj['href'] + weibo_obj['username'] + weibo_obj['weibo_data'] + '</p></a>';
+
+                                search_obj += '<div class="article-item clearfix"><h3><a  ' + 'href=' + weibo_obj['href'] + '>' + weibo_obj['weibo_title'];
+                                var arr = Object.keys(weibo_obj.img)
+
+                                if (arr.length < 5) {
+                                    {#console.log(weibo_obj.img)#}
+                                    search_obj += '</a></h3> <div class="clearfix">';
+                                    $.each(weibo_obj.img, function (index, img) {
+                                        search_obj += '<a class="active " href=' + img + ' style="height: 100px;width: 100px" target="_blank"><img style="height: 80px;width: 80px"src=' + img + '>';
+                                    })
+                                    search_obj += '</a></div><div class="footers"><a href="#" class="recommend"><i class="fa fa-user-o" aria-hidden="true"></i><span>' + weibo_obj['username'] + '</span></a><span>发布时间:' + weibo_obj['weibo_data'] + '</span></div> </div>';
+
+                                } else {
+                                    {#console.log(arr,arr.length)#}
+                                    search_obj += '</a></h3> <div class="clearfix"> <a class="active left" href=' + weibo_obj.img + ' style="height: 100px;width: 100px" target="_blank"><img style="height: 80px;width: 80px"src=' + weibo_obj['img'];
+                                    search_obj += '></a></div><div class="footers"><a href="#" class="recommend"><i class="fa fa-user-o" aria-hidden="true"></i><span>' + weibo_obj['username'] + '</span></a><span>发布时间:' + weibo_obj['weibo_data'] + '</span></div> </div>';
+                                }
                             })
 
                         });
+                        $('#search_title').html(search_obj);
+                    } else if (arg.status == 5) {
+                        var search_obj = '';
+                        $.each(arg.message, function (index, obj) {
+                            console.log(obj)
+
+                            search_obj += '<div class="article-item clearfix"><h3><a  ' + '>' + obj['weibo_title'];
+                            var arr = Object.keys(obj.img);
+                            if (arr.length < 5) {
+                                search_obj += '</a></h3> <div class="clearfix">';
+                                $.each(obj.img, function (index, img) {
+                                    search_obj += '<a class="active " href=' + img + ' style="height: 100px;width: 100px" target="_blank"><img style="height: 80px;width: 80px"src=' + img + '>';
+                                });
+                                search_obj += '</a></div><div class="footers"><a href="#" class="recommend"><i class="fa fa-user-o" aria-hidden="true"></i><span>' + obj['username'] + '</span></a><span>发布时间:' + obj['weibo_data'] + '</span></div> </div>';
+
+                            } else {
+                                search_obj += '</a></h3> <div class="clearfix"> <a class="active left" href=' + obj.img + ' style="height: 100px;width: 100px" target="_blank"><img style="height: 80px;width: 80px"src=' + obj['img'];
+                                search_obj += '></a></div><div class="footers"><a href="#" class="recommend"><i class="fa fa-user-o" aria-hidden="true"></i><span>' + obj['username'] + '</span></a><span>发布时间:' + obj['weibo_data'] + '</span></div> </div>';
+                            }
+                        });
+
+
                         $('#search_title').html(search_obj);
                     } else if (arg.status = 1) {
                         $('#search_title').html('');

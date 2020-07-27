@@ -14,6 +14,7 @@ def search(request):
     search_key = request.POST.get('search_text')
     sprider_search = request.POST.get('sprider_search')
     sprider_weibo_search = request.POST.get('sprider_weibo_search')
+    sprider_weibo_search_obj = sprider_weibo_search
     ret = {'status': None, 'message': None}
     # 未输入任何值进行搜索
     if not (search_key or sprider_search or sprider_weibo_search):
@@ -34,11 +35,18 @@ def search(request):
         ret['message'] = list(sprider_obj)
         return JsonResponse(ret)
     # 爬微博热搜
-    elif sprider_weibo_search:
-        weibo_serach = WeiBo_Hot(3)
-        print(weibo_serach)
-        ret['status'] = 4
+    # elif sprider_weibo_search:
+    #     weibo_serach = WeiBo_Hot(3)
+    #     ret['status'] = 4
+    #     ret['message'] = weibo_serach
+    #     print(weibo_serach)
+    #     return JsonResponse(ret)
+    # 爬微博指定内容
+    elif sprider_weibo_search_obj:
+        weibo_serach = WeiBo_Hot(3, sprider_weibo_search)
+        ret['status'] = 5
         ret['message'] = weibo_serach
+        print(weibo_serach)
         return JsonResponse(ret)
     # 输入指定数据进行模糊搜索
     else:

@@ -32,11 +32,18 @@ def WeiBo_page(index=2, *args):
     # 通过args区分搜索关键字
     if not args:
         for i in range(index):
-            time.sleep(3)
-            el = browser.find_element_by_xpath('//*[contains(text(),"正在加载中，请稍候...")]')
-            time.sleep(3)
-            browser.execute_script("arguments[0].scrollIntoView();", el)
-            time.sleep(3)
+            try:
+                time.sleep(3)
+                el = browser.find_element_by_xpath('//*[contains(text(),"正在加载中，请稍候...")]')
+                time.sleep(2)
+                browser.execute_script("arguments[0].scrollIntoView();", el)
+                time.sleep(2)
+            except Exception as e:
+                time.sleep(3)
+                el = browser.find_element_by_xpath('//*[contains(text(),"正在加载中，请稍候...")]')
+                time.sleep(2)
+                browser.execute_script("arguments[0].scrollIntoView();", el)
+                time.sleep(2)
     else:
         key = args[0]
         browser.find_element_by_xpath('//*[@id="weibo_top_public"]/div/div/div[2]/input').send_keys(key)
@@ -180,28 +187,54 @@ def WeiBo_Hot(index, *args):
         if weibo_serach:
 
             for list_img in weibo_serach:
+                img = []
+                username = []
+                weibo_title = []
+                weibo_data = []
+                user_face = []
                 nick_names = list_img.find('a', attrs={'class': 'name'})
                 if nick_names == None:
                     pass
                 else:
-                    nick_name = nick_names.string  # 博主昵称
+                    username = nick_names.string  # 博主昵称
                 weibo_contents = list_img.find('p', attrs={'class': 'txt', 'node-type': 'feed_list_content'})
                 if weibo_contents == None:
                     pass
                 else:
-                    weibo_content = weibo_contents.text.strip()
+                    weibo_title = weibo_contents.text.strip()
+                weibo_datas = list_img.find('p', attrs={'class': 'from'})
+                if weibo_datas == None:
+                    pass
+                else:
+                    weibo_data = weibo_datas.find('a').string.strip().replace("\n", "")
+                user_faces = list_img.find('div', attrs={'class': 'avator'})
+                if user_faces == None:
+                    pass
+                else:
+                    user_face = user_faces.find('a').find('img').get('src')
+                imgs = list_img.find('div', attrs={'class': 'feed_list_media_prev'})
+                if imgs == None:
+                    pass
+                else:
+                    img = imgs.find('ul').find('li').find('img').get('src')
                 weibo_serach_obj = {
-                    'nick_name': nick_name,
-                    'weibo_content': weibo_content
+                    'username': username,
+                    'weibo_title': weibo_title,
+                    'weibo_data': weibo_data,
+                    'href': None,
+                    'user_face': user_face,
+                    'img': img
                 }
                 weibo_serachs.append(weibo_serach_obj)
+            # print(weibo_serachs)
+        return weibo_serachs
 
     # print(list_imgA_objs,list_imgB_objs)
     # print(list_imgB_objs)
-    return videos_objs, list_imgA_objs, list_imgB_objs, weibo_serachs
+    return videos_objs, list_imgA_objs, list_imgB_objs
 # def WeiBo_Serach(key):
 # #
 # #     weib0_key=WeiBo_page(key).find('div',attrs={'class':' gn_search_v2'})
 #
-# # WeiBo_Hot(2, '王')
+# WeiBo_Hot(2, '王')
 # WeiBo_Hot(2)
