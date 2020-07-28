@@ -14,17 +14,17 @@ def search(request):
     search_key = request.POST.get('search_text')
     sprider_search = request.POST.get('sprider_search')
     sprider_weibo_search = request.POST.get('sprider_weibo_search')
-    weibo_obj = sprider_weibo_search.split(',', 1)
     sprider_weibo_search_obj = []
-
-    if len(weibo_obj) > 1:
-        if int(weibo_obj[1]) > 10:
-            sprider_weibo_search = 10
+    if sprider_weibo_search:
+        weibo_obj = sprider_weibo_search.split(',', 1)
+        if len(weibo_obj) > 1:
+            if int(weibo_obj[1]) > 10:
+                sprider_weibo_search = 10
+            else:
+                sprider_weibo_search = int(weibo_obj[1])
         else:
-            sprider_weibo_search = int(weibo_obj[1])
-    else:
-        sprider_weibo_search = []
-        sprider_weibo_search_obj = weibo_obj[0]
+            sprider_weibo_search = []
+            sprider_weibo_search_obj = weibo_obj[0]
     ret = {'status': None, 'message': None}
     # 未输入任何值进行搜索
     if not (search_key or sprider_search or sprider_weibo_search or sprider_weibo_search_obj):
