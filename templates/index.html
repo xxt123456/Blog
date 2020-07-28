@@ -185,7 +185,6 @@
         });
         $('#sprider_weibo_search').click(function () {
             var obj = $('#search_text').val();
-            alert(Object.prototype.toString.call(obj))
             $.ajax({
                 url: '/search/',
                 processData: true,
