@@ -65,15 +65,17 @@
                 <tr nid="{{ row.nid }}">
                     <td><a href="/{{ row.blog.site }}/{{ row.nid }}.html">{{ row.title }}</a></td>
                     <td>
-                        <a class="btn btn-danger btn-xs" id="del_article" article_id="{{ row.nid }}">
-                            <i class="fa fa-times" aria-hidden="true"></i>
-                            删除
-                        </a>
-                        |
                         <a class="btn btn-primary btn-xs" href="article/edit_article_{{ row.nid }}.html">
                             <i class="fa fa-pencil-square-o" aria-hidden="true"></i>
                             编辑
                         </a>
+                        |
+
+                        <a class="btn btn-danger btn-xs" id="del_article" article_id="{{ row.nid }}">
+                            <i class="fa fa-times" aria-hidden="true"></i>
+                            删除
+                        </a>
+
                     </td>
                 </tr>
             {% endfor %}

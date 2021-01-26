@@ -94,6 +94,12 @@
             ths.src = ths.src + "?";
         }
 
+            $(window).keydown(function (e) {
+                if (e.keyCode == 13) {
+                    $('#denglu').click();
+                }
+            })
+
     </script>
     </div>
 </body>

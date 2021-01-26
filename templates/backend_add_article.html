@@ -110,6 +110,7 @@
                 dataType: 'JSON',
                 success: function (arg) {
                     if (arg.status == true) {
+                        alert(arg.message);
                         setTimeout('location=document.referrer;', 1000)
                     } else {
                         alert(arg.error())

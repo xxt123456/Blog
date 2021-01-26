@@ -1,5 +1,5 @@
 from django.db import models
-
+from django.contrib.auth.models import AbstractUser
 
 # from django.db.models import BooleanField as _BooleanField
 #
@@ -17,7 +17,7 @@ from django.db import models
 #             return super(BooleanField, self).get_prep_value(value)
 
 
-class UserInfo(models.Model):
+class UserInfo(AbstractUser):
     """
     用户表
     """

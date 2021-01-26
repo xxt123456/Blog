@@ -9,7 +9,7 @@ https://docs.djangoproject.com/en/2.1/topics/settings/
 For the full list of settings and their values, see
 https://docs.djangoproject.com/en/2.1/ref/settings/
 """
-
+from django.middleware import clickjacking
 import os
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
@@ -39,7 +39,9 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'backend',
     'web',
+    'notifications',
     'repository',
+
 ]
 
 MIDDLEWARE = [
@@ -85,6 +87,10 @@ DATABASES = {
         'PASSWORD':'123456',
         'HOST':'127.0.0.1',
         'PROT':'3306',
+        'OPTIONS': {
+            "init_command": "SET foreign_key_checks = 0;",
+        },
+
     }
 }
 
@@ -148,3 +154,9 @@ STATICFILES_DIRS=(
 # }
 SESSION_COOKIE_AGE = 60 * 60 * 24
 SESSION_SAVE_EVERY_REQUEST = True
+AUTH_USER_MODEL = "repository.UserInfo"  # 修改通知默认user表，不使用django自带的用户管理系统
+AUTHENTICATION_BACKENDS = (
+
+    'web.views.account',
+
+)

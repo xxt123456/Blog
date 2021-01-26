@@ -17,8 +17,10 @@ from django.contrib import admin
 from django.urls import path
 from django.conf.urls import url
 from django.conf.urls import include
+import notifications.urls
 urlpatterns = [
     # url(r'^admin/', admin.site.urls),
     url(r'^backend/', include('backend.urls')),
     url(r'^', include('web.urls')),
+    path('inbox/notifications/', include(notifications.urls, namespace='notifications')),
 ]

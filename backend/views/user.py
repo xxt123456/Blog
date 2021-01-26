@@ -15,7 +15,10 @@ def index(request):
         user_info=request.session.get('user_info')
         if not user_info['blog__nid']:
             models.Blog.objects.create()
-    return render(request,'backend_index.html')
+        user = models.UserInfo.objects.filter(username=request.session.get('user_info')['username']).values('nickname',
+                                                                                                            'avatar',
+                                                                                                            'username')
+    return render(request, 'backend_index.html', {'user': user})
 
 @check_login
 def base_info(request):
@@ -25,9 +28,16 @@ def base_info(request):
     :return:
     """
     current_username = request.session.get('user_info')
+
     email = models.UserInfo.objects.filter(username=current_username['username']).values('email', 'nickname', 'avatar',
                                                                                          'username')
-    return render(request,'backend_base_info.html',{'current_username':current_username,'email':email})
+    user = models.UserInfo.objects.filter(username=request.session.get('user_info')['username']).values('nickname',
+                                                                                                        'avatar',
+                                                                                                        'username')
+    return render(request, 'backend_base_info.html',
+                  {'current_username': current_username, 'email': email, 'user': user})
+
+
 
 @check_login
 def upload_avatar(request):
@@ -38,17 +48,23 @@ def upload_avatar(request):
         if not file_obj:
             pass
         else:
-            file_name = str(uuid.uuid4())
-            file_path = os.path.join('static/imgs/avatar/', file_name)
-            f = open(file_path,'wb')
-            models.UserInfo.objects.filter(username=username).update(avatar=file_path)
-            for chunk in file_obj.chunks():
-                f.write(chunk)
-            f.close()
+            file_name = ''.join(str(uuid.uuid4()).split('-')) + '.' + str(file_obj).split('.', -1)[-1]
+            file_path = 'static/imgs/avatar/' + username + '/'
+            if not os.path.exists(file_path):
+                os.makedirs(file_path)
+            with open(file_path + file_name, 'wb') as f:
+                for i in file_obj:
+                    f.write(i)
+            # for chunk in file_obj.chunks():
+            #     f.write(chunk)
+            # f.close()
+            models.UserInfo.objects.filter(username=username).update(avatar=file_name)
             ret['status']=True
             ret['data']=file_path
     return HttpResponse(json.dumps(ret))
 
+
+@check_login
 @check_login
 def tag(request,*args,**kwargs):
     """
@@ -65,7 +81,10 @@ def tag(request,*args,**kwargs):
     page_obj=Pagination(request.GET.get('p'),data_count)
     tag_list=models.Tag.objects.filter(blog=blog).annotate(c=Count('article2tag__article')).values().order_by('-nid')[page_obj.start:page_obj.end]
     page_str=page_obj.page_str(base_url)
-    return  render(request,'backend_tag.html',{'tag_list':tag_list,'page_str':page_str})
+    user = models.UserInfo.objects.filter(username=request.session.get('user_info')['username']).values('nickname',
+                                                                                                        'avatar',
+                                                                                                        'username')
+    return render(request, 'backend_tag.html', {'tag_list': tag_list, 'page_str': page_str, 'user': user})
 
 def del_tag(request):
     blog_id = request.session.get('user_info')['blog__nid']
@@ -113,7 +132,11 @@ def category(request,*args,**kwargs):
                                                                                                         'nid')[
                 page_obj.start:page_obj.end]
     page_str = page_obj.page_str(bass_url)
-    return  render(request,'backend_category.html',{'date_list':date_list,'page_str':page_str})
+    user = models.UserInfo.objects.filter(username=request.session.get('user_info')['username']).values('nickname',
+                                                                                                        'avatar',
+                                                                                                        'username')
+
+    return render(request, 'backend_category.html', {'date_list': date_list, 'page_str': page_str, 'user': user})
 
 def add_category(request):
     blog_id = request.session.get('user_info')['blog__nid']
@@ -139,12 +162,11 @@ def edit_category(request):
     blog_id = request.session.get('user_info')['blog__nid']
     category_title=request.POST.get('cate_title')
     category_id=request.POST.get('cate_id')
-    print(category_title,category_id)
     try:
         models.Category.objects.filter(nid=category_id).update(title=category_title, blog=blog_id)
         res={'statu':True}
     except Exception as err:
-        print(err)
+
         res = {'statu': False, 'res': '修改失败'}
     return JsonResponse(res)
 

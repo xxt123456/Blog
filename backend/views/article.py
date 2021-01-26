@@ -5,7 +5,7 @@ from django.http import JsonResponse
 from utils.pagination import Pagination
 from django.urls import reverse
 import os
-import time
+import uuid
 
 @check_login
 def article(request, *args, **kwargs):
@@ -35,6 +35,9 @@ def article(request, *args, **kwargs):
     category_list = models.Category.objects.filter(blog_id=blog_id['blog__nid']).values('nid', 'title')
     type_list = map(lambda item: {'nid': item[0], 'title': item[1]}, models.Article.type_choices)
     kwargs['p'] = page.current_page
+    user = models.UserInfo.objects.filter(username=request.session.get('user_info')['username']).values('nickname',
+                                                                                                        'avatar',
+                                                                                                        'username')
     return render(
         request,
         'backend_article.html',
@@ -44,7 +47,8 @@ def article(request, *args, **kwargs):
             'category_list': category_list,
             'type_list': type_list,
             'arg_dict': kwargs,
-            'data_count': data_count
+            'data_count': data_count,
+            'user': user
         }
     )
 
@@ -61,8 +65,11 @@ def add_article(request):
         cat_list = models.Blog.objects.filter(nid=blog_id).values('category__title', 'category__nid', 'title', 'nid')
         tag_list = models.Blog.objects.filter(nid=blog_id).values('tag__title', 'tag__nid')
         article_type_id = models.Article.type_choices
+        user = models.UserInfo.objects.filter(username=request.session.get('user_info')['username']).values('nickname',
+                                                                                                            'avatar',
+                                                                                                            'username')
         return render(request, 'backend_add_article.html',
-                      {'cat_list': cat_list, 'tag_list': tag_list, 'article_type_id': article_type_id})
+                      {'cat_list': cat_list, 'tag_list': tag_list, 'article_type_id': article_type_id, 'user': user})
     title = request.POST.get('art_name')
     summary = request.POST.get('art_introduce')
     blog_id = models.Blog.objects.get(nid=request.POST.get('art_blog_id'))
@@ -71,11 +78,8 @@ def add_article(request):
     article_type_id = request.POST.get('article_type_id')
     art_content = request.POST.get('art_content')
     article_img = request.FILES.get('article_img')
-    path = 'static/imgs/art_imgs/' + request.session.get('user_info')['username'] + '/' + str(time.time()) + '/'
-    if not article_img:
-        pass
-    else:
-        img_name = str(time.time()) + '.' + article_img.name.split('.', -1)[1]
+    img_name = ''.join(str(uuid.uuid4()).split('-')) + '.' + str(article_img).split('.', -1)[-1]
+    path = 'static/imgs/art_imgs/' + request.session.get('user_info')['username'] + '/'
     if not os.path.exists(path):
         os.makedirs(path)
     try:
@@ -84,14 +88,14 @@ def add_article(request):
                 for i in article_img:
                     f.write(i)
             a = models.Article.objects.create(title=title, summary=summary, blog=blog_id, category=category_id,
-                                              article_type_id=article_type_id, article_img=article_img)
+                                              article_type_id=article_type_id, article_img=img_name)
             models.ArticleDetail.objects.create(article=a, content=art_content)
             models.Article2Tag.objects.create(article=a, tag=tags_id)
             res = {'status': True}
         else:
-            article_img = "static/imgs/avatar/default.png"
+            img_name = ""
             a = models.Article.objects.create(title=title, summary=summary, blog=blog_id, category=category_id,
-                                              article_type_id=article_type_id, article_img=article_img)
+                                              article_type_id=article_type_id, article_img=img_name)
             models.ArticleDetail.objects.create(article=a, content=art_content)
             models.Article2Tag.objects.create(article=a, tag=tags_id)
             res = {'status': True}
@@ -136,9 +140,12 @@ def edit_article(request, *args, **kwargs):
                                                                         'tags__article2tag__tag__title',
                                                                         'article_type_id')
         article_type_id = models.Article.type_choices
+        user = models.UserInfo.objects.filter(username=request.session.get('user_info')['username']).values('nickname',
+                                                                                                            'avatar',
+                                                                                                            'username')
         return render(request, 'backend_edit_article.html',
                       {'artilce_list': artilce_list, 'cat_list': cat_list, 'tag_list': tag_list, 'art_id': art_id,
-                       'article_type_id': article_type_id})
+                       'article_type_id': article_type_id, 'user': user})
     if request.method == "POST":
         title = request.POST.get('art_name')
         art_id = request.POST.get('art_id')
@@ -148,13 +155,9 @@ def edit_article(request, *args, **kwargs):
         article_type_id = request.POST.get('article_type_id')
         art_content = request.POST.get('art_content')
         art_img = request.FILES.get('art_img')
-        path = 'static/imgs/art_imgs/' + request.session.get('user_info')['username'] + '/' + str(time.time()) + '/'
-        if not art_img:
-            pass
-        else:
-            img_name = str(time.time()) + '.' + art_img.name.split('.', -1)[1]
-            # img_name = str(time.time()) + '.' + art_img.name.split('.', -1)[1]
-            ss = path + img_name
+        img_name = ''.join(str(uuid.uuid4()).split('-')) + '.' + str(art_img).split('.', -1)[-1]
+        path = 'static/imgs/art_imgs/' + request.session.get('user_info')['username'] + '/'
+
         if not os.path.exists(path):
             os.makedirs(path)
         try:
@@ -162,17 +165,14 @@ def edit_article(request, *args, **kwargs):
                 with open(path + img_name, 'wb') as f:
                     for i in art_img:
                         f.write(i)
-                f.close()
                 models.Article.objects.filter(nid=art_id).update(title=title, summary=summary, category=category_id,
-                                                                 article_type_id=article_type_id, article_img=ss)
+                                                                 article_type_id=article_type_id, article_img=img_name)
                 models.Article2Tag.objects.filter(article=art_id).update(tag=tags_id)
                 models.ArticleDetail.objects.filter(article=art_id).update(content=art_content)
                 res = {'status': True, 'message': '编辑成功'}
             else:
-                article_img = "static/imgs/avatar/default.png"
                 models.Article.objects.filter(nid=art_id).update(title=title, summary=summary, category=category_id,
-                                                                 article_type_id=article_type_id,
-                                                                 article_img=article_img)
+                                                                 article_type_id=article_type_id)
                 models.Article2Tag.objects.filter(article=art_id).update(tag=tags_id)
                 models.ArticleDetail.objects.filter(article=art_id).update(content=art_content)
                 res = {'status': True, 'message': '编辑成功'}
@@ -182,19 +182,22 @@ def edit_article(request, *args, **kwargs):
         return JsonResponse(res)
 
 
+# 文章内容中的图片
+from django.views.decorators.clickjacking import xframe_options_sameorigin
 @check_login
+@xframe_options_sameorigin
 def upload(request):
     obj = request.FILES.get('upload_img')
     type = obj.name.split('.', -1)
-    img_name = request.POST.get('img_name') + '.' + type[-1]
-    path = 'static/imgs/art_imgs/' + request.session.get('user_info')['username'] + '/'
+    img_name = ''.join(str(uuid.uuid4()).split('-')) + '.' + type[-1]
+    path = 'static/imgs/art_imgs/' + request.session.get('user_info')['username'] + '/' + 'contents' + '/'
     if not os.path.exists(path):
         os.makedirs(path)
     with open(path + img_name, 'wb') as f:
         for i in obj:
             f.write(i)
-    f.close()
     res = {'error': 0,
-           'url': '/static/imgs/art_imgs/' + request.session.get('user_info')['username'] + '/' + img_name
+           'url': '/static/imgs/art_imgs/' + request.session.get('user_info')[
+               'username'] + '/' + 'contents' + '/' + img_name
            }
     return JsonResponse(res)

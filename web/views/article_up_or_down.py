@@ -1,9 +1,11 @@
 from repository import models
 from django.http import JsonResponse
-
+from notifications.signals import notify
 from django.db import transaction
+from backend.auth.auth import check_login
 
 
+@check_login
 @transaction.atomic
 def artilce_give(request):
     """
@@ -70,4 +72,12 @@ def artilce_give(request):
                 ret = {'status': 6, 'message': '已点赞，请勿踩赞'}
         except Exception as e:
             print('11111', e)
+    notify.send(
+        models.UserInfo.objects.filter(nid=18).first(),
+        recipient=models.UserInfo.objects.filter(nid=user_id),
+        verb='回复了你',
+        target=models.Article.objects.filter(nid=article_id).first()
+
+    )
+
     return JsonResponse(ret)

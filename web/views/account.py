@@ -46,7 +46,7 @@ def login(request):
                 request.session['user_info']=user_info
                 if form.cleaned_data.get('rmb'):
                     request.session.set_expiry(60*60*24)
-                # return render(request,'home.html')
+                # return render(request,'home.html')z
         else:
             if 'check_code' in form.errors:
                 result['message']='验证码过期'

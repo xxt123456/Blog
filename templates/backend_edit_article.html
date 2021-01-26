@@ -72,6 +72,7 @@
         <input type="button" class="btn btn-primary" id="edit_article" value="编 辑">
         <a href="#" class="btn btn-primary" onclick="self.location=document.referrer;">返 回</a>
     </div>
+
 {% endblock %}
 {% block js %}
     <script charset="utf-8" src="/static/kindeditor/kindeditor-all.js"></script>
@@ -131,7 +132,7 @@
             formData.append('art_content', $('#editor_id').val());
             formData.append('article_img', $('#article_img')[0].files[0]);
             $.ajax({
-                url: '/backend/article/edit_article_22.html',
+                url: '/backend/article/edit_article_' + art_id + '.html',
                 processData: false,
                 contentType: false,
                 type: 'POST',
@@ -139,9 +140,10 @@
                 dataType: 'JSON',
                 success: function (arg) {
                     if (arg.status == true) {
-                        setTimeout('location=document.referrer;', 1000)
+                        alert(arg.message);
+                        setTimeout('location=document.referrer;', 100)
                     } else {
-
+                        alert(arg.message);
                     }
 
                 }
