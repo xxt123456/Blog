@@ -163,9 +163,9 @@ def WeiBo_Hot(index, *args):
                 if href == None:
                     pass
                 else:
-                    # print('AAA', urllib.parse.unquote(href['href']))
+
                     href = "https:" + href['href']
-                # print('BBBB', username, img, weibo_title)
+
                 list_imgB_obj = {
                     'img': img,
                     'weibo_title': weibo_title,
@@ -175,7 +175,7 @@ def WeiBo_Hot(index, *args):
                     'href': href
                 }
                 list_imgB_objs.append(list_imgB_obj)
-            # return img, weibo_data, username
+
         # 微博热门话题
         # if list_imgC:
         #     for list_img in list_imgC:
