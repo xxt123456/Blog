@@ -35,9 +35,6 @@ def article(request, *args, **kwargs):
     category_list = models.Category.objects.filter(blog_id=blog_id['blog__nid']).values('nid', 'title')
     type_list = map(lambda item: {'nid': item[0], 'title': item[1]}, models.Article.type_choices)
     kwargs['p'] = page.current_page
-    user = models.UserInfo.objects.filter(username=request.session.get('user_info')['username']).values('nickname',
-                                                                                                        'avatar',
-                                                                                                        'username')
     return render(
         request,
         'backend_article.html',
@@ -47,8 +44,7 @@ def article(request, *args, **kwargs):
             'category_list': category_list,
             'type_list': type_list,
             'arg_dict': kwargs,
-            'data_count': data_count,
-            'user': user
+            'data_count': data_count
         }
     )
 
@@ -65,11 +61,8 @@ def add_article(request):
         cat_list = models.Blog.objects.filter(nid=blog_id).values('category__title', 'category__nid', 'title', 'nid')
         tag_list = models.Blog.objects.filter(nid=blog_id).values('tag__title', 'tag__nid')
         article_type_id = models.Article.type_choices
-        user = models.UserInfo.objects.filter(username=request.session.get('user_info')['username']).values('nickname',
-                                                                                                            'avatar',
-                                                                                                            'username')
         return render(request, 'backend_add_article.html',
-                      {'cat_list': cat_list, 'tag_list': tag_list, 'article_type_id': article_type_id, 'user': user})
+                      {'cat_list': cat_list, 'tag_list': tag_list, 'article_type_id': article_type_id})
     title = request.POST.get('art_name')
     summary = request.POST.get('art_introduce')
     blog_id = models.Blog.objects.get(nid=request.POST.get('art_blog_id'))

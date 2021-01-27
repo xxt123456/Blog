@@ -32,13 +32,14 @@ def login(request):
         if form.is_valid():
             username = form.cleaned_data.get('username')
             password = form.cleaned_data.get('password')
-            we= models.UserInfo.objects.all()
             user_info = models.UserInfo.objects.filter(username=username, password=password).values('username',
                                                                                                     'nid',
                                                                                                     'password',
                                                                                                     'blog__nid',
                                                                                                     'blog__site',
-                                                                                                    'nickname').first()
+                                                                                                    'nickname',
+                                                                                                    'avatar').first()
+            print(user_info)
             if not user_info:
                 result['message']='用户名或密码错误'
             else:

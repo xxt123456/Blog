@@ -24,17 +24,18 @@
     <div class="right-menu right clearfix">
 
         <div class="user-info right">
-            {% for  row in user %}
+
             <a href="#" class="avatar">
-                {% if row.avatar == '' %}
+                {% if request.session.user_info.avatar == '' %}
                     <img class="img-circle" src="/static/imgs/avatar/default.png" style="width: 30px;height: 30px">
 
                 {% else %}
-                    <img class="img-circle" src="/static/imgs/avatar/{{ row.username }}/{{ row.avatar }}"
+                    <img class="img-circle"
+                         src="/static/imgs/avatar/{{ request.session.user_info.username }}/{{ request.session.user_info.avatar }}"
                          style="width: 30px;height: 30px">
                 {% endif %}
             </a>
-            {% endfor %}
+
 
             <div class="more-info">
                 <a href="/backend/base-info.html" class="more-item">个人信息</a>

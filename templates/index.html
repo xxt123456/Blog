@@ -35,8 +35,14 @@
                         &nbsp&nbsp&nbsp&nbsp&nbsp&nbsp{{ row.summary }}
                     </div>
                     <div class="footers">
-                        <a href="#" class="recommend" user_id="{{ request.session.user_info.nid }}">
-                            <i class="fa fa-user-o" aria-hidden="true"></i>
+                        <a href="#" class="recommend" user_id="{{ row.blog.user.nid }}">
+                            {% if row.blog.user.avatar == "" %}
+                                <i class="fa fa-user-o" aria-hidden="true"></i>
+                            {% else %}
+                                <img class="img-circle"
+                                     src="/static/imgs/avatar/{{ row.blog.user.username }}/{{ row.blog.user.avatar }}"
+                                     style="width: 25px;height: 25px">
+                            {% endif %}
                             <span>{{ row.blog.user.nickname }}</span>
                         </a>
                         <span>发布时间:{{ row.creat_time }}</span>
@@ -71,15 +77,14 @@
             <input type="button" id="sprider_search" value="可用代理">
             <input type="button" id="sprider_weibo_search" value="微博">
             <input type="button" id="clear_search" value="重置">
-
         </div>
     </div>
     <div class="col-md-5">
         <div class="nav navbar-nav navbar-right ">
             <span id="search_resule"></span>
         </div>
-        <div class="article-item clearfix">
-            <p id="search_title"></p>
+        <div class="article-list">
+            <p id="search_title" class="article-item clearfix "></p>
         </div>
     </div>
 
@@ -177,8 +182,6 @@
                     } else if (arg.status == 2) {
                         var search_obj = '';
                         $.each(arg.message, function (index, obj) {
-                            {#title +=$('#search_title').html(obj['title']);#}
-                            {#summary +$('#search_summary').html(obj['summary']);#}
                             search_obj += '<a href=' + "/" + obj['blog__site'] + "/" + obj['nid'] + ".html" + '>' + obj['title'] + '</a>' + '<p>' + obj['summary'] + '</p>';
                         });
                         $('#search_title').html(search_obj);

@@ -14,25 +14,37 @@ def search(request):
     search_key = request.POST.get('search_text')
     sprider_search = request.POST.get('sprider_search')
     sprider_weibo_search = request.POST.get('sprider_weibo_search')
+    # 对应类型为空时，输入为‘’，此时其他类型为None
     sprider_weibo_search_obj = []
     if sprider_weibo_search:
-        weibo_obj = sprider_weibo_search.split(',', 1)
-        if len(weibo_obj) > 1:
-            if int(weibo_obj[1]) > 10:
-                sprider_weibo_search = 10
-            else:
-                sprider_weibo_search = int(weibo_obj[1])
-        else:
-            sprider_weibo_search = []
-            sprider_weibo_search_obj = weibo_obj[0]
+        sprider_weibo_search_obj = sprider_weibo_search
+    else:
+        #     爬取热搜时，传入默认值1
+        sprider_weibo_search = 1
+
+
     ret = {'status': None, 'message': None}
     # 未输入任何值进行搜索
-    if not (search_key or sprider_search or sprider_weibo_search or sprider_weibo_search_obj):
+    if search_key == '':
+
         ret['status'] = 0
         ret['message'] = '请输入搜索数据'
+    elif search_key == None:
+        pass
+    else:
+        # 输入指定数据进行模糊搜索
+        search_object = models.Article.objects.filter(title__icontains=search_key).values('nid', 'title', 'summary',
+                                                                                          'blog__site')
+        if not search_object:
+            ret['status'] = 1
+            ret['message'] = '查询数据为空'
+            return JsonResponse(ret)
+        ret['status'] = 2
+        ret['message'] = list(search_object)
+        return JsonResponse(ret)
 
     # 爬代理ip
-    elif sprider_search:
+    if sprider_search:
         serach_objs = Spiderip(sprider_search)
         for sprider in serach_objs:
             ip = sprider.split(':')[1]
@@ -46,27 +58,14 @@ def search(request):
         return JsonResponse(ret)
     # 爬微博热搜
 
-    elif sprider_weibo_search:
+    if sprider_weibo_search == 1:
         weibo_serach = WeiBo_Hot(sprider_weibo_search)
         ret['status'] = 4
         ret['message'] = weibo_serach
         return JsonResponse(ret)
     # 爬微博指定内容
-    elif sprider_weibo_search_obj:
+    if sprider_weibo_search_obj:
         weibo_serach = WeiBo_Hot(1, sprider_weibo_search_obj)
         ret['status'] = 5
         ret['message'] = weibo_serach
         return JsonResponse(ret)
-    # 输入指定数据进行模糊搜索
-    else:
-        search_object = models.Article.objects.filter(title__icontains=search_key).values('nid', 'title', 'summary',
-                                                                                          'blog__site')
-        if not search_object:
-            ret['status'] = 1
-            ret['message'] = '查询数据为空'
-            return JsonResponse(ret)
-        ret['status'] = 2
-        ret['message'] = list(search_object)
-
-    return JsonResponse(ret)
-

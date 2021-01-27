@@ -5,7 +5,6 @@ import urllib.parse
 from selenium import webdriver
 from bs4 import BeautifulSoup as bf
 
-
 def Browser_Driver():
     chrome_options = webdriver.ChromeOptions()
     chrome_options.add_argument('--headless')
@@ -30,6 +29,7 @@ def Browser_Driver():
 def WeiBo_page(index=2, *args):
     browser = Browser_Driver()
     # 通过args区分搜索关键字
+
     if not args:
         for i in range(index):
             try:
@@ -52,7 +52,6 @@ def WeiBo_page(index=2, *args):
     weibo_pages = bf(browser.page_source, 'lxml')
     browser.quit()
     return weibo_pages
-
 
 def WeiBo_Hot(index, *args):
     browser = WeiBo_page(index, *args)
