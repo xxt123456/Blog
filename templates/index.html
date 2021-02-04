@@ -135,6 +135,7 @@
                         'article_id': article_id,
                         'user_id': user_id,
                         'up_or_down': up_or_down,
+                        csrfmiddlewaretoken: "{{ csrf_token }}"
                     },
                     dataType: 'JSON',
                     success: function (arg) {
@@ -198,7 +199,10 @@
             $.ajax({
                 url: '/search/',
                 processData: true,
-                data: {'sprider_search': obj},
+                data: {
+                    'sprider_search': obj,
+                    csrfmiddlewaretoken: "{{ csrf_token }}"
+                },
                 type: 'POST',
                 success: function (arg) {
                     if (arg.status == 0) {
@@ -223,7 +227,10 @@
             $.ajax({
                 url: '/search/',
                 processData: true,
-                data: {'sprider_weibo_search': obj},
+                data: {
+                    'sprider_weibo_search': obj,
+                    csrfmiddlewaretoken: "{{ csrf_token }}"
+                },
                 type: 'POST',
                 success: function (arg) {
                     if (arg.status == 0) {

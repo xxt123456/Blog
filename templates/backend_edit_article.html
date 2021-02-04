@@ -4,6 +4,7 @@
 {% endblock %}
 {% block conent %}
     <form class="form-horizontal">
+        {% csrf_token %}
         <div class="col-xs-12">
             <label class="col-xs-1 control-label">分类名称</label>
             <div class="col-xs-3">
@@ -63,6 +64,7 @@
                 <input type="file" id="article_img" name="filename">
             </div>
         </div>
+        <span class="tips" id="edit_resule"></span>
         <div class="col-xs-12 control-label">
             <textarea id="editor_id" name="content"
                       style="width:90%;height:400px;">{{ artilce_list.first.articledetail__content }}</textarea>
@@ -120,6 +122,7 @@
             var art_blog_id = $('#art_blog').data("blog_id");
             var article_type_id = $('#article_type_id').find("option:selected").data("article_type_id");
             var art_id = $('#art_name').data("art_id");
+            var csrf = $('input[name="csrfmiddlewaretoken"]').val();
             var formData = new FormData();
             formData.append('art_name', $('#art_name').val());
             formData.append('art_introduce', $('#art_introduce').val());
@@ -131,6 +134,7 @@
             formData.append('art_category_id', art_category_id);
             formData.append('art_content', $('#editor_id').val());
             formData.append('article_img', $('#article_img')[0].files[0]);
+            formData.append('csrfmiddlewaretoken', csrf);
             $.ajax({
                 url: '/backend/article/edit_article_' + art_id + '.html',
                 processData: false,
@@ -140,8 +144,8 @@
                 dataType: 'JSON',
                 success: function (arg) {
                     if (arg.status == true) {
-                        alert(arg.message);
-                        setTimeout('location=document.referrer;', 100)
+                        $('#edit_resule').html(arg.message).addClass('alert-success').fadeIn().delay(1500).fadeOut();
+                        setTimeout('location=document.referrer;', 1000)
                     } else {
                         alert(arg.message);
                     }

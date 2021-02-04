@@ -55,6 +55,15 @@ def upload_avatar(request):
             #     f.write(chunk)
             # f.close()
             models.UserInfo.objects.filter(username=username).update(avatar=file_name)
+            # 更新session中缓存的的头像路径
+            user_info = models.UserInfo.objects.filter(username=username).values('username',
+                                                                                 'nid',
+                                                                                 'password',
+                                                                                 'blog__nid',
+                                                                                 'blog__site',
+                                                                                 'nickname',
+                                                                                 'avatar').first()
+            request.session['user_info'] = user_info
             ret['status']=True
             ret['data']=file_path
     return HttpResponse(json.dumps(ret))

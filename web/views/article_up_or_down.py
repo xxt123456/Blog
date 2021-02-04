@@ -72,12 +72,15 @@ def artilce_give(request):
                 ret = {'status': 6, 'message': '已点赞，请勿踩赞'}
         except Exception as e:
             print('11111', e)
-    notify.send(
-        models.UserInfo.objects.filter(nid=18).first(),
-        recipient=models.UserInfo.objects.filter(nid=user_id),
-        verb='回复了你',
-        target=models.Article.objects.filter(nid=article_id).first()
 
-    )
+    # print("notttttttttttttttttt")
+    # notify.send(
+    #     models.UserInfo.objects.filter(nid=75).first(),
+    #     recipient=models.UserInfo.objects.filter(nid=75),
+    #     verb='回复了你',
+    #     target=models.Article.objects.filter(nid=article_id).first(),
+    #     action_object=models.UserInfo.objects.filter(nid=75).first()
+    # )
+
 
     return JsonResponse(ret)

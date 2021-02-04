@@ -22,5 +22,5 @@ urlpatterns = [
     # url(r'^admin/', admin.site.urls),
     url(r'^backend/', include('backend.urls')),
     url(r'^', include('web.urls')),
-    path('inbox/notifications/', include(notifications.urls, namespace='notifications')),
+    path('notifications/', include(notifications.urls, namespace='notifications')),
 ]

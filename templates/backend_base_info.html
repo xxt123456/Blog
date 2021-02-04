@@ -155,10 +155,11 @@
         function bindChangeAvatar3() {
             $('#avatarImg').change(function () {
                 var file_obj = $(this)[0].files[0];
+                var csrf = $('input[name="csrfmiddlewaretoken"]').val();
                 var form = new FormData();
                 form.append('img_upload', file_obj);
                 form.append('username', $(this).attr('username'));
-
+                form.append('csrfmiddlewaretoken', csrf);
                 $.ajax({
                     url: '/backend/upload-avatar.html',
                     type: 'POST',

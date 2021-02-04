@@ -115,6 +115,7 @@
                 type: 'POST',
                 data: {
                     add_tag: add_tag,
+                    csrfmiddlewaretoken: "{{ csrf_token }}"
                 },
                 success: function (data) {
                     console.log(data.statu);
@@ -139,6 +140,7 @@
                 type: 'POST',
                 data: {
                     tag_id: tag_id,
+                    csrfmiddlewaretoken: "{{ csrf_token }}"
                 },
                 success: function (data) {
                     console.log(data);
@@ -192,6 +194,7 @@
                     data: {
                         tag_title: new_title,
                         tag_id: tag_id,
+                        csrfmiddlewaretoken: "{{ csrf_token }}"
                     },
                     success: function (data) {
                         console.log(data);

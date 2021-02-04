@@ -52,7 +52,13 @@
                 创建新文章
             </a>
         </div>
-
+        <span class="tips" id="del_resule"></span>
+        <div class="tips-warning" id="verify" style="display: none">
+            <div>
+                <button>是</button>
+                <button>否</button>
+            </div>
+        </div>
         <table class="table table-bordered">
             <thead>
             <tr>
@@ -96,13 +102,17 @@
     <script>
         $('td #del_article').click(function () {
             var article_id = $(this).attr('article_id');
+            {#$('#verify').css('display','');#}
             $.ajax({
                 url: 'article/del_article/',
                 type: 'POST',
-                data: {'article_id': article_id},
+                data: {'article_id': article_id, csrfmiddlewaretoken: "{{ csrf_token }}"},
                 success: function (arg) {
                     if (arg.status == true) {
-                        location.reload();
+                        $('#del_resule').html(arg.message).addClass('alert-success').fadeIn().delay(1500).fadeOut();
+                        setTimeout(function () {
+                            location.reload()
+                        }, 1000)
                     } else {
                         alert(arg.err)
                     }

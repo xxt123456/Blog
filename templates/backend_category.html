@@ -103,6 +103,7 @@
                 type: 'POST',
                 data: {
                     add_cate: add_cate,
+                    csrfmiddlewaretoken: "{{ csrf_token }}"
                 },
                 success: function (data) {
                     if (data.statu == true) {
@@ -125,6 +126,7 @@
                 type: 'POST',
                 data: {
                     cate_id: cate_id,
+                    csrfmiddlewaretoken: "{{ csrf_token }}"
                 },
                 success: function (data) {
                     location.reload();
@@ -146,6 +148,7 @@
                 data:{
                     cate_title:new_title,
                     cate_id:cate_id,
+                    csrfmiddlewaretoken: "{{ csrf_token }}"
                 },
                 success:function (data) {
                     console.log(data);

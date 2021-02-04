@@ -91,7 +91,7 @@ def add_article(request):
                                               article_type_id=article_type_id, article_img=img_name)
             models.ArticleDetail.objects.create(article=a, content=art_content)
             models.Article2Tag.objects.create(article=a, tag=tags_id)
-            res = {'status': True}
+            res = {'status': True, 'message': '添加成功'}
     except Exception as e:
         print(e)
         res = {'status': False, 'err': '添加失败'}
@@ -106,10 +106,10 @@ def del_article(request):
     """
     article_id = request.POST.get('article_id')
     try:
-        atticle = models.Article.objects.filter(nid=article_id)
+        article = models.Article.objects.filter(nid=article_id)
         if article:
             models.Article.objects.filter(nid=article_id).delete()
-            res = {'status': True}
+            res = {'status': True, 'message': '删除成功'}
     except Exception as e:
         res = {'status': False, 'err': e}
     return JsonResponse(res)
@@ -171,7 +171,7 @@ def edit_article(request, *args, **kwargs):
                 res = {'status': True, 'message': '编辑成功'}
         except Exception as e:
             print(e)
-            res = {'status': False, 'message': '添加失败' + e}
+            res = {'status': False, 'message': '添加失败'}
         return JsonResponse(res)
 
 
